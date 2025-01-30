@@ -33,6 +33,8 @@ Para utilizar o **DocMeAI**, você precisará ter instalado o **DelphiOpenAI**. 
    - **Modelo de IA**: O modelo utilizado, como `gpt-4o-mini`.
    - **Máximo de Tokens**: Limite de tokens para as respostas.
    - **Temperatura**: Controle da criatividade da IA (valor entre `0.0` e `1.0`).
+   - ![image](https://github.com/user-attachments/assets/a670d1d9-769a-4c8d-b167-318e0449b512)
+
 
 3. Clique em **Salvar** para concluir a configuração.
 
@@ -73,3 +75,10 @@ begin
   Result := pValue1 + pValue2;
 end;
 ```
+Demonstração:
+
+
+https://github.com/user-attachments/assets/fee1905f-dfff-4fcb-a695-3f9aefc2495a
+
+
+
