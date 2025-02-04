@@ -6,13 +6,16 @@
         <Projects Include="Utils\Utils.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="GeminiAPI\GeminiAPI.dproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="WS\WS.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="GeminiAPI\GeminiAPI.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="DocMeAI.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\DocMeAITest.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -32,15 +35,6 @@
     <Target Name="Utils:Make">
         <MSBuild Projects="Utils\Utils.dproj" Targets="Make"/>
     </Target>
-    <Target Name="GeminiAPI">
-        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj"/>
-    </Target>
-    <Target Name="GeminiAPI:Clean">
-        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="GeminiAPI:Make">
-        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj" Targets="Make"/>
-    </Target>
     <Target Name="WS">
         <MSBuild Projects="WS\WS.dproj"/>
     </Target>
@@ -49,6 +43,15 @@
     </Target>
     <Target Name="WS:Make">
         <MSBuild Projects="WS\WS.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GeminiAPI">
+        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj"/>
+    </Target>
+    <Target Name="GeminiAPI:Clean">
+        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GeminiAPI:Make">
+        <MSBuild Projects="GeminiAPI\GeminiAPI.dproj" Targets="Make"/>
     </Target>
     <Target Name="DocMeAI">
         <MSBuild Projects="DocMeAI.dproj"/>
@@ -59,14 +62,23 @@
     <Target Name="DocMeAI:Make">
         <MSBuild Projects="DocMeAI.dproj" Targets="Make"/>
     </Target>
+    <Target Name="DocMeAITest">
+        <MSBuild Projects="..\DocMeAITest.dproj"/>
+    </Target>
+    <Target Name="DocMeAITest:Clean">
+        <MSBuild Projects="..\DocMeAITest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DocMeAITest:Make">
+        <MSBuild Projects="..\DocMeAITest.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Utils;GeminiAPI;WS;DocMeAI"/>
+        <CallTarget Targets="Utils;WS;GeminiAPI;DocMeAI;DocMeAITest"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Utils:Clean;GeminiAPI:Clean;WS:Clean;DocMeAI:Clean"/>
+        <CallTarget Targets="Utils:Clean;WS:Clean;GeminiAPI:Clean;DocMeAI:Clean;DocMeAITest:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Utils:Make;GeminiAPI:Make;WS:Make;DocMeAI:Make"/>
+        <CallTarget Targets="Utils:Make;WS:Make;GeminiAPI:Make;DocMeAI:Make;DocMeAITest:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

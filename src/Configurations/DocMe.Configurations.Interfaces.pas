@@ -2,6 +2,9 @@ unit DocMe.Configurations.Interfaces;
 
 interface
 
+uses
+  DocMe.AI.ProviderTypes;
+
 type
 
   IDocMeAIConfig = interface
@@ -40,7 +43,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function ApiKey(const Value: string): IDocMeAIConfig; overload;
+    function ApiKey(const AValue: string): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the AI model.
@@ -59,7 +62,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function ModelAI(const Value: string): IDocMeAIConfig; overload;
+    function ModelAI(const AValue: string): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the maximum number of tokens.
@@ -78,7 +81,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function MaxTokens(const Value: Integer): IDocMeAIConfig; overload;
+    function MaxTokens(const AValue: Integer): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the temperature setting.
@@ -97,7 +100,45 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function Temperature(const Value: Double): IDocMeAIConfig; overload;
+    function Temperature(const AValue: Double): IDocMeAIConfig; overload;
+
+    /// <summary>
+    /// Retrieves the current AI provider type.
+    /// </summary>
+    /// <returns>
+    /// The current AI provider type as a <see cref="TDocMeAIProviderType"/>.
+    /// </returns>
+    function AIProviderType: TDocMeAIProviderType; overload;
+
+    /// <summary>
+    /// Sets the AI provider type and returns the corresponding configuration.
+    /// </summary>
+    /// <param name="AType">
+    /// The AI provider type to set, specified as a <see cref="TDocMeAIProviderType"/>.
+    /// </param>
+    /// <returns>
+    /// An interface to the AI configuration as <see cref="IDocMeAIConfig"/>.
+    /// </returns>
+    function AIProviderType(const AType: TDocMeAIProviderType): IDocMeAIConfig; overload;
+
+    /// <summary>
+    /// Gets the active state of the configuration.
+    /// </summary>
+    /// <returns>
+    /// Returns a Boolean indicating whether the configuration is active.
+    /// </returns>
+    function Active: Boolean; overload;
+
+    /// <summary>
+    /// Sets the active state of the configuration.
+    /// </summary>
+    /// <param name="AValue">
+    /// A Boolean value indicating the desired active state.
+    /// </param>
+    /// <returns>
+    /// Returns an instance of <see cref="IDocMeAIConfig"/> for method chaining.
+    /// </returns>
+    function Active(const AValue: Boolean): IDocMeAIConfig; overload;
   end;
 
 implementation

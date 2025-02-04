@@ -1,4 +1,4 @@
-unit DocMe.Documentation;
+unit DocumentationTest;
 
 interface
 
@@ -18,7 +18,9 @@ uses
   FMX.Memo.Types,
   FMX.ScrollBox,
   FMX.Memo,
-  FMX.Objects;
+  FMX.Objects,
+  DocMe.Configurations.Interfaces,
+  DocMe.AI.Interfaces;
 
 type
   TFrmDocMeAIDocumentation = class(TForm)
@@ -29,7 +31,10 @@ type
     BtnDocument: TRectangle;
     LbDocument: TLabel;
     procedure BtnDocumentClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
+    FConfig: IDocMeAIConfig;
+    FAI: IDocMeAI;
     /// <summary>
     /// Disables the visual controls.
     /// </summary>
@@ -49,7 +54,8 @@ implementation
 
 uses
   System.Threading,
-  DocMe.Documentation.Process;
+  DocMe.Configurations.Config,
+  DocMe.AI.Factory;
 
 {$R *.fmx}
 { TFrmDocMeAIDocumentation }
@@ -58,29 +64,9 @@ procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
 begin
   DisableControls;
 
-  TTask.Run(
-    procedure
-    begin
-      try
-        TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
+  // TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
+  FAI.DocumentElements(MemAdditionalInfo.Lines.Text.Trim);
 
-        TThread.Synchronize(nil,
-          procedure
-          begin
-            Self.Close;
-          end);
-      except
-        on E: Exception do
-        begin
-          TThread.Synchronize(nil,
-            procedure
-            begin
-              EnableControls;
-              ShowMessage('An error occurred: ' + E.Message);
-            end);
-        end;
-      end;
-    end);
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;
@@ -93,6 +79,12 @@ procedure TFrmDocMeAIDocumentation.EnableControls;
 begin
   MemAdditionalInfo.Enabled := True;
   BtnDocument.Enabled := True;
+end;
+
+procedure TFrmDocMeAIDocumentation.FormCreate(Sender: TObject);
+begin
+  FConfig := TDocMeAIConfig.New.LoadConfig;
+  FAI := TDocMeAIFactory.CreateAI(FConfig);
 end;
 
 end.

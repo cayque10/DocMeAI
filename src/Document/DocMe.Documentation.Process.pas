@@ -44,14 +44,14 @@ uses
   System.SysUtils,
   Vcl.Dialogs,
   System.StrUtils,
-  DocMe.AI.ChatGPT;
+  DocMe.AI.Factory;
 
 { TDocMeDocumentationProcess }
 
 constructor TDocMeDocumentationProcess.Create;
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
-  FAI := TDocMeAIChatGPT.New(FConfig);
+  FAI := TDocMeAIFactory.CreateAI(FConfig);
   FDocMeText := TDocMeDocumentationText.New;
 end;
 

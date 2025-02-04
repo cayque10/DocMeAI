@@ -3,7 +3,7 @@
         <ProjectGuid>{2B7DCD6D-DF5F-419E-9A23-03C24CC5005E}</ProjectGuid>
         <MainSource>WS.dpk</MainSource>
         <ProjectVersion>20.1</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>

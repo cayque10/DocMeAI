@@ -6,8 +6,7 @@ uses
   ToolsAPI,
   Vcl.Menus,
   System.Classes,
-  DocMe.Documentation,
-  DocMe.Configurations;
+  DocMe.Documentation;
 
 type
   TDocMeMenuMain = class(TNotifierObject, IOTAWizard)
@@ -86,6 +85,9 @@ procedure RegisterMenuWizard;
 
 implementation
 
+uses
+  DocMe.Configurations;
+
 procedure RegisterMenuWizard;
 begin
   RegisterPackageWizard(TDocMeMenuMain.Create);
@@ -148,9 +150,9 @@ end;
 
 procedure TDocMeMenuMain.OnConfigurations(Sender: TObject);
 var
-  lFrmDocMeConfigurations: TFrmDocMeConfigurations;
+  lFrmDocMeConfigurations: TFrmDocMeAIConfigurations;
 begin
-  lFrmDocMeConfigurations := TFrmDocMeConfigurations.Create(nil);
+  lFrmDocMeConfigurations := FrmDocMeAIConfigurations.Create(nil);
   try
     lFrmDocMeConfigurations.ShowModal;
   finally
@@ -160,9 +162,9 @@ end;
 
 procedure TDocMeMenuMain.OnDocumentElements(Sender: TObject);
 var
-  lFrmDocumentation: TFrmDocMeDocumentation;
+  lFrmDocumentation: TFrmDocMeAIDocumentation;
 begin
-  lFrmDocumentation := TFrmDocMeDocumentation.Create(nil);
+  lFrmDocumentation := TFrmDocMeAIDocumentation.Create(nil);
   try
     lFrmDocumentation.ShowModal;
   finally

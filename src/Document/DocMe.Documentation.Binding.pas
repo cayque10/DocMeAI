@@ -94,11 +94,11 @@ end;
 procedure TDocMeDocumentationBinding.Execute(const pContext: IOTAKeyContext; pKeyCode: TShortcut;
   var pBindingResult: TKeyBindingResult);
 var
-  lFrmDocumentation: TFrmDocMeDocumentation;
+  lFrmDocumentation: TFrmDocMeAIDocumentation;
 begin
   pBindingResult := krHandled;
 
-  lFrmDocumentation := TFrmDocMeDocumentation.Create(nil);
+  lFrmDocumentation := TFrmDocMeAIDocumentation.Create(nil);
   try
     lFrmDocumentation.ShowModal;
   finally

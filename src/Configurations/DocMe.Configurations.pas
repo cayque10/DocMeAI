@@ -3,42 +3,61 @@ unit DocMe.Configurations;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
   System.SysUtils,
-  System.Variants,
+  System.Types,
+  System.UITypes,
   System.Classes,
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-  Vcl.ExtCtrls,
-  DocMe.Configurations.Config,
-  DocMe.Configurations.Interfaces;
+  System.Variants,
+  FMX.Types,
+  FMX.Controls,
+  FMX.Forms,
+  FMX.Graphics,
+  FMX.Dialogs,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Memo.Types,
+  FMX.ScrollBox,
+  FMX.Memo,
+  FMX.Edit,
+  FMX.Layouts,
+  FMX.TabControl,
+  FMX.ListBox,
+  FMX.Objects,
+  DocMe.Configurations.Interfaces,
+  System.Generics.Collections;
 
 type
-  TFrmDocMeConfigurations = class(TForm)
-    PnlContainer: TPanel;
-    LbSpecification: TLabel;
-    PnlButton: TPanel;
-    BtnSave: TButton;
-    PnlTemperature: TPanel;
-    PnlAPIKey: TPanel;
-    MemAPIKey: TMemo;
-    LbAPIKey: TLabel;
-    EdtTemperature: TEdit;
-    LbTemperature: TLabel;
-    PnlModel: TPanel;
-    LbModel: TLabel;
-    EdtModel: TEdit;
-    PnlMaxToken: TPanel;
+  TFrmDocMeAIConfigurations = class(TForm)
+    RecContainer: TRectangle;
+    TcAI: TTabControl;
+    TiAI: TTabItem;
+    LayContainer: TLayout;
+    BtnSave: TRectangle;
+    LbSave: TLabel;
+    RecMaxToken: TRectangle;
     LbMaxToken: TLabel;
     EdtMaxToken: TEdit;
-    procedure FormCreate(Sender: TObject);
+    RecTemperature: TRectangle;
+    LbTemperature: TLabel;
+    EdtTemperature: TEdit;
+    RecAPIKey: TRectangle;
+    LbAPIKey: TLabel;
+    RecContainerMem: TRectangle;
+    MemAPIKey: TMemo;
+    RecModel: TRectangle;
+    CbModel: TComboBox;
+    LbModel: TLabel;
+    RecContainerComboAI: TRectangle;
+    CbAI: TComboBox;
+    SwActive: TSwitch;
     procedure BtnSaveClick(Sender: TObject);
+    procedure CbAIChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure SwActiveSwitch(Sender: TObject);
   private
     FConfig: IDocMeAIConfig;
+    FAIModels: TDictionary<string, TArray<string>>;
     /// <summary>
     /// Saves the current configuration settings to a persistent storage.
     /// </summary>
@@ -53,46 +72,149 @@ type
     /// Validates the data contained in the configuration settings.
     /// </summary>
     procedure ValidateDatas;
+
+    /// <summary>
+    /// Retrieves the index of the AI model.
+    /// </summary>
+    /// <returns>
+    /// The index of the AI model as an <see cref="Integer"/>.
+    /// </returns>
+    function GetIndexAIModel: Integer;
+
+    /// <summary>
+    /// Configures the combo box for selecting AI models.
+    /// </summary>
+    procedure ConfigComboBoxAIModel;
+
+    /// <summary>
+    /// Generates AI models based on the current configuration.
+    /// </summary>
+    procedure GenerateAIModels;
   public
   end;
 
+var
+  FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations;
+
 implementation
 
-{$R *.dfm}
+uses
+  DocMe.Configurations.Config,
+  DocMe.AI.ProviderTypes;
 
-procedure TFrmDocMeConfigurations.BtnSaveClick(Sender: TObject);
+{$R *.fmx}
+{ TFrmDocMeAISettings }
+
+procedure TFrmDocMeAIConfigurations.BtnSaveClick(Sender: TObject);
 begin
   SaveConfig;
 end;
 
-procedure TFrmDocMeConfigurations.FormCreate(Sender: TObject);
+procedure TFrmDocMeAIConfigurations.CbAIChange(Sender: TObject);
 begin
-  FConfig := TDocMeAIConfig.New.LoadConfig;
+  FConfig.AIProviderType(TDocMeAIProviderType(CbAI.ItemIndex)).LoadConfig;
+
+  ConfigComboBoxAIModel;
   ConfigToView;
 end;
 
-procedure TFrmDocMeConfigurations.ConfigToView;
+procedure TFrmDocMeAIConfigurations.ConfigToView;
+var
+  lOnChangeCbAI: TNotifyEvent;
 begin
+  MemAPIKey.Lines.Clear;
+  lOnChangeCbAI := CbAI.OnChange;
+  CbAI.OnChange := nil;
+  try
+    CbAI.ItemIndex := Ord(FConfig.AIProviderType);
+  finally
+    CbAI.OnChange := lOnChangeCbAI;
+  end;
   MemAPIKey.Lines.Add(FConfig.ApiKey);
-  EdtModel.Text := FConfig.ModelAI;
+  CbModel.ItemIndex := GetIndexAIModel;
   EdtMaxToken.Text := IntToStr(FConfig.MaxTokens);
   EdtTemperature.Text := FloatToStr(FConfig.Temperature);
+  SwActive.IsChecked := FConfig.Active;
 end;
 
-procedure TFrmDocMeConfigurations.SaveConfig;
+procedure TFrmDocMeAIConfigurations.FormCreate(Sender: TObject);
+begin
+  TcAI.TabPosition := TTabPosition.None;
+  GenerateAIModels;
+  FConfig := TDocMeAIConfig.New.LoadConfig;
+  ConfigComboBoxAIModel;
+  ConfigToView;
+end;
+
+procedure TFrmDocMeAIConfigurations.FormDestroy(Sender: TObject);
+begin
+  FAIModels.Free;
+end;
+
+function TFrmDocMeAIConfigurations.GetIndexAIModel: Integer;
+var
+  I: Integer;
+begin
+  Result := 0;
+
+  CbModel.BeginUpdate;
+  try
+    for I := 0 to Pred(CbModel.Count) do
+    begin
+      if CbModel.ListItems[I].Text.ToLower = FConfig.ModelAI.ToLower then
+      begin
+        Result := I;
+        Break;
+      end;
+    end;
+  finally
+    CbModel.EndUpdate;
+  end;
+end;
+
+procedure TFrmDocMeAIConfigurations.ConfigComboBoxAIModel;
+var
+  lSelectedType: string;
+  lModels: TArray<string>;
+  I: Integer;
+begin
+  lSelectedType := CbAI.Selected.Text;
+  CbModel.Clear;
+
+  if FAIModels.TryGetValue(lSelectedType, lModels) then
+  begin
+    for I := Low(lModels) to High(lModels) do
+      CbModel.Items.Add(lModels[I]);
+    if CbModel.Items.Count > 0 then
+      CbModel.ItemIndex := 0;
+  end;
+end;
+
+procedure TFrmDocMeAIConfigurations.GenerateAIModels;
+begin
+  FAIModels := TDictionary < string, TArray < string >>.Create;
+  FAIModels.Add('ChatGPT', ['gpt-4o', 'gpt-4o-mini', 'o1', 'o1-mini', 'o3-mini']);
+  FAIModels.Add('Gemini', ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro', 'gemini-2.0-flash-exp']);
+  FAIModels.Add('DeepSeek', ['deepseek-chat', 'deepseek-reasoner']);
+end;
+
+procedure TFrmDocMeAIConfigurations.SaveConfig;
 begin
   ValidateDatas;
-  FConfig
-    .ApiKey(MemAPIKey.Lines.Text.Trim)
-    .ModelAI(Trim(EdtModel.Text))
-    .MaxTokens(StrToIntDef(EdtMaxToken.Text, MAX_TOKENS_AI))
-    .Temperature(StrToFloat(Trim(EdtTemperature.Text)))
-    .SaveConfig;
+
+  FConfig.AIProviderType(TDocMeAIProviderType(CbAI.ItemIndex)).ApiKey(MemAPIKey.Lines.Text.Trim)
+    .ModelAI(Trim(CbModel.Text)).MaxTokens(StrToIntDef(EdtMaxToken.Text, MAX_TOKENS_AI))
+    .Temperature(StrToFloat(Trim(EdtTemperature.Text))).SaveConfig;
 
   ShowMessage('Settings saved successfully');
 end;
 
-procedure TFrmDocMeConfigurations.ValidateDatas;
+procedure TFrmDocMeAIConfigurations.SwActiveSwitch(Sender: TObject);
+begin
+  FConfig.Active(SwActive.IsChecked);
+end;
+
+procedure TFrmDocMeAIConfigurations.ValidateDatas;
 var
   lErrorMessage: string;
   lMaxTokens: Integer;
@@ -108,7 +230,7 @@ begin
   if MemAPIKey.Lines.Text.Trim.IsEmpty then
     lErrorMessage := lErrorMessage + '- API Key cannot be empty.' + sLineBreak;
 
-  if Trim(EdtModel.Text).IsEmpty then
+  if Trim(CbModel.Text).IsEmpty then
     lErrorMessage := lErrorMessage + '- Model AI cannot be empty.' + sLineBreak;
 
   if not TryStrToInt(EdtMaxToken.Text, lMaxTokens) or (lMaxTokens <= 0) then

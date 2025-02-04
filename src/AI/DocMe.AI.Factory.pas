@@ -12,6 +12,11 @@ type
   TDocMeAIFactory = class
   private
   public
+    /// <summary>
+    /// Creates an instance of the AI using the provided configuration.
+    /// </summary>
+    /// <param name="pConfig">An instance of <see cref="IDocMeAIConfig"/> that contains the configuration for the AI.</param>
+    /// <returns>An instance of <see cref="IDocMeAI"/> representing the created AI.</returns>
     class function CreateAI(const pConfig: IDocMeAIConfig): IDocMeAI;
   end;
 
@@ -27,12 +32,12 @@ uses
 
 class function TDocMeAIFactory.CreateAI(const pConfig: IDocMeAIConfig): IDocMeAI;
 begin
-  case pConfig.AIProviderType of
-    aiChatGPT:
+  case Ord(pConfig.AIProviderType) of
+    Ord(aiChatGPT):
       Result := TDocMeAIChatGPT.New(pConfig);
-    aiGemini:
+    Ord(aiGemini):
       Result := TDocMeAIGemini.New(pConfig);
-    aiDeepSeek:
+    Ord(aiDeepSeek):
       Result := TDocMeAIDeepSeek.New(pConfig);
   else
     raise Exception.Create('AI type not supported.');

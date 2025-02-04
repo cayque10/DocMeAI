@@ -9,28 +9,29 @@ package DocMeAI;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS OFF}
+{$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
-{$OVERFLOWCHECKS OFF}
-{$RANGECHECKS OFF}
-{$REFERENCEINFO OFF}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE RELEASE}
+{$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
   designide,
-  RESTComponents;
+  RESTComponents,
+  fmx;
 
 contains
   DocMe.Documentation.Binding in 'Document\DocMe.Documentation.Binding.pas',
@@ -38,13 +39,18 @@ contains
   DocMe.Documentation.Register in 'Document\DocMe.Documentation.Register.pas',
   DocMe.Documentation.Text in 'Document\DocMe.Documentation.Text.pas',
   DocMe.Menu.Main in 'Menu\DocMe.Menu.Main.pas',
-  DocMe.Configurations in 'Configurations\DocMe.Configurations.pas' {FrmDocMeConfigurations},
-  DocMe.Documentation in 'Document\DocMe.Documentation.pas' {FrmDocMeDocumentation},
   DocMe.Configurations.Config in 'Configurations\DocMe.Configurations.Config.pas',
   DocMe.Configurations.Interfaces in 'Configurations\DocMe.Configurations.Interfaces.pas',
-  DocMe.AI.ChatGPT in 'AI\ChatGPT\DocMe.AI.ChatGPT.pas',
   DocMe.AI.Interfaces in 'AI\DocMe.AI.Interfaces.pas',
   DocMe.Documentation.Process.Interfaces in 'Document\DocMe.Documentation.Process.Interfaces.pas',
-  DocMe.Documentation.Text.Interfaces in 'Document\DocMe.Documentation.Text.Interfaces.pas';
+  DocMe.Documentation.Text.Interfaces in 'Document\DocMe.Documentation.Text.Interfaces.pas',
+  DocMe.Configurations in 'Configurations\DocMe.Configurations.pas' {FrmDocMeAIConfigurations},
+  DocMe.Documentation in 'Document\DocMe.Documentation.pas' {FrmDocMeAIDocumentation},
+  DocMe.Helpers.AI in 'Helpers\DocMe.Helpers.AI.pas',
+  DocMe.AI.ChatGPT in 'AI\ChatGPT\DocMe.AI.ChatGPT.pas',
+  DocMe.AI.DeepSeek in 'AI\DeepSeek\DocMe.AI.DeepSeek.pas',
+  DocMe.AI.Gemini in 'AI\Gemini\DocMe.AI.Gemini.pas',
+  DocMe.AI.ProviderTypes in 'AI\DocMe.AI.ProviderTypes.pas',
+  DocMe.AI.Factory in 'AI\DocMe.AI.Factory.pas';
 
 end.

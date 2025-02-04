@@ -7,17 +7,19 @@ uses
   System.SysUtils,
   System.JSON,
   System.IOUtils,
-  DocMe.Configurations.Interfaces;
+  DocMe.Configurations.Interfaces,
+  DocMe.AI.ProviderTypes;
 
 type
   TDocMeAIConfig = class(TInterfacedObject, IDocMeAIConfig)
   private
+    FActive: Boolean;
     FApiKey: string;
     FModelAI: string;
     FMaxTokens: Integer;
     FTemperature: Double;
     FConfigFilePath: string;
-
+    FProviderType: TDocMeAIProviderType;
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
@@ -29,7 +31,7 @@ type
     /// <returns>
     /// Returns True if the file was successfully loaded; otherwise, False.
     /// </returns>
-    function LoadFromFile: Boolean;
+    function LoadFromFile(const AIndex: Integer): Boolean;
 
     /// <summary>
     /// Saves the current configuration data to a file.
@@ -48,8 +50,17 @@ type
     /// Ensures that the configuration directory exists, creating it if necessary.
     /// </summary>
     procedure EnsureConfigDirectoryExists;
+    function GetActiveProviderType: Integer;
   public
     destructor Destroy; override;
+
+    /// <summary>
+    /// Creates a new instance of the IDocMeAIConfig interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of IDocMeAIConfig.
+    /// </returns>
+    class function New: IDocMeAIConfig;
 
     /// <summary>
     /// Loads the configuration settings.
@@ -84,7 +95,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function ApiKey(const Value: string): IDocMeAIConfig; overload;
+    function ApiKey(const AValue: string): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the AI model.
@@ -103,7 +114,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function ModelAI(const Value: string): IDocMeAIConfig; overload;
+    function ModelAI(const AValue: string): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the maximum number of tokens.
@@ -122,7 +133,7 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function MaxTokens(const Value: Integer): IDocMeAIConfig; overload;
+    function MaxTokens(const AValue: Integer): IDocMeAIConfig; overload;
 
     /// <summary>
     /// Gets the temperature setting.
@@ -141,15 +152,45 @@ type
     /// <returns>
     /// An instance of IDocMeAIConfig for method chaining.
     /// </returns>
-    function Temperature(const Value: Double): IDocMeAIConfig; overload;
+    function Temperature(const AValue: Double): IDocMeAIConfig; overload;
 
     /// <summary>
-    /// Creates a new instance of the IDocMeAIConfig interface.
+    /// Retrieves the current AI provider type.
     /// </summary>
     /// <returns>
-    /// An instance of IDocMeAIConfig.
+    /// The current AI provider type as a <see cref="TDocMeAIProviderType"/>.
     /// </returns>
-    class function New: IDocMeAIConfig;
+    function AIProviderType: TDocMeAIProviderType; overload;
+
+    /// <summary>
+    /// Sets the AI provider type and returns the corresponding configuration.
+    /// </summary>
+    /// <param name="AType">
+    /// The AI provider type to set, specified as a <see cref="TDocMeAIProviderType"/>.
+    /// </param>
+    /// <returns>
+    /// An interface to the AI configuration as <see cref="IDocMeAIConfig"/>.
+    /// </returns>
+    function AIProviderType(const AType: TDocMeAIProviderType): IDocMeAIConfig; overload;
+
+    /// <summary>
+    /// Gets the active state of the configuration.
+    /// </summary>
+    /// <returns>
+    /// Returns a Boolean indicating whether the configuration is active.
+    /// </returns>
+    function Active: Boolean; overload;
+
+    /// <summary>
+    /// Sets the active state of the configuration.
+    /// </summary>
+    /// <param name="AValue">
+    /// A Boolean value indicating the desired active state.
+    /// </param>
+    /// <returns>
+    /// Returns an instance of <see cref="IDocMeAIConfig"/> for method chaining.
+    /// </returns>
+    function Active(const AValue: Boolean): IDocMeAIConfig; overload;
   end;
 
 const
@@ -158,6 +199,9 @@ const
   TEMPERATURE_AI = 0.3;
 
 implementation
+
+uses
+  System.Generics.Collections;
 
 { TDocMeAIConfig }
 
@@ -169,13 +213,13 @@ begin
   FModelAI := OPENAI_MODEL;
   FMaxTokens := MAX_TOKENS_AI;
   FTemperature := TEMPERATURE_AI;
-
+  FProviderType := TDocMeAIProviderType(GetActiveProviderType);
   LoadConfig;
 end;
 
 destructor TDocMeAIConfig.Destroy;
 begin
-  SaveConfig;
+
   inherited;
 end;
 
@@ -188,58 +232,179 @@ begin
     ForceDirectories(lConfigPath);
 end;
 
-function TDocMeAIConfig.LoadFromFile: Boolean;
+function TDocMeAIConfig.LoadFromFile(const AIndex: Integer): Boolean;
 var
-  LJSON: TJSONObject;
   LContent: string;
+  LConfigArray: TJSONArray;
+  LParsedJSON: TJSONValue;
+  LConfigObj: TJSONObject;
+  LVal: TJSONValue;
 begin
   Result := False;
 
   if not TFile.Exists(FConfigFilePath) then
     Exit;
 
+  LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
+  LParsedJSON := TJSONObject.ParseJSONValue(LContent);
   try
-    LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
-    LJSON := TJSONObject.ParseJSONValue(LContent) as TJSONObject;
+    // Verifica se o JSON foi parseado corretamente e é um array
+    if not Assigned(LParsedJSON) or not(LParsedJSON is TJSONArray) then
+      Exit;
 
-    if Assigned(LJSON) then
-      try
-        FApiKey := LJSON.GetValue<string>('ApiKey', '');
-        FModelAI := LJSON.GetValue<string>('ModelAI', OPENAI_MODEL);
-        FMaxTokens := LJSON.GetValue<Integer>('MaxTokens', MAX_TOKENS_AI);
-        FTemperature := LJSON.GetValue<Double>('Temperature', TEMPERATURE_AI);
-        Result := True;
-      finally
-        LJSON.Free;
-      end;
-  except
-    on E: Exception do
-      raise Exception.Create('Error loading configuration: ' + E.Message);
+    LConfigArray := TJSONArray(LParsedJSON);
+
+    // Valida o índice
+    if (AIndex < 0) or (AIndex >= LConfigArray.Count) then
+      Exit;
+
+    // Verifica se o item do array é um objeto JSON
+    if not(LConfigArray.Items[AIndex] is TJSONObject) then
+      Exit;
+
+    LConfigObj := TJSONObject(LConfigArray.Items[AIndex]);
+
+    LVal := LConfigObj.GetValue('Active');
+    if Assigned(LVal) and (LVal is TJSONBool) then
+      FActive := TJSONBool(LVal).AsBoolean
+    else
+      FActive := False;
+
+    LVal := LConfigObj.GetValue('ProviderType');
+    if Assigned(LVal) and (LVal is TJSONNumber) then
+      FProviderType := TDocMeAIProviderType(TJSONNumber(LVal).AsInt)
+    else
+      FProviderType := TDocMeAIProviderType.aiChatGPT;
+
+    LVal := LConfigObj.GetValue('ApiKey');
+    if Assigned(LVal) then
+      FApiKey := LVal.Value
+    else
+      FApiKey := '';
+
+    LVal := LConfigObj.GetValue('ModelAI');
+    if Assigned(LVal) then
+      FModelAI := LVal.Value
+    else
+      FModelAI := '';
+
+    LVal := LConfigObj.GetValue('MaxTokens');
+    if Assigned(LVal) and (LVal is TJSONNumber) then
+      FMaxTokens := TJSONNumber(LVal).AsInt
+    else
+      FMaxTokens := MAX_TOKENS_AI;
+
+    LVal := LConfigObj.GetValue('Temperature');
+    if Assigned(LVal) and (LVal is TJSONNumber) then
+      FTemperature := TJSONNumber(LVal).AsDouble
+    else
+      FTemperature := TEMPERATURE_AI;
+
+    Result := True;
+  finally
+    LParsedJSON.Free;
   end;
 end;
 
 procedure TDocMeAIConfig.SaveToFile;
 var
-  LJSON: TJSONObject;
+  LConfigArray: TJSONArray;
   LContent: string;
+  LNewConfig, LConfig: TJSONObject;
+  LParsedJSON: TJSONValue;
+  I: Integer;
+  lFound: Boolean;
+  lKeyValue: string;
+  lRemovedPair: TJSONPair;
 begin
-  LJSON := TJSONObject.Create;
-  try
-    LJSON.AddPair('ApiKey', FApiKey);
-    LJSON.AddPair('ModelAI', FModelAI);
-    LJSON.AddPair('MaxTokens', TJSONNumber.Create(FMaxTokens));
-    LJSON.AddPair('Temperature', TJSONNumber.Create(FTemperature));
+  if TFile.Exists(FConfigFilePath) then
+  begin
+    LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
+    LParsedJSON := TJSONObject.ParseJSONValue(LContent);
+    if (LParsedJSON <> nil) and (LParsedJSON is TJSONArray) then
+      LConfigArray := TJSONArray(LParsedJSON)
+    else
+    begin
+      LConfigArray := TJSONArray.Create;
+      LParsedJSON.Free;
+    end;
+  end
+  else
+    LConfigArray := TJSONArray.Create;
 
-    LContent := LJSON.ToJSON;
+  lKeyValue := IntToStr(Ord(FProviderType));
+  lFound := False;
+
+  for I := 0 to LConfigArray.Count - 1 do
+  begin
+    LConfig := TJSONObject(LConfigArray.Items[I]);
+    if Assigned(LConfig.GetValue('ProviderType')) then
+    begin
+      lRemovedPair := LConfig.RemovePair('Active');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LConfig.AddPair('Active', False);
+
+      if (LConfig.GetValue('ProviderType').Value = lKeyValue) then
+      begin
+        lRemovedPair := LConfig.RemovePair('Active');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('Active', TJSONBool.Create(FActive));
+
+        lRemovedPair := LConfig.RemovePair('ApiKey');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('ApiKey', FApiKey);
+
+        lRemovedPair := LConfig.RemovePair('ModelAI');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('ModelAI', FModelAI);
+
+        lRemovedPair := LConfig.RemovePair('MaxTokens');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('MaxTokens', TJSONNumber.Create(FMaxTokens));
+
+        lRemovedPair := LConfig.RemovePair('Temperature');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('Temperature', TJSONNumber.Create(FTemperature));
+
+        lFound := True;
+      end;
+    end;
+  end;
+
+  if not lFound then
+  begin
+    LNewConfig := TJSONObject.Create;
+    try
+      LNewConfig.AddPair('Active', TJSONBool.Create(FActive));
+      LNewConfig.AddPair('ProviderType', TJSONNumber.Create(Ord(FProviderType)));
+      LNewConfig.AddPair('ApiKey', FApiKey);
+      LNewConfig.AddPair('ModelAI', FModelAI);
+      LNewConfig.AddPair('MaxTokens', TJSONNumber.Create(FMaxTokens));
+      LNewConfig.AddPair('Temperature', TJSONNumber.Create(FTemperature));
+      LConfigArray.AddElement(LNewConfig);
+    except
+      LNewConfig.Free;
+      raise;
+    end;
+  end;
+
+  try
+    LContent := LConfigArray.ToString;
     TFile.WriteAllText(FConfigFilePath, LContent, TEncoding.UTF8);
   finally
-    LJSON.Free;
+    LConfigArray.Free;
   end;
 end;
 
 function TDocMeAIConfig.LoadConfig: IDocMeAIConfig;
 begin
-  if not LoadFromFile then
+  if not LoadFromFile(Ord(FProviderType)) then
     SaveToFile;
 
   Result := Self;
@@ -252,6 +417,53 @@ begin
   Result := Self;
 end;
 
+function TDocMeAIConfig.GetActiveProviderType: Integer;
+var
+  LContent: string;
+  LParsedJSON: TJSONValue;
+  LJSONArray: TJSONArray;
+  LJSONObj: TJSONObject;
+  I: Integer;
+  LActiveValue: TJSONValue;
+  LProvideTypeValue: TJSONValue;
+begin
+  Result := 0;
+
+  if not TFile.Exists(FConfigFilePath) then
+    Exit;
+
+  LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
+  LParsedJSON := TJSONObject.ParseJSONValue(LContent);
+  try
+    if Assigned(LParsedJSON) and (LParsedJSON is TJSONArray) then
+    begin
+      LJSONArray := TJSONArray(LParsedJSON);
+      for I := 0 to LJSONArray.Count - 1 do
+      begin
+        if LJSONArray.Items[I] is TJSONObject then
+        begin
+          LJSONObj := TJSONObject(LJSONArray.Items[I]);
+          LActiveValue := LJSONObj.GetValue('Active');
+          if Assigned(LActiveValue) and (LActiveValue is TJSONBool) then
+          begin
+            if TJSONBool(LActiveValue).AsBoolean then
+            begin
+              LProvideTypeValue := LJSONObj.GetValue('ProviderType');
+              if Assigned(LProvideTypeValue) and (LProvideTypeValue is TJSONNumber) then
+              begin
+                Result := TJSONNumber(LProvideTypeValue).AsInt;
+                Exit;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LParsedJSON.Free;
+  end;
+end;
+
 function TDocMeAIConfig.GetDefaultConfigPath: string;
 begin
   Result := TPath.Combine(TPath.GetHomePath, 'DocMeAI\config.json');
@@ -262,9 +474,31 @@ begin
   Result := FApiKey;
 end;
 
-function TDocMeAIConfig.ApiKey(const Value: string): IDocMeAIConfig;
+function TDocMeAIConfig.Active(const AValue: Boolean): IDocMeAIConfig;
 begin
-  FApiKey := Value;
+  Result := Self;
+  FActive := AValue;
+end;
+
+function TDocMeAIConfig.Active: Boolean;
+begin
+  Result := FActive;
+end;
+
+function TDocMeAIConfig.AIProviderType(const AType: TDocMeAIProviderType): IDocMeAIConfig;
+begin
+  Result := Self;
+  FProviderType := AType;
+end;
+
+function TDocMeAIConfig.AIProviderType: TDocMeAIProviderType;
+begin
+  Result := FProviderType;
+end;
+
+function TDocMeAIConfig.ApiKey(const AValue: string): IDocMeAIConfig;
+begin
+  FApiKey := AValue;
   Result := Self;
 end;
 
@@ -273,10 +507,10 @@ begin
   Result := FModelAI;
 end;
 
-function TDocMeAIConfig.ModelAI(const Value: string): IDocMeAIConfig;
+function TDocMeAIConfig.ModelAI(const AValue: string): IDocMeAIConfig;
 begin
-  if not Value.Trim.IsEmpty then
-    FModelAI := Value;
+  if not AValue.Trim.IsEmpty then
+    FModelAI := AValue;
 
   Result := Self;
 end;
@@ -291,10 +525,10 @@ begin
   Result := FMaxTokens;
 end;
 
-function TDocMeAIConfig.MaxTokens(const Value: Integer): IDocMeAIConfig;
+function TDocMeAIConfig.MaxTokens(const AValue: Integer): IDocMeAIConfig;
 begin
-  if Value > 0 then
-    FMaxTokens := Value;
+  if AValue > 0 then
+    FMaxTokens := AValue;
 
   Result := Self;
 end;
@@ -304,10 +538,10 @@ begin
   Result := FTemperature;
 end;
 
-function TDocMeAIConfig.Temperature(const Value: Double): IDocMeAIConfig;
+function TDocMeAIConfig.Temperature(const AValue: Double): IDocMeAIConfig;
 begin
-  if Value > 0 then
-    FTemperature := Value;
+  if AValue > 0 then
+    FTemperature := AValue;
 
   Result := Self;
 end;
