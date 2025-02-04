@@ -31,7 +31,8 @@ requires
   rtl,
   designide,
   RESTComponents,
-  fmx;
+  fmx,
+  GeminiAPI;
 
 contains
   DocMe.Documentation.Binding in 'Document\DocMe.Documentation.Binding.pas',

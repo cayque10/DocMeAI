@@ -65,7 +65,12 @@ begin
   DisableControls;
 
   // TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
-  FAI.DocumentElements(MemAdditionalInfo.Lines.Text.Trim);
+  try
+   ShowMessage(FAI.DocumentElements(MemAdditionalInfo.Lines.Text.Trim));
+
+  finally
+    EnableControls;
+  end;
 
 end;
 

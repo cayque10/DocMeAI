@@ -35,6 +35,7 @@ requires
 contains
   GeminiAPI.Main in 'GeminiAPI.Main.pas',
   GeminiAPI.Interfaces in 'GeminiAPI.Interfaces.pas',
-  GeminiAPI.GenerativeModels in 'GeminiAPI.GenerativeModels.pas';
+  GeminiAPI.GenerativeModels in 'GeminiAPI.GenerativeModels.pas',
+  GeminiAPI.Response in 'GeminiAPI.Response.pas';
 
 end.

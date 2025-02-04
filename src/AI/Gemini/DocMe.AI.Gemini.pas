@@ -11,71 +11,82 @@ type
   private
     FConfig: IDocMeAIConfig;
     FAdditionalInfo: string;
-
     /// <summary>
     /// Initializes a new instance of the class with the specified configuration.
     /// </summary>
     /// <param name="pConfig">The configuration to be used for the instance.</param>
-    constructor Create(const pConfig: IDocMeAIConfig);
+    constructor Create(const AConfig: IDocMeAIConfig);
 
     /// <summary>
     /// Builds a prompt based on the provided data.
     /// </summary>
-    /// <param name="pData">The data to be used for building the prompt.</param>
+    /// <param name="AData">The data to be used for building the prompt.</param>
     /// <returns>A string representing the built prompt.</returns>
-    function BuildPrompt(const pData: string): string;
+    function BuildPrompt(const AData: string): string;
 
     /// <summary>
     /// Formats the response string.
     /// </summary>
-    /// <param name="pResponse">The response string to be formatted.</param>
+    /// <param name="AResponse">The response string to be formatted.</param>
     /// <returns>A string representing the formatted response.</returns>
-    function FormatResponse(const pResponse: string): string;
+    function FormatResponse(const AResponse: string): string;
   protected
   public
     /// <summary>
     /// Creates a new instance of the class with the specified configuration.
     /// </summary>
-    /// <param name="pConfig">The configuration to be used for the new instance.</param>
+    /// <param name="AConfig">The configuration to be used for the new instance.</param>
     /// <returns>An instance of IDocMeAI.</returns>
-    class function New(const pConfig: IDocMeAIConfig): IDocMeAI;
+    class function New(const AConfig: IDocMeAIConfig): IDocMeAI;
 
     /// <summary>
     /// Documents the elements based on the provided data and additional information.
     /// </summary>
-    /// <param name="pData">The data to be documented.</param>
-    /// <param name="pAdditionalInfo">Optional additional information for documentation.</param>
+    /// <param name="AData">The data to be documented.</param>
+    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
     /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const pData: string; const pAdditionalInfo: string = ''): string;
+    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation
 
+uses
+  GeminiAPI.Main, System.SysUtils;
+
 { TDocMeAIGemini }
 
-function TDocMeAIGemini.BuildPrompt(const pData: string): string;
+function TDocMeAIGemini.BuildPrompt(const AData: string): string;
 begin
-
+  Result := 'Quanto que é 1 + 1. Retorne somente o resultado.';
 end;
 
-constructor TDocMeAIGemini.Create(const pConfig: IDocMeAIConfig);
+constructor TDocMeAIGemini.Create(const AConfig: IDocMeAIConfig);
 begin
-
+  FConfig := AConfig;
 end;
 
-function TDocMeAIGemini.DocumentElements(const pData, pAdditionalInfo: string): string;
+function TDocMeAIGemini.DocumentElements(const AData, AAdditionalInfo: string): string;
 begin
+  FAdditionalInfo := AAdditionalInfo;
 
+  Result := TGeminiAPI.New(FConfig.ApiKey)
+              .Gemini15Flash
+              .Prompt(BuildPrompt(''))
+              .GenerateContent
+                .Text;
+
+  Result := FormatResponse(Result);
 end;
 
-function TDocMeAIGemini.FormatResponse(const pResponse: string): string;
+function TDocMeAIGemini.FormatResponse(const AResponse: string): string;
 begin
-
+  Result := StringReplace(AResponse, #$A, #13#10, [rfReplaceAll]);
+  Result := Result.Replace('`', '').Replace('delphi', '');
 end;
 
-class function TDocMeAIGemini.New(const pConfig: IDocMeAIConfig): IDocMeAI;
+class function TDocMeAIGemini.New(const AConfig: IDocMeAIConfig): IDocMeAI;
 begin
-  Result := Self.Create(pConfig);
+  Result := Self.Create(AConfig);
 end;
 
 end.

@@ -174,6 +174,14 @@ type
     function AIProviderType(const AType: TDocMeAIProviderType): IDocMeAIConfig; overload;
 
     /// <summary>
+    /// Retrieves the current AI provider type.
+    /// </summary>
+    /// <returns>
+    /// The current AI provider type as a <see cref="string"/>.
+    /// </returns>
+    function AIProviderTypeName: string;
+
+    /// <summary>
     /// Gets the active state of the configuration.
     /// </summary>
     /// <returns>
@@ -478,6 +486,11 @@ function TDocMeAIConfig.Active(const AValue: Boolean): IDocMeAIConfig;
 begin
   Result := Self;
   FActive := AValue;
+end;
+
+function TDocMeAIConfig.AIProviderTypeName: string;
+begin
+  Result := DOCME_AI_PROVIDER_NAMES_TYPE[FProviderType];
 end;
 
 function TDocMeAIConfig.Active: Boolean;

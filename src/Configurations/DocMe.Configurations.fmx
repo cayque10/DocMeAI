@@ -1,6 +1,7 @@
 object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
   Left = 0
   Top = 0
+  BorderStyle = Single
   Caption = 'Configurations'
   ClientHeight = 398
   ClientWidth = 582
@@ -1299,6 +1300,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
               object MemAPIKey: TMemo
                 Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
                 DataDetectorTypes = []
+                TextSettings.WordWrap = True
                 Align = Client
                 Margins.Left = 1.000000000000000000
                 Margins.Top = 1.000000000000000000

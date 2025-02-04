@@ -5,6 +5,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
   Caption = 'Example'
   ClientHeight = 393
   ClientWidth = 624
+  Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -178,6 +179,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
               object MemAPIKey: TMemo
                 Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
                 DataDetectorTypes = []
+                TextSettings.WordWrap = True
                 Align = Client
                 Margins.Left = 1.000000000000000000
                 Margins.Top = 1.000000000000000000
@@ -230,19 +232,6 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
                 Size.Height = 21.000000000000000000
                 Size.PlatformDefault = False
                 Text = 'Model'
-                TabOrder = 1
-              end
-              object LbModelInfo: TLabel
-                Align = Left
-                AutoSize = True
-                StyledSettings = [Family, Style]
-                Position.X = 41.000000000000000000
-                Size.Width = 144.000000000000000000
-                Size.Height = 21.000000000000000000
-                Size.PlatformDefault = False
-                TextSettings.Font.Size = 10.000000000000000000
-                TextSettings.FontColor = xFF787878
-                Text = 'Ordenated by price'
                 TabOrder = 0
               end
             end

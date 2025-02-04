@@ -105,6 +105,7 @@
         <DCCReference Include="GeminiAPI.Main.pas"/>
         <DCCReference Include="GeminiAPI.Interfaces.pas"/>
         <DCCReference Include="GeminiAPI.GenerativeModels.pas"/>
+        <DCCReference Include="GeminiAPI.Response.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

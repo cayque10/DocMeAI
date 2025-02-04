@@ -48,7 +48,6 @@ type
     CbModel: TComboBox;
     RecModelTitle: TRectangle;
     LbModel: TLabel;
-    LbModelInfo: TLabel;
     RecContainerComboAI: TRectangle;
     CbAI: TComboBox;
     SwActive: TSwitch;
@@ -181,7 +180,7 @@ var
   lModels: TArray<string>;
   I: Integer;
 begin
-  lSelectedType := CbAI.Selected.Text;
+  lSelectedType := FConfig.AIProviderTypeName;
   CbModel.Clear;
 
   if FAIModels.TryGetValue(lSelectedType, lModels) then

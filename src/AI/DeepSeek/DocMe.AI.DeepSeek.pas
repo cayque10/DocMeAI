@@ -15,22 +15,22 @@ type
     /// <summary>
     /// Initializes a new instance of the class with the specified configuration.
     /// </summary>
-    /// <param name="pConfig">The configuration to be used for the instance.</param>
-    constructor Create(const pConfig: IDocMeAIConfig);
+    /// <param name="AConfig">The configuration to be used for the instance.</param>
+    constructor Create(const AConfig: IDocMeAIConfig);
 
     /// <summary>
     /// Builds a prompt based on the provided data.
     /// </summary>
-    /// <param name="pData">The data to be used for building the prompt.</param>
+    /// <param name="AData">The data to be used for building the prompt.</param>
     /// <returns>A string representing the built prompt.</returns>
-    function BuildPrompt(const pData: string): string;
+    function BuildPrompt(const AData: string): string;
 
     /// <summary>
     /// Formats the response string.
     /// </summary>
     /// <param name="pResponse">The response string to be formatted.</param>
     /// <returns>A string representing the formatted response.</returns>
-    function FormatResponse(const pResponse: string): string;
+    function FormatResponse(const AResponse: string): string;
   protected
   public
     /// <summary>
@@ -38,44 +38,49 @@ type
     /// </summary>
     /// <param name="pConfig">The configuration to be used for the new instance.</param>
     /// <returns>An instance of IDocMeAI.</returns>
-    class function New(const pConfig: IDocMeAIConfig): IDocMeAI;
+    class function New(const AConfig: IDocMeAIConfig): IDocMeAI;
 
     /// <summary>
     /// Documents the elements based on the provided data and additional information.
     /// </summary>
-    /// <param name="pData">The data to be documented.</param>
-    /// <param name="pAdditionalInfo">Optional additional information for documentation.</param>
+    /// <param name="AData">The data to be documented.</param>
+    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
     /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const pData: string; const pAdditionalInfo: string = ''): string;
+    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation
 
+uses
+  System.SysUtils;
+
 { TDocMeAIDeepSeek }
 
-function TDocMeAIDeepSeek.BuildPrompt(const pData: string): string;
+function TDocMeAIDeepSeek.BuildPrompt(const AData: string): string;
 begin
-
+  Result := '';
 end;
 
-constructor TDocMeAIDeepSeek.Create(const pConfig: IDocMeAIConfig);
+constructor TDocMeAIDeepSeek.Create(const AConfig: IDocMeAIConfig);
 begin
-
+  FConfig := AConfig;
+  raise Exception.Create('Not implemented');
 end;
 
-function TDocMeAIDeepSeek.DocumentElements(const pData, pAdditionalInfo: string): string;
+function TDocMeAIDeepSeek.DocumentElements(const AData, AAdditionalInfo: string): string;
 begin
-
+  FAdditionalInfo := AAdditionalInfo;
+  Result := FormatResponse(BuildPrompt(''));
 end;
 
-function TDocMeAIDeepSeek.FormatResponse(const pResponse: string): string;
+function TDocMeAIDeepSeek.FormatResponse(const AResponse: string): string;
 begin
-
+  Result := '';
 end;
 
-class function TDocMeAIDeepSeek.New(const pConfig: IDocMeAIConfig): IDocMeAI;
+class function TDocMeAIDeepSeek.New(const AConfig: IDocMeAIConfig): IDocMeAI;
 begin
-  Result := Self.Create(pConfig);
+  Result := Self.Create(AConfig);
 end;
 
 end.

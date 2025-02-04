@@ -9,10 +9,7 @@ uses
   System.Classes;
 
 type
-  TGeminiRequest = class
-  private
-  public
-  end;
+
 
   TGeminiAPI = class(TInterfacedObject, IGeminiAPI)
   private
@@ -24,17 +21,17 @@ type
     constructor Create(const AAPIKey: string);
     function GeminiModelToString(const AModel: TGeminiModel): string;
     function GetAPIURL: string;
-    function AddParam(const AName, AValue: string): TGeminiAPI;
+    function AddParam(const AName, AValue: string): IGeminiAPI;
     function BuildRequest: TMemoryStream;
   public
-    class function New(const AAPIKey: string): TGeminiAPI;
+    class function New(const AAPIKey: string): IGeminiAPI;
     function GenerativeModel(const AModel: TGeminiModel): IGeminiAPI;
     function Prompt(const AValue: string): IGeminiAPI;
     function Gemini15Pro: IGeminiAPI;
     function Gemini15Flash8B: IGeminiAPI;
     function Gemini15Flash: IGeminiAPI;
     function Gemini20Flash: IGeminiAPI;
-    function GenerateContent: string;
+    function GenerateContent: IGeminiResponse;
   end;
 
 implementation
@@ -44,11 +41,11 @@ uses
   System.SysUtils,
   System.JSON,
   System.JSON.Writers,
-  System.JSON.Builders;
+  System.JSON.Builders, GeminiAPI.Response;
 
 { TGeminiAPI }
 
-function TGeminiAPI.AddParam(const AName, AValue: string): TGeminiAPI;
+function TGeminiAPI.AddParam(const AName, AValue: string): IGeminiAPI;
 begin
   Result := Self;
   FWSBase.Params.Add(Format('%s=%s', [AName, AValue]));
@@ -69,18 +66,8 @@ begin
     try
       lJSONBuilder := TJSONObjectBuilder.Create(lJSONWriter);
       try
-        lJSONBuilder
-          .BeginObject
-            .BeginArray('contents')
-              .BeginObject
-                .BeginArray('parts')
-                  .BeginObject
-                    .Add('text', FPrompt)
-                  .EndObject
-                .EndArray
-              .EndObject
-            .EndArray
-          .EndObject;
+        lJSONBuilder.BeginObject.BeginArray('contents').BeginObject.BeginArray('parts').BeginObject.Add('text', FPrompt)
+          .EndObject.EndArray.EndObject.EndArray.EndObject;
 
         lJSONString := lStringWriter.ToString;
       finally
@@ -105,7 +92,6 @@ begin
     raise;
   end;
 end;
-
 
 constructor TGeminiAPI.Create(const AAPIKey: string);
 begin
@@ -155,15 +141,18 @@ begin
   end;
 end;
 
-function TGeminiAPI.GenerateContent: string;
+function TGeminiAPI.GenerateContent: IGeminiResponse;
 var
   lRequest: TMemoryStream;
+  lResponse: string;
 begin
   FAPIUrl := GetAPIURL;
   AddParam('key', FAPIKey);
   lRequest := BuildRequest;
   try
-    FWSBase.SetBaseUrl(FAPIUrl).WSResquest.Post(FAPIUrl, lRequest);
+    lResponse := FWSBase.SetBaseUrl(FAPIUrl).WSResquest.Post('', lRequest);
+
+    Result := TGeminiResponse.New(lResponse);
   finally
     lRequest.Free;
   end;
@@ -181,7 +170,7 @@ begin
     ':generateContent';
 end;
 
-class function TGeminiAPI.New(const AAPIKey: string): TGeminiAPI;
+class function TGeminiAPI.New(const AAPIKey: string): IGeminiAPI;
 begin
   Result := Self.Create(AAPIKey);
 end;

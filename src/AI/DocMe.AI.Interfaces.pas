@@ -8,10 +8,10 @@ type
     /// <summary>
     /// Documents the elements based on the provided data and additional information.
     /// </summary>
-    /// <param name="pData">The data to be documented.</param>
-    /// <param name="pAdditionalInfo">Optional additional information for documentation.</param>
+    /// <param name="AData">The data to be documented.</param>
+    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
     /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const pData: string; const pAdditionalInfo: string = ''): string;
+    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation

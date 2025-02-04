@@ -73,7 +73,7 @@ type
   EWSForbidden = class(EWSExceptionBase);
   EWSNotFound = class(EWSExceptionBase);
   EWSNotAcceptable = class(EWSExceptionBase);
-
+  EWSServerError = class(EWSExceptionBase);
   EWSNoConnection = class(EWSExceptionBase);
 
 implementation
@@ -118,22 +118,35 @@ end;
 
 procedure TWSBase.CheckResponse;
 var
-  LErrorMessage: string;
+  lMsg: string;
 begin
-  if FResponse.IsEmpty then
+  if ResponseCode in [TWSHTTPCode.WS_HTTP_CODE_OK,
+                      TWSHTTPCode.WS_HTTP_CODE_CREATED,
+                      TWSHTTPCode.WS_HTTP_CODE_ACCEPTED,
+                      TWSHTTPCode.WS_HTTP_CODE_NON_AUTHORITATIVE_INFO,
+                      TWSHTTPCode.WS_HTTP_CODE_NO_CONTENT] then
     Exit;
 
-  if ResponseCode <= TWSHTTPCode.WS_HTTP_CODE_PERMANENT_REDIRECT then
-    Exit;
+  lMsg := Format('HTTP Error %d: %s', [ResponseCode, FResponse]);
 
-  LErrorMessage := FHttpClient.ErrorMessage.Trim;
-
-  if LErrorMessage.IsEmpty then
-    LErrorMessage := Format('Unexpected error. Response Code: %d', [ResponseCode]);
-
-  raise EWSExceptionBase.Create(LErrorMessage);
+  case ResponseCode of
+    TWSHTTPCode.WS_HTTP_CODE_BAD_REQUEST:
+      raise EWSBadRequest.Create(lMsg);
+    TWSHTTPCode.WS_HTTP_CODE_UNAUTHORIZED:
+      raise EWSUnauthorized.Create(lMsg);
+    TWSHTTPCode.WS_HTTP_CODE_FORBIDDEN:
+      raise EWSForbidden.Create(lMsg);
+    TWSHTTPCode.WS_HTTP_CODE_NOT_FOUND:
+      raise EWSNotFound.Create(lMsg);
+    TWSHTTPCode.WS_HTTP_CODE_INTERNAL_SERVER_ERROR,
+    TWSHTTPCode.WS_HTTP_CODE_NOT_IMPLEMENTED,
+    TWSHTTPCode.WS_HTTP_CODE_BAD_GATEWAY,
+    TWSHTTPCode.WS_HTTP_CODE_SERVICE_UNAVAILABLE:
+      raise EWSServerError.Create(lMsg);
+  else
+    raise EWSExceptionBase.Create(lMsg);
+  end;
 end;
-
 
 procedure TWSBase.CheckStatusConnection(const AUrl: String);
   procedure _Check;
