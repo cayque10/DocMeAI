@@ -1,0 +1,91 @@
+object FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation
+  Left = 0
+  Top = 0
+  BorderStyle = Single
+  Caption = 'Documentation'
+  ClientHeight = 332
+  ClientWidth = 420
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object RecContainer: TRectangle
+    Align = Client
+    Fill.Color = claWhite
+    Size.Width = 420.000000000000000000
+    Size.Height = 332.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object LbSpecification: TLabel
+      Align = Top
+      StyledSettings = [Family, Style]
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 6.000000000000000000
+      Size.Width = 408.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.FontColor = xFF333333
+      Text = 
+        'Specify any additional information to be used in the documentati' +
+        'on'
+      TabOrder = 0
+    end
+    object MemAdditionalInfo: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      Align = Top
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 29.000000000000000000
+      Size.Width = 408.000000000000000000
+      Size.Height = 258.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Viewport.Width = 408.000000000000000000
+      Viewport.Height = 258.000000000000000000
+    end
+    object RecButton: TRectangle
+      Align = Client
+      Fill.Color = claWhite
+      Margins.Left = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Size.Width = 408.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      object BtnDocument: TRectangle
+        Align = Client
+        Fill.Color = xFF252525
+        Size.Width = 408.000000000000000000
+        Size.Height = 33.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 4.000000000000000000
+        YRadius = 6.000000000000000000
+        OnClick = BtnDocumentClick
+        object LbDocument: TLabel
+          Align = Client
+          AutoSize = True
+          StyledSettings = [Family, Size, Style]
+          Locked = True
+          Size.Width = 408.000000000000000000
+          Size.Height = 33.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'Document'
+          TabOrder = 0
+        end
+      end
+    end
+  end
+end

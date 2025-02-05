@@ -3,12 +3,16 @@ program DocMeAITest;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Main in 'View\Main.pas' {FrmDocMeAITest};
+  ConfigurationTest in 'View\ConfigurationTest.pas' {FrmDocMeAIConfigurations},
+  DocumentationTest in 'View\DocumentationTest.pas' {FrmDocMeAIDocumentation};
 
 {$R *.res}
 
 begin
+{$IFDEF DEBUG}
+  ReportMemoryLeaksOnShutdown := True;
+{$ENDIF}
   Application.Initialize;
-  Application.CreateForm(TFrmDocMeAITest, FrmDocMeAITest);
+  Application.CreateForm(TFrmDocMeAIConfigurations, FrmDocMeAIConfigurations);
   Application.Run;
 end.

@@ -1,0 +1,54 @@
+package WS;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  IndySystem,
+  IndyProtocols,
+  IndyCore,
+  RESTComponents,
+  Utils;
+
+contains
+  WS.Base in 'WS.Base.pas',
+  WS.Token in 'WS.Token.pas',
+  WS.Interfaces in 'WS.Interfaces.pas',
+  WS.http.Indy in 'http\WS.http.Indy.pas',
+  WS.Http.Net in 'http\WS.Http.Net.pas',
+  WS.Factory in 'WS.Factory.pas',
+  Ws.Common in 'Ws.Common.pas',
+  WS.Parser in 'WS.Parser.pas',
+  WS.Wrapper.Converter in 'Wrapper\WS.Wrapper.Converter.pas',
+  WS.Wrapper.Attributes in 'Wrapper\WS.Wrapper.Attributes.pas';
+
+end.
+
+
+

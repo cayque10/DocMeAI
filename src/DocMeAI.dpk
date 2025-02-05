@@ -1,0 +1,56 @@
+package DocMeAI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  designide,
+  RESTComponents,
+  fmx,
+  GeminiAPI;
+
+contains
+  DocMe.Documentation.Binding in 'Document\DocMe.Documentation.Binding.pas',
+  DocMe.Documentation.Process in 'Document\DocMe.Documentation.Process.pas',
+  DocMe.Documentation.Register in 'Document\DocMe.Documentation.Register.pas',
+  DocMe.Documentation.Text in 'Document\DocMe.Documentation.Text.pas',
+  DocMe.Menu.Main in 'Menu\DocMe.Menu.Main.pas',
+  DocMe.Configurations.Config in 'Configurations\DocMe.Configurations.Config.pas',
+  DocMe.Configurations.Interfaces in 'Configurations\DocMe.Configurations.Interfaces.pas',
+  DocMe.AI.Interfaces in 'AI\DocMe.AI.Interfaces.pas',
+  DocMe.Documentation.Process.Interfaces in 'Document\DocMe.Documentation.Process.Interfaces.pas',
+  DocMe.Documentation.Text.Interfaces in 'Document\DocMe.Documentation.Text.Interfaces.pas',
+  DocMe.Configurations in 'Configurations\DocMe.Configurations.pas' {FrmDocMeAIConfigurations},
+  DocMe.Documentation in 'Document\DocMe.Documentation.pas' {FrmDocMeAIDocumentation},
+  DocMe.AI.ChatGPT in 'AI\ChatGPT\DocMe.AI.ChatGPT.pas',
+  DocMe.AI.DeepSeek in 'AI\DeepSeek\DocMe.AI.DeepSeek.pas',
+  DocMe.AI.Gemini in 'AI\Gemini\DocMe.AI.Gemini.pas',
+  DocMe.AI.ProviderTypes in 'AI\DocMe.AI.ProviderTypes.pas',
+  DocMe.AI.Factory in 'AI\DocMe.AI.Factory.pas';
+
+end.
