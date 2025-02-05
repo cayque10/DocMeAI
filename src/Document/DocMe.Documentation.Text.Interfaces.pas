@@ -16,10 +16,10 @@ type
     /// <summary>
     /// Replaces the currently selected text with the specified new text.
     /// </summary>
-    /// <param name="pNewText">
+    /// <param name="ANewText">
     /// The new text to replace the selected text with.
     /// </param>
-    procedure ReplaceSelectedText(const pNewText: string);
+    procedure ReplaceSelectedText(const ANewText: string);
   end;
 
 implementation

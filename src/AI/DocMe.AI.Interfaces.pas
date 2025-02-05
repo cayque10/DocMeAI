@@ -8,7 +8,15 @@ uses
 type
   IAIModelsProvider = interface
     ['{98E2E2AB-1A96-4BCA-B009-A2C075110702}']
+    /// <summary>
+    /// Retrieves a list of AI models.
+    /// </summary>
+    /// <returns>
+    /// A dictionary where the key is a string representing the model name,
+    /// and the value is an array of strings representing the associated model details.
+    /// </returns>
     function GetAIModelsList: TDictionary<string, TArray<string>>;
+
   end;
 
   IDocMeAI = interface

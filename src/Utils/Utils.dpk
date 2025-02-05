@@ -30,13 +30,19 @@ package Utils;
 
 requires
   rtl,
-  RESTComponents;
+  RESTComponents,
+  fmx;
 
 contains
   Utils.Date in 'Utils.Date.pas',
   Utils.JSON.Cleaner in 'JSON\Utils.JSON.Cleaner.pas',
   Utils.JSON in 'JSON\Utils.JSON.pas',
   Utils.Pkg.Json.DTO in 'JSON\Utils.Pkg.Json.DTO.pas',
-  Utils.Resource.Strings in 'Resource\Utils.Resource.Strings.pas';
+  Utils.Resource.Strings in 'Resource\Utils.Resource.Strings.pas',
+  Utils.CustomTask.Interfaces in 'CustomTask\Utils.CustomTask.Interfaces.pas',
+  Utils.CustomTask in 'CustomTask\Utils.CustomTask.pas',
+  Utils.CustomTask.Wrapper in 'CustomTask\Utils.CustomTask.Wrapper.pas',
+  Utils.Forms.Interfaces in 'Forms\Utils.Forms.Interfaces.pas',
+  Utils.Forms.Loading in 'Forms\Utils.Forms.Loading.pas';
 
 end.

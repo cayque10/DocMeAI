@@ -32,10 +32,10 @@ type
     /// <summary>
     /// Processes the documentation with optional additional information.
     /// </summary>
-    /// <param name="pAdditionalInfo">
+    /// <param name="AAdditionalInfo">
     /// Optional additional information to be used during processing.
     /// </param>
-    procedure Process(const pAdditionalInfo: string = '');
+    procedure Process(const AAdditionalInfo: string = '');
   end;
 
 implementation
@@ -65,7 +65,7 @@ begin
   Result := Self.Create;
 end;
 
-procedure TDocMeDocumentationProcess.Process(const pAdditionalInfo: string = '');
+procedure TDocMeDocumentationProcess.Process(const AAdditionalInfo: string = '');
 var
   lSelectedData: string;
   lProcessedData: string;
@@ -77,7 +77,7 @@ begin
     Exit;
   end;
 
-  lProcessedData := FAI.DocumentElements(lSelectedData, pAdditionalInfo);
+  lProcessedData := FAI.DocumentElements(lSelectedData, AAdditionalInfo);
   FDocMeText.ReplaceSelectedText(lProcessedData);
 end;
 

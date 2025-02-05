@@ -202,7 +202,14 @@ type
     /// </returns>
     function Active(const AValue: Boolean): IDocMeAIConfig; overload;
 
+    /// <summary>
+    /// Retrieves an instance of the IAIModelsProvider interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IAIModelsProvider"/> that provides access to AI models.
+    /// </returns>
     function AIModelsProvider: IAIModelsProvider;
+
   end;
 
 const

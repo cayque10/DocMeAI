@@ -19,49 +19,52 @@ type
   TJSONCleaner<T: class> = class(TInterfacedObject, IJSONCleaner<T>)
   private
     /// <summary>
-    /// Limpa um objeto JSON, removendo campos que não estão presentes na classe correspondente.
+    /// Cleans a JSON object by removing fields that are not present in the corresponding class.
     /// </summary>
-    /// <param name="pJSONObject">O objeto JSON a ser limpo.</param>
-    /// <param name="pType">O tipo RTTI da classe Delphi correspondente.</param>
+    /// <param name="LJSONObject">The JSON object to be cleaned.</param>
+    /// <param name="LType">The RTTI type of the corresponding Delphi class.</param>
     procedure CleanJSONObject(LJSONObject: TJSONObject; LType: TRttiType);
+
     /// <summary>
-    /// Limpa um array JSON, aplicando a limpeza em cada item do array.
+    /// Cleans a JSON array by applying the cleaning process to each item in the array.
     /// </summary>
-    /// <param name="pJSONArray">O array JSON a ser limpo.</param>
-    /// <param name="pType">O tipo RTTI dos itens do array.</param>
+    /// <param name="LJSONArray">The JSON array to be cleaned.</param>
+    /// <param name="LType">The RTTI type of the items in the array.</param>
     procedure CleanJSONArray(LJSONArray: TJSONArray; LType: TRttiType);
+
     /// <summary>
-    /// Obtém o tipo genérico de uma Lista a partir do tipo RTTI.
+    /// Obtains the generic type of a list from the RTTI type.
     /// </summary>
-    /// <param name="pType">O tipo RTTI da TObjectList.</param>
-    /// <param name="pTypeListName">O nome do tipo da lista </param>
-    /// <returns>O tipo RTTI do item genérico da lista.</returns>
+    /// <param name="AType">The RTTI type of the TObjectList.</param>
+    /// <param name="pTypeListName">The name of the list type.</param>
+    /// <returns>The RTTI type of the generic item in the list.</returns>
     function GetGenericClassType(AType: TRttiType; const pTypeListName: String): TRttiType;
+
     /// <summary>
-    /// Remove o prefixo 'F' (maiúsculo ou minúsculo) do inicio de uma string, se ele estiver presente.
+    /// Removes the prefix 'F' (uppercase or lowercase) from the beginning of a string, if present.
     /// </summary>
-    /// <param name="pValue">
-    /// A string da qual o prefixo 'F' deve ser removido.
-    /// </param>
+    /// <param name="pValue">The string from which the prefix 'F' should be removed.</param>
     /// <returns>
-    /// A string sem o prefixo 'F' no início, se ele estiver presente; caso contrário, retorna a string original.
+    /// The string without the 'F' prefix at the beginning, if present; otherwise, returns the original string.
     /// </returns>
     function RemovePrefixF(const pValue: string): string;
 
   public
     /// <summary>
-    /// Cria a instância da classe
+    /// Creates an instance of the class.
     /// </summary>
     /// <returns>
-    /// Retorna a instância da classe
+    /// Returns the instance of the class.
     /// </returns>
     class function New: IJSONCleaner<T>;
+
     /// <summary>
-    /// Limpa um JSON string, removendo campos que não estão presentes na classe correspondente.
+    /// Cleans a JSON string by removing fields that are not present in the corresponding class.
     /// </summary>
-    /// <param name="pJSON">A string JSON a ser limpa.</param>
-    /// <returns>Uma string JSON limpa.</returns>
+    /// <param name="pJSON">The JSON string to be cleaned.</param>
+    /// <returns>A cleaned JSON string.</returns>
     function CleanJSON(const pJSON: string): string;
+
   end;
 
 implementation

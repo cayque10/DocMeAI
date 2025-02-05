@@ -19,10 +19,10 @@ type
     /// <summary>
     /// Executes the keyboard binding with the given context and key code.
     /// </summary>
-    /// <param name="pContext">The context in which the key is pressed.</param>
-    /// <param name="pKeyCode">The shortcut key code that was pressed.</param>
-    /// <param name="pBindingResult">The result of the key binding execution.</param>
-    procedure Execute(const pContext: IOTAKeyContext; pKeyCode: TShortcut; var pBindingResult: TKeyBindingResult);
+    /// <param name="AContext">The context in which the key is pressed.</param>
+    /// <param name="AKeyCode">The shortcut key code that was pressed.</param>
+    /// <param name="ABindingResult">The result of the key binding execution.</param>
+    procedure Execute(const AContext: IOTAKeyContext; AKeyCode: TShortcut; var ABindingResult: TKeyBindingResult);
   protected
     /// <summary>
     /// Retrieves the type of binding for the keyboard.
@@ -46,7 +46,7 @@ type
     /// Binds the keyboard to the specified binding services.
     /// </summary>
     /// <param name="pBindingServices">The services used for binding the keyboard.</param>
-    procedure BindKeyboard(const pBindingServices: IOTAKeyBindingServices);
+    procedure BindKeyboard(const ABindingServices: IOTAKeyBindingServices);
   public
     /// <summary>
     /// Finalizes the instance of the class, releasing resources.
@@ -77,9 +77,9 @@ end;
 
 { TDocMeBinding }
 
-procedure TDocMeDocumentationBinding.BindKeyboard(const pBindingServices: IOTAKeyBindingServices);
+procedure TDocMeDocumentationBinding.BindKeyboard(const ABindingServices: IOTAKeyBindingServices);
 begin
-  pBindingServices.AddKeyBinding([TextToShortCut('Ctrl+Shift+D')], Execute, nil, 0, '', 'miDocument');
+  ABindingServices.AddKeyBinding([TextToShortCut('Ctrl+Shift+D')], Execute, nil, 0, '', 'miDocument');
 end;
 
 constructor TDocMeDocumentationBinding.Create;
@@ -91,12 +91,12 @@ begin
   inherited;
 end;
 
-procedure TDocMeDocumentationBinding.Execute(const pContext: IOTAKeyContext; pKeyCode: TShortcut;
-  var pBindingResult: TKeyBindingResult);
+procedure TDocMeDocumentationBinding.Execute(const AContext: IOTAKeyContext; AKeyCode: TShortcut;
+  var ABindingResult: TKeyBindingResult);
 var
   lFrmDocumentation: TFrmDocMeAIDocumentation;
 begin
-  pBindingResult := krHandled;
+  ABindingResult := krHandled;
 
   lFrmDocumentation := TFrmDocMeAIDocumentation.Create(nil);
   try

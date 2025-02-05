@@ -9,7 +9,24 @@ type
   TWSWrapperConverter = class
   private
   public
+    /// <summary>
+    /// Converts the specified entity object to a TStringStream.
+    /// </summary>
+    /// <param name="AEntity">The entity object to be converted.</param>
+    /// <returns>
+    /// A TStringStream containing the serialized representation of the entity.
+    /// </returns>
     class function EntitityToStream(const AEntity: TObject): TStringStream; overload;
+
+    /// <summary>
+    /// Converts the specified entity object of a generic type to a TStringStream,
+    /// including only the specified field.
+    /// </summary>
+    /// <param name="AEntity">The entity object of type T to be converted.</param>
+    /// <param name="AFieldName">The name of the field to include in the conversion.</param>
+    /// <returns>
+    /// A TStringStream containing the serialized representation of the entity's specified field.
+    /// </returns>
     class function EntitityToStream<T: Class>(const AEntity: T; const AFieldName: String): TStringStream; overload;
   end;
 

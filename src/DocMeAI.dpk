@@ -47,7 +47,6 @@ contains
   DocMe.Documentation.Text.Interfaces in 'Document\DocMe.Documentation.Text.Interfaces.pas',
   DocMe.Configurations in 'Configurations\DocMe.Configurations.pas' {FrmDocMeAIConfigurations},
   DocMe.Documentation in 'Document\DocMe.Documentation.pas' {FrmDocMeAIDocumentation},
-  DocMe.Helpers.AI in 'Helpers\DocMe.Helpers.AI.pas',
   DocMe.AI.ChatGPT in 'AI\ChatGPT\DocMe.AI.ChatGPT.pas',
   DocMe.AI.DeepSeek in 'AI\DeepSeek\DocMe.AI.DeepSeek.pas',
   DocMe.AI.Gemini in 'AI\Gemini\DocMe.AI.Gemini.pas',

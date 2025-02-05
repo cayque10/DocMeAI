@@ -3,9 +3,9 @@
         <ProjectGuid>{792BA598-0A55-4B41-B892-1FAA0D6F4B36}</ProjectGuid>
         <MainSource>Utils.dpk</MainSource>
         <ProjectVersion>20.1</ProjectVersion>
-        <FrameworkType>None</FrameworkType>
+        <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">Utils</ProjectName>
         <TargetedPlatforms>1</TargetedPlatforms>
@@ -102,11 +102,17 @@
         </DelphiCompile>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="RESTComponents.dcp"/>
+        <DCCReference Include="fmx.dcp"/>
         <DCCReference Include="Utils.Date.pas"/>
         <DCCReference Include="JSON\Utils.JSON.Cleaner.pas"/>
         <DCCReference Include="JSON\Utils.JSON.pas"/>
         <DCCReference Include="JSON\Utils.Pkg.Json.DTO.pas"/>
         <DCCReference Include="Resource\Utils.Resource.Strings.pas"/>
+        <DCCReference Include="CustomTask\Utils.CustomTask.Interfaces.pas"/>
+        <DCCReference Include="CustomTask\Utils.CustomTask.pas"/>
+        <DCCReference Include="CustomTask\Utils.CustomTask.Wrapper.pas"/>
+        <DCCReference Include="Forms\Utils.Forms.Interfaces.pas"/>
+        <DCCReference Include="Forms\Utils.Forms.Loading.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -22,10 +22,10 @@ type
     /// <summary>
     /// Replaces the currently selected text with the specified new text.
     /// </summary>
-    /// <param name="pNewText">
+    /// <param name="SNewText">
     /// The new text to replace the selected text with.
     /// </param>
-    procedure ReplaceSelectedText(const pNewText: string);
+    procedure ReplaceSelectedText(const SNewText: string);
   end;
 
 implementation
@@ -59,7 +59,7 @@ begin
   Result := Self.Create;
 end;
 
-procedure TDocMeDocumentationText.ReplaceSelectedText(const pNewText: string);
+procedure TDocMeDocumentationText.ReplaceSelectedText(const SNewText: string);
 var
   lEditorServices: IOTAEditorServices;
   lEditView: IOTAEditView;
@@ -78,7 +78,7 @@ begin
     lSelectionLength := Length(lSelectedText);
 
     if lSelectionLength > 0 then
-      lEditPosition.InsertText(pNewText);
+      lEditPosition.InsertText(SNewText);
   end;
 end;
 

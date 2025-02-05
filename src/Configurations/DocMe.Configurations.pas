@@ -89,9 +89,6 @@ type
   public
   end;
 
-var
-  FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations;
-
 implementation
 
 uses

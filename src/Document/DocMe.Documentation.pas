@@ -33,6 +33,7 @@ type
     /// <summary>
     /// Disables the visual controls.
     /// </summary>
+
     procedure DisableControls;
 
     /// <summary>
@@ -42,45 +43,58 @@ type
   public
   end;
 
-var
-  FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation;
-
 implementation
 
 uses
   System.Threading,
-  DocMe.Documentation.Process;
+  DocMe.Documentation.Process,
+  Utils.CustomTask,
+  Utils.Forms.Interfaces,
+  Utils.Forms.Loading;
 
 {$R *.fmx}
 { TFrmDocMeAIDocumentation }
 
 procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
+var
+  lLoading: ILoading;
 begin
   DisableControls;
+  lLoading := TUtilsFormsLoading.New;
 
-  TTask.Run(
+  TCustomThread.Create(True, True).OnRun(
     procedure
     begin
-      try
-        TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
-
-        TThread.Synchronize(nil,
-          procedure
-          begin
-            Self.Close;
-          end);
-      except
-        on E: Exception do
+      TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
+    end).OnStart(
+    procedure
+    begin
+      TThread.Synchronize(nil,
+        procedure
         begin
-          TThread.Synchronize(nil,
-            procedure
-            begin
-              EnableControls;
-              ShowMessage('An error occurred: ' + E.Message);
-            end);
-        end;
-      end;
-    end);
+          lLoading.Show(Self, 'Wait. Documentation in progress.');
+        end);
+    end).OnFinish(
+    procedure
+    begin
+      TThread.Queue(nil,
+        procedure
+        begin
+          EnableControls;
+          lLoading.Hide;
+          Self.Close;
+        end);
+    end).OnError(
+    procedure(AErrorMsg: String)
+    begin
+      TThread.Queue(nil,
+        procedure
+        begin
+          EnableControls;
+          lLoading.Hide;
+          ShowMessage(AErrorMsg);
+        end);
+    end).Start;
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;

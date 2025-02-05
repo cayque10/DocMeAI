@@ -9,16 +9,84 @@ interface
 type
   IWSToken = interface
     ['{48A153A9-8401-4E7E-97BF-5A89BFA52198}']
+
+    /// <summary>
+    /// Validates the current state or data.
+    /// </summary>
+    /// <returns>
+    /// Returns True if the validation is successful; otherwise, False.
+    /// </returns>
     function IsValidate: Boolean;
+
+    /// <summary>
+    /// Extracts data from the provided string and processes it.
+    /// </summary>
+    /// <param name="AData">
+    /// The string containing the data to be extracted.
+    /// </param>
     procedure Extract(const AData: String);
+
+    /// <summary>
+    /// Saves the provided data into the cache.
+    /// </summary>
+    /// <param name="AData">
+    /// The string containing the data to be saved in the cache.
+    /// </param>
     procedure SaveInCache(const AData: String);
+
+    /// <summary>
+    /// Deletes the cached data.
+    /// </summary>
     procedure DeleteCache;
+
+    /// <summary>
+    /// Retrieves the current token.
+    /// </summary>
+    /// <returns>
+    /// Returns the current token as a string.
+    /// </returns>
     function Token: String; overload;
+
+    /// <summary>
+    /// Sets the token to the provided value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the new token value.
+    /// </param>
     procedure Token(const AValue: String); overload;
+
+    /// <summary>
+    /// Refreshes the token and retrieves the new token.
+    /// </summary>
+    /// <returns>
+    /// Returns the refreshed token as a string.
+    /// </returns>
     function RefreshToken: String; overload;
+
+    /// <summary>
+    /// Sets the refreshed token to the provided value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the new refreshed token value.
+    /// </param>
     procedure RefreshToken(const AValue: String); overload;
+
+    /// <summary>
+    /// Validates the current token and retrieves the validation result.
+    /// </summary>
+    /// <returns>
+    /// Returns the validation result of the token as a string.
+    /// </returns>
     function TokenValidate: String; overload;
+
+    /// <summary>
+    /// Validates the provided token value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the token value to validate.
+    /// </param>
     procedure TokenValidate(const AValue: String); overload;
+
   end;
 
   TWSToken = class(TInterfacedObject, IWSToken)
@@ -28,23 +96,119 @@ type
     FToken: String;
     FRefreshToken: String;
     FTokenValidate: String;
+
+    /// <summary>
+    /// Retrieves a string value from the cache.
+    /// </summary>
+    /// <returns>
+    /// A string representing the cached value.
+    /// </returns>
     function GetInCache: String;
+
+    /// <summary>
+    /// Checks if the provided date has expired.
+    /// </summary>
+    /// <param name="ADate">
+    /// The date to be checked for expiration.
+    /// </param>
+    /// <returns>
+    /// True if the date is expired; otherwise, false.
+    /// </returns>
     function IsExpiredDate(const ADate: TDateTime): Boolean;
+
+    /// <summary>
+    /// Initializes a new instance of the class.
+    /// </summary>
+    constructor Create;
   protected
   public
-    constructor Create;
     destructor Destroy; override;
+
+    /// <summary>
+    /// Creates a new instance of IWSToken.
+    /// </summary>
+    /// <returns>
+    /// A new instance of <see cref="IWSToken"/>.
+    /// </returns>
     class function New: IWSToken;
+
+    /// <summary>
+    /// Validates the current state or data.
+    /// </summary>
+    /// <returns>
+    /// Returns True if the validation is successful; otherwise, False.
+    /// </returns>
     function IsValidate: Boolean;
+
+    /// <summary>
+    /// Extracts data from the provided string and processes it.
+    /// </summary>
+    /// <param name="AData">
+    /// The string containing the data to be extracted.
+    /// </param>
     procedure Extract(const AData: String);
+
+    /// <summary>
+    /// Saves the provided data into the cache.
+    /// </summary>
+    /// <param name="AData">
+    /// The string containing the data to be saved in the cache.
+    /// </param>
     procedure SaveInCache(const AData: String);
+
+    /// <summary>
+    /// Deletes the cached data.
+    /// </summary>
     procedure DeleteCache;
+
+    /// <summary>
+    /// Retrieves the current token.
+    /// </summary>
+    /// <returns>
+    /// Returns the current token as a string.
+    /// </returns>
     function Token: String; overload;
+
+    /// <summary>
+    /// Sets the token to the provided value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the new token value.
+    /// </param>
     procedure Token(const AValue: String); overload;
+
+    /// <summary>
+    /// Refreshes the token and retrieves the new token.
+    /// </summary>
+    /// <returns>
+    /// Returns the refreshed token as a string.
+    /// </returns>
     function RefreshToken: String; overload;
+
+    /// <summary>
+    /// Sets the refreshed token to the provided value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the new refreshed token value.
+    /// </param>
     procedure RefreshToken(const AValue: String); overload;
+
+    /// <summary>
+    /// Validates the current token and retrieves the validation result.
+    /// </summary>
+    /// <returns>
+    /// Returns the validation result of the token as a string.
+    /// </returns>
     function TokenValidate: String; overload;
+
+    /// <summary>
+    /// Validates the provided token value.
+    /// </summary>
+    /// <param name="AValue">
+    /// The string containing the token value to validate.
+    /// </param>
     procedure TokenValidate(const AValue: String); overload;
+
   const
     DATA_ACCESS_TOKEN = 'JPDAccess.data';
   end;

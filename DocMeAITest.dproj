@@ -4,7 +4,7 @@
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">DocMeAITest</ProjectName>
         <TargetedPlatforms>32787</TargetedPlatforms>
@@ -167,7 +167,7 @@
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <DCC_UnitSearchPath>..\DocMeAI\src\Configurations;..\DocMeAI\src\AI;..\DocMeAI\src\AI\ChatGPT;..\DocMeAI\src\AI\Gemini;..\DocMeAI\src\AI\DeepSeek;..\DocMeAI\src\GeminiAPI;..\DocMeAI\src\DeepSeekAPI;..\DocMeAI\src\WS;..\DocMeAI\src\WS\http;..\DocMeAI\src\WS\Wrapper;..\DocMeAI\src\Utils;..\DocMeAI\src\Utils\JSON;..\DocMeAI\src\Utils\Resource;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\DocMeAI\src\Configurations;..\DocMeAI\src\AI;..\DocMeAI\src\AI\ChatGPT;..\DocMeAI\src\AI\Gemini;..\DocMeAI\src\AI\DeepSeek;..\DocMeAI\src\GeminiAPI;..\DocMeAI\src\DeepSeekAPI;..\DocMeAI\src\WS;..\DocMeAI\src\WS\http;..\DocMeAI\src\WS\Wrapper;..\DocMeAI\src\Utils;..\DocMeAI\src\Utils\JSON;..\DocMeAI\src\Utils\Resource;..\DocMeAI\src\Utils\CustomTask;..\DocMeAI\src\Utils\Forms;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">

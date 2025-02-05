@@ -10,7 +10,6 @@ type
 
   IDocMeAIConfig = interface
     ['{9857474D-4922-41F4-8DE8-FDC56C2206A1}']
-
     /// <summary>
     /// Loads the configuration settings.
     /// </summary>
@@ -149,6 +148,12 @@ type
     /// </returns>
     function Active(const AValue: Boolean): IDocMeAIConfig; overload;
 
+    /// <summary>
+    /// Retrieves an instance of the IAIModelsProvider interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IAIModelsProvider"/> that provides access to AI models.
+    /// </returns>
     function AIModelsProvider: IAIModelsProvider;
   end;
 

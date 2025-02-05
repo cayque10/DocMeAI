@@ -55,19 +55,60 @@ implementation
 uses
   System.Threading,
   DocMe.Configurations.Config,
-  DocMe.AI.Factory;
+  DocMe.AI.Factory,
+  Utils.CustomTask,
+  Utils.Forms.Interfaces,
+  Utils.Forms.Loading;
 
 {$R *.fmx}
 { TFrmDocMeAIDocumentation }
 
 procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
+var
+  lLoading: ILoading;
 begin
   DisableControls;
-  try
-    ShowMessage(FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim));
-  finally
-    EnableControls;
-  end;
+  lLoading := TUtilsFormsLoading.New;
+
+  TCustomThread.Create(True, True).OnRun(
+    procedure
+    var
+      lDoc: string;
+    begin
+      lDoc := FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
+      TThread.Synchronize(nil,
+        procedure
+        begin
+          ShowMessage(lDoc);
+        end);
+    end).OnStart(
+    procedure
+    begin
+      TThread.Synchronize(nil,
+        procedure
+        begin
+           LLoading.Show(Self, 'Wait. Documentation in progress.');
+        end);
+    end).OnFinish(
+    procedure
+    begin
+      TThread.Queue(nil,
+        procedure
+        begin
+          EnableControls;
+          LLoading.Hide;
+        end);
+    end).OnError(
+    procedure(AErrorMsg: String)
+    begin
+      TThread.Queue(nil,
+        procedure
+        begin
+          EnableControls;
+          LLoading.Hide;
+          ShowMessage(AErrorMsg);
+        end);
+    end).Start;
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;

@@ -9,7 +9,22 @@ type
   TUtilsJSON = class
   private
   public
+    /// <summary>
+    /// Converts a JSON string to a list of entities of type T.
+    /// </summary>
+    /// <param name="AJSON">The JSON string to be converted.</param>
+    /// <param name="AListEntity">The TObjectList<T> where the entities will be stored.</param>
     class procedure JSONToEntityList<T: Class, constructor>(const AJSON: String; const AListEntity: TObjectList<T>);
+
+    /// <summary>
+    /// Converts a JSON string to a single entity of type T.
+    /// </summary>
+    /// <param name="AJSON">The JSON string to be converted.</param>
+    /// <param name="AField">An optional field name to extract a specific entity.</param>
+    /// <returns>
+    /// An instance of type T created from the JSON string.
+    /// </returns>
+    /// <see cref="T"/>
     class function JSONToEntity<T: Class, constructor>(const AJSON: String; const AField: String = ''): T;
 
   end;
@@ -32,7 +47,7 @@ var
   LJsonValueField: TJSONValue;
   LCleanJSON: String;
 begin
-Result := nil;
+  Result := nil;
   LJsonValueField := nil;
 
   LValue := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(AJSON), 0);
@@ -43,8 +58,7 @@ Result := nil;
   try
     if not LValue.TryGetValue<TJSONArray>('data', LArray) then
     begin
-     Exit;
-     // raise Exception.Create(Format('Objeto %s não encontrado!', [QuotedStr('Data')]));
+      Exit;
     end;
 
     if LArray.Items[0].ToJSON = 'null' then
@@ -98,7 +112,6 @@ begin
     if not LValueAux.TryGetValue<TJSONArray>('data', LArray) then
     begin
       Exit;
-      //raise Exception.Create(Format('Objeto %s não encontrado!', [QuotedStr('Data')]));
     end;
 
     for LValue in LArray do

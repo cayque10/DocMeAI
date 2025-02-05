@@ -5,7 +5,7 @@
         <ProjectVersion>20.1</ProjectVersion>
         <FrameworkType>FMX</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">DocMeAI</ProjectName>
         <TargetedPlatforms>1</TargetedPlatforms>
@@ -94,7 +94,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_UsePackage>rtl;RESTComponents;fmx;GeminiAPI;$(DCC_UsePackage)</DCC_UsePackage>
-        <DCC_UnitSearchPath>..\src\GeminiAPI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\src\GeminiAPI;..\src\Utils\Forms;..\src\Utils\CustomTask;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>rtl;RESTComponents;fmx;$(DCC_UsePackage)</DCC_UsePackage>
@@ -155,7 +155,6 @@
             <Form>FrmDocMeAIDocumentation</Form>
             <FormType>fmx</FormType>
         </DCCReference>
-        <DCCReference Include="Helpers\DocMe.Helpers.AI.pas"/>
         <DCCReference Include="AI\ChatGPT\DocMe.AI.ChatGPT.pas"/>
         <DCCReference Include="AI\DeepSeek\DocMe.AI.DeepSeek.pas"/>
         <DCCReference Include="AI\Gemini\DocMe.AI.Gemini.pas"/>
