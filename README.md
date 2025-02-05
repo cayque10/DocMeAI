@@ -33,7 +33,8 @@ Para utilizar o **DocMeAI**, você precisará ter instalado o **DelphiOpenAI**. 
    - **Modelo de IA**: O modelo utilizado, como `gpt-4o-mini`.
    - **Máximo de Tokens**: Limite de tokens para as respostas.
    - **Temperatura**: Controle da criatividade da IA (valor entre `0.0` e `1.0`).
-   - ![image](https://github.com/user-attachments/assets/a670d1d9-769a-4c8d-b167-318e0449b512)
+   - ![image](https://github.com/user-attachments/assets/75579c12-28fb-4942-8909-63c580e51e6a)
+
 
 
 3. Clique em **Salvar** para concluir a configuração.
@@ -46,7 +47,8 @@ Para utilizar o **DocMeAI**, você precisará ter instalado o **DelphiOpenAI**. 
 2. Use o **atalho** `CTRL + SHIFT + D` ou clique no menu **"Documentation"**.
 3. (Opcional) Insira instruções adicionais antes de gerar a documentação, caso queira orientar a IA para casos específicos.
 4. Clique em **"Document"**.
-5. O código selecionado será automaticamente documentado com os **XML Documentation Comments** do Delphi.
+5. ![image](https://github.com/user-attachments/assets/edf3103b-ef58-4b5f-92f6-18e70edfc57d)
+6. O código selecionado será automaticamente documentado com os **XML Documentation Comments** do Delphi.
 
 ---
 
