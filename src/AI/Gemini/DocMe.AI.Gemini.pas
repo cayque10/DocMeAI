@@ -86,7 +86,7 @@ begin
 
   Result := TGeminiAPI.New(FConfig.ApiKey)
               .Gemini15Flash
-              .Prompt(BuildPrompt(''))
+              .Prompt(BuildPrompt(AData))
               .GenerateContent
                 .Text;
 
@@ -96,7 +96,7 @@ end;
 function TDocMeAIGemini.FormatResponse(const AResponse: string): string;
 begin
   Result := StringReplace(AResponse, #$A, #13#10, [rfReplaceAll]);
-  Result := Result.Replace('`', '').Replace('delphi', '');
+  Result := Result.Replace('`', '').Replace('delphi', '').Replace('{', '').Replace('}', '');
 end;
 
 class function TDocMeAIGemini.New(const AConfig: IDocMeAIConfig): IDocMeAI;

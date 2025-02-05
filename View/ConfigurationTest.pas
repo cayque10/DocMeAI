@@ -183,7 +183,7 @@ var
   lModels: TArray<string>;
   I: Integer;
 begin
-  lSelectedType := CbAI.Selected.Text;
+  lSelectedType := FConfig.AIProviderTypeName;
   CbModel.Clear;
 
   if FConfig.AIModelsProvider.GetAIModelsList.TryGetValue(lSelectedType, lModels) then
