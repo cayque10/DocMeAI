@@ -3,7 +3,7 @@ program DocMeAITest;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Main in 'View\Main.pas' {FrmDocMeAISettings},
+  ConfigurationTest in 'View\ConfigurationTest.pas' {FrmDocMeAIConfigurations},
   DocumentationTest in 'View\DocumentationTest.pas' {FrmDocMeAIDocumentation};
 
 {$R *.res}
@@ -13,6 +13,6 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 {$ENDIF}
   Application.Initialize;
-  Application.CreateForm(TFrmDocMeAISettings, FrmDocMeAISettings);
+  Application.CreateForm(TFrmDocMeAIConfigurations, FrmDocMeAIConfigurations);
   Application.Run;
 end.

@@ -63,15 +63,11 @@ uses
 procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
 begin
   DisableControls;
-
-  // TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
   try
-   ShowMessage(FAI.DocumentElements(MemAdditionalInfo.Lines.Text.Trim));
-
+    ShowMessage(FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim));
   finally
     EnableControls;
   end;
-
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;

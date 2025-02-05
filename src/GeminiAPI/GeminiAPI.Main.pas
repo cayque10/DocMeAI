@@ -66,8 +66,18 @@ begin
     try
       lJSONBuilder := TJSONObjectBuilder.Create(lJSONWriter);
       try
-        lJSONBuilder.BeginObject.BeginArray('contents').BeginObject.BeginArray('parts').BeginObject.Add('text', FPrompt)
-          .EndObject.EndArray.EndObject.EndArray.EndObject;
+        lJSONBuilder
+          .BeginObject
+            .BeginArray('contents')
+              .BeginObject
+                .BeginArray('parts')
+                  .BeginObject
+                    .Add('text', FPrompt)
+                  .EndObject
+                .EndArray
+              .EndObject
+            .EndArray
+          .EndObject;
 
         lJSONString := lStringWriter.ToString;
       finally
@@ -147,6 +157,7 @@ var
   lResponse: string;
 begin
   FAPIUrl := GetAPIURL;
+  FWSBase.Params.Clear;
   AddParam('key', FAPIKey);
   lRequest := BuildRequest;
   try

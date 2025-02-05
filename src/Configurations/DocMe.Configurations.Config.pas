@@ -8,7 +8,8 @@ uses
   System.JSON,
   System.IOUtils,
   DocMe.Configurations.Interfaces,
-  DocMe.AI.ProviderTypes;
+  DocMe.AI.ProviderTypes,
+  DocMe.AI.Interfaces;
 
 type
   TDocMeAIConfig = class(TInterfacedObject, IDocMeAIConfig)
@@ -20,6 +21,7 @@ type
     FTemperature: Double;
     FConfigFilePath: string;
     FProviderType: TDocMeAIProviderType;
+    FAIModelsProvider: IAIModelsProvider;
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
@@ -199,10 +201,11 @@ type
     /// Returns an instance of <see cref="IDocMeAIConfig"/> for method chaining.
     /// </returns>
     function Active(const AValue: Boolean): IDocMeAIConfig; overload;
+
+    function AIModelsProvider: IAIModelsProvider;
   end;
 
 const
-  OPENAI_MODEL = 'gpt-4o-mini';
   MAX_TOKENS_AI = 2048;
   TEMPERATURE_AI = 0.3;
 
@@ -218,16 +221,16 @@ begin
   EnsureConfigDirectoryExists;
   FConfigFilePath := GetDefaultConfigPath;
   FApiKey := '';
-  FModelAI := OPENAI_MODEL;
+  FModelAI := '';
   FMaxTokens := MAX_TOKENS_AI;
   FTemperature := TEMPERATURE_AI;
   FProviderType := TDocMeAIProviderType(GetActiveProviderType);
+  FAIModelsProvider := TAIModelsProvider.New;
   LoadConfig;
 end;
 
 destructor TDocMeAIConfig.Destroy;
 begin
-
   inherited;
 end;
 
@@ -256,17 +259,14 @@ begin
   LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
   LParsedJSON := TJSONObject.ParseJSONValue(LContent);
   try
-    // Verifica se o JSON foi parseado corretamente e é um array
     if not Assigned(LParsedJSON) or not(LParsedJSON is TJSONArray) then
       Exit;
 
     LConfigArray := TJSONArray(LParsedJSON);
 
-    // Valida o índice
     if (AIndex < 0) or (AIndex >= LConfigArray.Count) then
       Exit;
 
-    // Verifica se o item do array é um objeto JSON
     if not(LConfigArray.Items[AIndex] is TJSONObject) then
       Exit;
 
@@ -496,6 +496,11 @@ end;
 function TDocMeAIConfig.Active: Boolean;
 begin
   Result := FActive;
+end;
+
+function TDocMeAIConfig.AIModelsProvider: IAIModelsProvider;
+begin
+  Result := FAIModelsProvider;
 end;
 
 function TDocMeAIConfig.AIProviderType(const AType: TDocMeAIProviderType): IDocMeAIConfig;

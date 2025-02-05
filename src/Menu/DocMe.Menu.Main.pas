@@ -152,7 +152,7 @@ procedure TDocMeMenuMain.OnConfigurations(Sender: TObject);
 var
   lFrmDocMeConfigurations: TFrmDocMeAIConfigurations;
 begin
-  lFrmDocMeConfigurations := FrmDocMeAIConfigurations.Create(nil);
+  lFrmDocMeConfigurations := TFrmDocMeAIConfigurations.Create(nil);
   try
     lFrmDocMeConfigurations.ShowModal;
   finally

@@ -216,8 +216,8 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="View\Main.pas">
-            <Form>FrmDocMeAISettings</Form>
+        <DCCReference Include="View\ConfigurationTest.pas">
+            <Form>FrmDocMeAIConfigurations</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="View\DocumentationTest.pas">

@@ -93,7 +93,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_UsePackage>rtl;RESTComponents;fmx;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>rtl;RESTComponents;fmx;GeminiAPI;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_UnitSearchPath>..\src\GeminiAPI;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">

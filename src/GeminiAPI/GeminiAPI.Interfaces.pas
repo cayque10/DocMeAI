@@ -3,13 +3,15 @@ unit GeminiAPI.Interfaces;
 interface
 
 uses
-  GeminiAPI.GenerativeModels;
+  GeminiAPI.GenerativeModels,
+  GeminiAPI.Entity;
 
 type
   IGeminiResponse = interface
     ['{8B414A68-DF39-4287-A950-6669A2B2CD88}']
     function Content: string;
     function Text: string;
+    function Entity: TGeminiAPIEntity;
   end;
 
   IGeminiAPI = interface

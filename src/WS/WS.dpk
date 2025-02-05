@@ -45,8 +45,6 @@ contains
   WS.Factory in 'WS.Factory.pas',
   Ws.Common in 'Ws.Common.pas',
   WS.Parser in 'WS.Parser.pas',
-  WS.Wrapper.interfaces in 'Wrapper\WS.Wrapper.interfaces.pas',
-  WS.Wrapper.Consume in 'Wrapper\WS.Wrapper.Consume.pas',
   WS.Wrapper.Converter in 'Wrapper\WS.Wrapper.Converter.pas',
   WS.Wrapper.Attributes in 'Wrapper\WS.Wrapper.Attributes.pas';
 

@@ -1,22 +1,21 @@
-object FrmDocMeAISettings: TFrmDocMeAISettings
+object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
   Left = 0
   Top = 0
   BorderStyle = Single
   Caption = 'Example'
-  ClientHeight = 393
-  ClientWidth = 624
+  ClientHeight = 416
+  ClientWidth = 673
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object RecContainer: TRectangle
     Align = Client
     Fill.Color = claWhite
-    Size.Width = 624.000000000000000000
-    Size.Height = 393.000000000000000000
+    Size.Width = 673.000000000000000000
+    Size.Height = 416.000000000000000000
     Size.PlatformDefault = False
     Stroke.Kind = None
     object TcAI: TTabControl
@@ -26,16 +25,16 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
       Margins.Top = 6.000000000000000000
       Margins.Right = 6.000000000000000000
       Margins.Bottom = 6.000000000000000000
-      Size.Width = 612.000000000000000000
-      Size.Height = 348.000000000000000000
+      Size.Width = 661.000000000000000000
+      Size.Height = 349.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'TcAIStyle1'
       TabIndex = 0
       TabOrder = 0
       TabPosition = Top
       Sizes = (
-        612s
-        322s)
+        661s
+        323s)
       object TiAI: TTabItem
         CustomIcon = <
           item
@@ -52,8 +51,8 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
         ExplicitSize.cy = 8.000000000000000000
         object LayContainer: TLayout
           Align = Client
-          Size.Width = 612.000000000000000000
-          Size.Height = 322.000000000000000000
+          Size.Width = 661.000000000000000000
+          Size.Height = 323.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object BtnSave: TRectangle
@@ -63,7 +62,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             Margins.Right = 6.000000000000000000
             Position.X = 6.000000000000000000
             Position.Y = 279.000000000000000000
-            Size.Width = 600.000000000000000000
+            Size.Width = 649.000000000000000000
             Size.Height = 40.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
@@ -94,13 +93,13 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
             Position.Y = 173.000000000000000000
-            Size.Width = 600.000000000000000000
+            Size.Width = 649.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbMaxToken: TLabel
               Align = Top
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Max Token'
@@ -110,7 +109,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Client
               TabOrder = 1
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 27.000000000000000000
               Size.PlatformDefault = False
             end
@@ -124,13 +123,13 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
             Position.Y = 229.000000000000000000
-            Size.Width = 600.000000000000000000
+            Size.Width = 649.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbTemperature: TLabel
               Align = Top
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Temperature'
@@ -140,7 +139,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Client
               TabOrder = 1
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 27.000000000000000000
               Size.PlatformDefault = False
             end
@@ -154,14 +153,14 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
             Position.Y = 6.000000000000000000
-            Size.Width = 600.000000000000000000
+            Size.Width = 649.000000000000000000
             Size.Height = 99.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbAPIKey: TLabel
               Align = Top
               AutoSize = True
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 16.000000000000000000
               Size.PlatformDefault = False
               Text = 'API Key'
@@ -171,7 +170,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
               Align = Client
               Fill.Color = claWhite
               Margins.Top = 5.000000000000000000
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 78.000000000000000000
               Size.PlatformDefault = False
               Stroke.Color = xFF303030
@@ -185,12 +184,12 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
                 Margins.Top = 1.000000000000000000
                 Margins.Right = 1.000000000000000000
                 Margins.Bottom = 1.000000000000000000
-                Size.Width = 598.000000000000000000
+                Size.Width = 647.000000000000000000
                 Size.Height = 76.000000000000000000
                 Size.PlatformDefault = False
                 StyleLookup = 'MemAPIKeyChatGPTStyle1'
                 TabOrder = 1
-                Viewport.Width = 594.000000000000000000
+                Viewport.Width = 643.000000000000000000
                 Viewport.Height = 72.000000000000000000
               end
             end
@@ -204,7 +203,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
             Position.Y = 117.000000000000000000
-            Size.Width = 600.000000000000000000
+            Size.Width = 649.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
@@ -212,7 +211,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
               Align = Top
               ItemIndex = 0
               Position.Y = 21.000000000000000000
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 25.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = 'comboboxstyle'
@@ -221,7 +220,7 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
             object RecModelTitle: TRectangle
               Align = Top
               Fill.Color = claWhite
-              Size.Width = 600.000000000000000000
+              Size.Width = 649.000000000000000000
               Size.Height = 21.000000000000000000
               Size.PlatformDefault = False
               Stroke.Kind = None
@@ -242,48 +241,86 @@ object FrmDocMeAISettings: TFrmDocMeAISettings
     object RecContainerComboAI: TRectangle
       Align = Top
       Fill.Color = claWhite
-      Size.Width = 624.000000000000000000
-      Size.Height = 33.000000000000000000
+      Size.Width = 673.000000000000000000
+      Size.Height = 55.000000000000000000
       Size.PlatformDefault = False
       Stroke.Kind = None
-      object CbAI: TComboBox
+      object RecCbAI: TRectangle
         Align = Left
-        Items.Strings = (
-          'ChatGPT'
-          'Gemini'
-          'DeepSeek')
-        ItemIndex = 0
+        Fill.Color = claWhite
         Margins.Left = 6.000000000000000000
         Margins.Top = 6.000000000000000000
         Margins.Right = 6.000000000000000000
-        Margins.Bottom = 6.000000000000000000
         Position.X = 6.000000000000000000
         Position.Y = 6.000000000000000000
-        Size.Width = 483.000000000000000000
-        Size.Height = 21.000000000000000000
+        Size.Width = 513.000000000000000000
+        Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 0
-        OnChange = CbAIChange
+        Stroke.Kind = None
+        object CbAI: TComboBox
+          Align = Client
+          Items.Strings = (
+            'ChatGPT'
+            'Gemini'
+            'DeepSeek')
+          ItemIndex = 0
+          Margins.Top = 6.000000000000000000
+          Margins.Bottom = 6.000000000000000000
+          Size.Width = 513.000000000000000000
+          Size.Height = 21.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          OnChange = CbAIChange
+        end
+        object LbAI: TLabel
+          Align = Top
+          AutoSize = True
+          Size.Width = 513.000000000000000000
+          Size.Height = 16.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'AI Provider'
+          TabOrder = 0
+        end
       end
-      object SwActive: TSwitch
+      object RecActive: TRectangle
         Align = Client
-        IsChecked = False
+        Fill.Color = claWhite
         Margins.Top = 6.000000000000000000
         Margins.Right = 6.000000000000000000
-        Margins.Bottom = 6.000000000000000000
-        Size.Width = 37.000000000000000000
-        Size.Height = 21.000000000000000000
+        Size.Width = 56.000000000000000000
+        Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 1
-        OnSwitch = SwActiveSwitch
+        Stroke.Kind = None
+        object SwActive: TSwitch
+          Align = Left
+          IsChecked = False
+          Margins.Top = 6.000000000000000000
+          Margins.Right = 6.000000000000000000
+          Margins.Bottom = 6.000000000000000000
+          Position.Y = 22.000000000000000000
+          Size.Width = 49.000000000000000000
+          Size.Height = 21.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          OnSwitch = SwActiveSwitch
+        end
+        object LbActive: TLabel
+          Align = Top
+          AutoSize = True
+          Size.Width = 56.000000000000000000
+          Size.Height = 16.000000000000000000
+          Size.PlatformDefault = False
+          Text = 'Active'
+          TabOrder = 0
+        end
       end
       object BtnDocument: TButton
         Align = Left
-        Margins.Top = 6.000000000000000000
+        Margins.Top = 28.000000000000000000
         Margins.Right = 6.000000000000000000
         Margins.Bottom = 6.000000000000000000
-        Position.X = 495.000000000000000000
-        Position.Y = 6.000000000000000000
+        Position.X = 525.000000000000000000
+        Position.Y = 28.000000000000000000
         Size.Width = 80.000000000000000000
         Size.Height = 21.000000000000000000
         Size.PlatformDefault = False

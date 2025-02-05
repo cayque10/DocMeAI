@@ -51,13 +51,28 @@ type
 implementation
 
 uses
-  GeminiAPI.Main, System.SysUtils;
+  GeminiAPI.Main,
+  System.SysUtils,
+  System.StrUtils;
 
 { TDocMeAIGemini }
 
 function TDocMeAIGemini.BuildPrompt(const AData: string): string;
 begin
-  Result := 'Quanto que é 1 + 1. Retorne somente o resultado.';
+  Result := 'Your goal is to document procedures, functions, properties, and units provided in the Delphi XML' +
+    ' comment format in English. ' + 'Follow these instructions:' + sLineBreak +
+    '1. Document each method using XML comments directly above its declaration.' + sLineBreak +
+    '2. Use the tags <summary>, <param>, and <returns> as needed.' + sLineBreak +
+    '3. The <summary> tag should explain the purpose of the method.' + sLineBreak +
+    '4. Use the <param> tag to describe each parameter.' + sLineBreak +
+    '5. Use the <returns> tag to describe the return value, if applicable.' + sLineBreak +
+    '6. Use the <see cref="type"/> tag to describe data type, if applicable.' + sLineBreak +
+    '7. Do not modify the implementation of the method.' + sLineBreak +
+    '8. Each XML comment should be on its own line, properly formatted and clean.' + sLineBreak +
+    '9. Always return only the documentation, with no additional comments or explanations.' + sLineBreak + sLineBreak +
+    'Here is the method(s) to be documented:' + sLineBreak + sLineBreak + AData + sLineBreak + sLineBreak +
+    IfThen(FAdditionalInfo.Trim.IsEmpty, '', Format('additional information about de elements: %s ',
+    [FAdditionalInfo]));
 end;
 
 constructor TDocMeAIGemini.Create(const AConfig: IDocMeAIConfig);

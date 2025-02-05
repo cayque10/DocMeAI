@@ -1,9 +1,5 @@
 ﻿unit WS.Wrapper.Converter;
 
-{
-  Converte entidade em TStream
-}
-
 interface
 
 uses
@@ -65,7 +61,6 @@ begin
           if (LAttribute is JSONNameAttribute) then
             LPropertyName := JSONNameAttribute(LAttribute).Value.ToLower;
 
-        // Devido a usar a classe do Pkg, a property herdada � listada, assim ela � ignorada
         if LPropertyName.Equals(PROPERTY_DEFAULT_PAG_JSON) then
           continue;
 
@@ -76,29 +71,21 @@ begin
             tkString, tkLString, tkWString, tkUString:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsString;
-                { if LFieldValue = EmptyStr then
-                  continue; }
                 LJSONObject.AddPair(LPropertyName, String(LFieldValue));
               end;
             tkInteger:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsInteger;
-                { if LFieldValue <= 0 then
-                  continue; }
                 LJSONObject.AddPair(LPropertyName, Integer(LFieldValue));
               end;
             tkInt64:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsInt64;
-                { if LFieldValue <= 0 then
-                  continue; }
                 LJSONObject.AddPair(LPropertyName, Int64(LFieldValue));
               end;
             tkFloat:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsCurrency;
-                { if LFieldValue <= 0 then
-                  continue; }
                 LJSONObject.AddPair(LPropertyName, Double(LFieldValue));
               end;
             tkClass:
@@ -110,8 +97,6 @@ begin
             tkChar:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsBoolean;
-                { if LFieldValue <= 0 then
-                  continue; }
                 LJSONObject.AddPair(LPropertyName, TJSONBool.Create(LFieldValue));
               end;
             tkEnumeration:

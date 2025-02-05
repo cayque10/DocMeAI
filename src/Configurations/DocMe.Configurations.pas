@@ -23,8 +23,7 @@ uses
   FMX.TabControl,
   FMX.ListBox,
   FMX.Objects,
-  DocMe.Configurations.Interfaces,
-  System.Generics.Collections;
+  DocMe.Configurations.Interfaces;
 
 type
   TFrmDocMeAIConfigurations = class(TForm)
@@ -48,16 +47,18 @@ type
     CbModel: TComboBox;
     LbModel: TLabel;
     RecContainerComboAI: TRectangle;
+    RecCbAI: TRectangle;
     CbAI: TComboBox;
+    LbAI: TLabel;
+    RecActive: TRectangle;
     SwActive: TSwitch;
+    LbActive: TLabel;
     procedure BtnSaveClick(Sender: TObject);
     procedure CbAIChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure SwActiveSwitch(Sender: TObject);
   private
     FConfig: IDocMeAIConfig;
-    FAIModels: TDictionary<string, TArray<string>>;
     /// <summary>
     /// Saves the current configuration settings to a persistent storage.
     /// </summary>
@@ -85,11 +86,6 @@ type
     /// Configures the combo box for selecting AI models.
     /// </summary>
     procedure ConfigComboBoxAIModel;
-
-    /// <summary>
-    /// Generates AI models based on the current configuration.
-    /// </summary>
-    procedure GenerateAIModels;
   public
   end;
 
@@ -140,15 +136,9 @@ end;
 procedure TFrmDocMeAIConfigurations.FormCreate(Sender: TObject);
 begin
   TcAI.TabPosition := TTabPosition.None;
-  GenerateAIModels;
   FConfig := TDocMeAIConfig.New.LoadConfig;
   ConfigComboBoxAIModel;
   ConfigToView;
-end;
-
-procedure TFrmDocMeAIConfigurations.FormDestroy(Sender: TObject);
-begin
-  FAIModels.Free;
 end;
 
 function TFrmDocMeAIConfigurations.GetIndexAIModel: Integer;
@@ -181,21 +171,13 @@ begin
   lSelectedType := CbAI.Selected.Text;
   CbModel.Clear;
 
-  if FAIModels.TryGetValue(lSelectedType, lModels) then
+  if FConfig.AIModelsProvider.GetAIModelsList.TryGetValue(lSelectedType, lModels) then
   begin
     for I := Low(lModels) to High(lModels) do
       CbModel.Items.Add(lModels[I]);
     if CbModel.Items.Count > 0 then
       CbModel.ItemIndex := 0;
   end;
-end;
-
-procedure TFrmDocMeAIConfigurations.GenerateAIModels;
-begin
-  FAIModels := TDictionary < string, TArray < string >>.Create;
-  FAIModels.Add('ChatGPT', ['gpt-4o', 'gpt-4o-mini', 'o1', 'o1-mini', 'o3-mini']);
-  FAIModels.Add('Gemini', ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro', 'gemini-2.0-flash-exp']);
-  FAIModels.Add('DeepSeek', ['deepseek-chat', 'deepseek-reasoner']);
 end;
 
 procedure TFrmDocMeAIConfigurations.SaveConfig;

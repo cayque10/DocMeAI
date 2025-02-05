@@ -3,19 +3,23 @@ unit GeminiAPI.Response;
 interface
 
 uses
-  GeminiAPI.Interfaces;
+  GeminiAPI.Interfaces,
+  GeminiAPI.Entity;
 
 type
   TGeminiResponse = class(TInterfacedObject, IGeminiResponse)
   private
     FResponse: string;
+    FEntity: TGeminiAPIEntity;
     constructor Create(const AResponse: string);
     function ExtractTextFromJSON(const AJSONContent: string): string;
 
   public
+    destructor Destroy; override;
     class function New(const AResponse: string): IGeminiResponse;
     function Content: string;
     function Text: string;
+    function Entity: TGeminiAPIEntity;
   end;
 
 implementation
@@ -23,6 +27,7 @@ implementation
 uses
   System.SysUtils,
   System.JSON,
+  REst.JSON,
   System.Generics.Collections;
 
 { TGeminiResponse }
@@ -35,6 +40,22 @@ end;
 constructor TGeminiResponse.Create(const AResponse: string);
 begin
   FResponse := AResponse;
+end;
+
+destructor TGeminiResponse.Destroy;
+begin
+  if Assigned(FEntity) then
+    FEntity.Free;
+  inherited;
+end;
+
+function TGeminiResponse.Entity: TGeminiAPIEntity;
+begin
+  if Assigned(FEntity) then
+    FEntity.Free;
+
+  FEntity := TJSON.JsonToObject<TGeminiAPIEntity>(FResponse);
+  Result := FEntity;
 end;
 
 function TGeminiResponse.ExtractTextFromJSON(const AJSONContent: string): string;

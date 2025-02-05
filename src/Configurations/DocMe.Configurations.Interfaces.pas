@@ -3,7 +3,8 @@ unit DocMe.Configurations.Interfaces;
 interface
 
 uses
-  DocMe.AI.ProviderTypes;
+  DocMe.AI.ProviderTypes,
+  DocMe.AI.Interfaces;
 
 type
 
@@ -147,6 +148,8 @@ type
     /// Returns an instance of <see cref="IDocMeAIConfig"/> for method chaining.
     /// </returns>
     function Active(const AValue: Boolean): IDocMeAIConfig; overload;
+
+    function AIModelsProvider: IAIModelsProvider;
   end;
 
 implementation

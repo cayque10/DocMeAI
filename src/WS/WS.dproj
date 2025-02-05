@@ -171,8 +171,6 @@
         <DCCReference Include="WS.Factory.pas"/>
         <DCCReference Include="Ws.Common.pas"/>
         <DCCReference Include="WS.Parser.pas"/>
-        <DCCReference Include="Wrapper\WS.Wrapper.interfaces.pas"/>
-        <DCCReference Include="Wrapper\WS.Wrapper.Consume.pas"/>
         <DCCReference Include="Wrapper\WS.Wrapper.Converter.pas"/>
         <DCCReference Include="Wrapper\WS.Wrapper.Attributes.pas"/>
         <BuildConfiguration Include="Base">
