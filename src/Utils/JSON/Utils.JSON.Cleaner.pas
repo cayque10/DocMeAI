@@ -98,7 +98,11 @@ begin
         begin
           if lAttribute is JSONNameAttribute then
           begin
+{$IF CompilerVersion >= 36}
             lFieldName := JSONNameAttribute(lAttribute).Value;
+{$ELSE}
+            lFieldName := JSONNameAttribute(lAttribute).Name;
+{$ENDIF}
             break;
           end;
         end;

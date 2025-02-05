@@ -358,7 +358,7 @@ begin
       lRemovedPair := LConfig.RemovePair('Active');
       if Assigned(lRemovedPair) then
         lRemovedPair.Free;
-      LConfig.AddPair('Active', False);
+      LConfig.AddPair('Active', TJSONBool.Create(False));
 
       if (LConfig.GetValue('ProviderType').Value = lKeyValue) then
       begin
