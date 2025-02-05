@@ -181,9 +181,13 @@ procedure TFrmDocMeAIConfigurations.SaveConfig;
 begin
   ValidateDatas;
 
-  FConfig.AIProviderType(TDocMeAIProviderType(CbAI.ItemIndex)).ApiKey(MemAPIKey.Lines.Text.Trim)
-    .ModelAI(Trim(CbModel.Text)).MaxTokens(StrToIntDef(EdtMaxToken.Text, MAX_TOKENS_AI))
-    .Temperature(StrToFloat(Trim(EdtTemperature.Text))).SaveConfig;
+  FConfig
+    .AIProviderType(TDocMeAIProviderType(CbAI.ItemIndex))
+    .ApiKey(MemAPIKey.Lines.Text.Trim)
+    .ModelAI(Trim(CbModel.Items[CbModel.ItemIndex]))
+    .MaxTokens(StrToIntDef(EdtMaxToken.Text, MAX_TOKENS_AI))
+    .Temperature(StrToFloat(Trim(EdtTemperature.Text)))
+    .SaveConfig;
 
   ShowMessage('Settings saved successfully');
 end;
@@ -209,7 +213,7 @@ begin
   if MemAPIKey.Lines.Text.Trim.IsEmpty then
     lErrorMessage := lErrorMessage + '- API Key cannot be empty.' + sLineBreak;
 
-  if Trim(CbModel.Text).IsEmpty then
+  if Trim(CbModel.Items[CbModel.ItemIndex]).IsEmpty then
     lErrorMessage := lErrorMessage + '- Model AI cannot be empty.' + sLineBreak;
 
   if not TryStrToInt(EdtMaxToken.Text, lMaxTokens) or (lMaxTokens <= 0) then

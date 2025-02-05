@@ -76,8 +76,11 @@ begin
 
         for LAttribute in LProperty.GetAttributes do
           if (LAttribute is JSONNameAttribute) then
+{$IF CompilerVersion >= 36}
             LPropertyName := JSONNameAttribute(LAttribute).Value.ToLower;
-
+{$ELSE}
+            LPropertyName := JSONNameAttribute(LAttribute).Name.ToLower;
+{$ENDIF}
         if LPropertyName.Equals(PROPERTY_DEFAULT_PAG_JSON) then
           continue;
 
@@ -93,17 +96,17 @@ begin
             tkInteger:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsInteger;
-                LJSONObject.AddPair(LPropertyName, Integer(LFieldValue));
+                LJSONObject.AddPair(LPropertyName, TJSONNumber.Create(Integer(LFieldValue)));
               end;
             tkInt64:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsInt64;
-                LJSONObject.AddPair(LPropertyName, Int64(LFieldValue));
+                LJSONObject.AddPair(LPropertyName, TJSONNumber.Create(Int64(LFieldValue)));
               end;
             tkFloat:
               begin
                 LFieldValue := LField.GetValue(TObject(AEntity)).AsCurrency;
-                LJSONObject.AddPair(LPropertyName, Double(LFieldValue));
+                LJSONObject.AddPair(LPropertyName, TJSONNumber.Create(Double(LFieldValue)));
               end;
             tkClass:
               begin
@@ -230,7 +233,11 @@ begin
         begin
           if LAttribute is WSWrapperConverter then
           begin
+{$IF CompilerVersion >= 36}
             LPropertyName := JSONNameAttribute(LAttribute).Value.ToLower;
+{$ELSE}
+            LPropertyName := JSONNameAttribute(LAttribute).Name.ToLower;
+{$ENDIF}
             Break;
           end
           else if LAttribute is WSWrapperIgnore then
