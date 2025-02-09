@@ -37,7 +37,7 @@ requires
 contains
   DocMe.Documentation.Binding in 'Document\DocMe.Documentation.Binding.pas',
   DocMe.Documentation.Process in 'Document\DocMe.Documentation.Process.pas',
-  DocMe.Documentation.Register in 'Document\DocMe.Documentation.Register.pas',
+  DocMe.Register in 'DocMe.Register.pas',
   DocMe.Documentation.Text in 'Document\DocMe.Documentation.Text.pas',
   DocMe.Menu.Main in 'Menu\DocMe.Menu.Main.pas',
   DocMe.Configurations.Config in 'Configurations\DocMe.Configurations.Config.pas',
@@ -51,6 +51,13 @@ contains
   DocMe.AI.DeepSeek in 'AI\DeepSeek\DocMe.AI.DeepSeek.pas',
   DocMe.AI.Gemini in 'AI\Gemini\DocMe.AI.Gemini.pas',
   DocMe.AI.ProviderTypes in 'AI\DocMe.AI.ProviderTypes.pas',
-  DocMe.AI.Factory in 'AI\DocMe.AI.Factory.pas';
+  DocMe.AI.Factory in 'AI\DocMe.AI.Factory.pas',
+  DocMe.AI.PromptBuilder.Documentation in 'AI\PromptBuilder\DocMe.AI.PromptBuilder.Documentation.pas',
+  DocMe.AI.PromptBuilder.DiffComment in 'AI\PromptBuilder\DocMe.AI.PromptBuilder.DiffComment.pas',
+  DocMe.AI.PromptBuilder.Types in 'AI\PromptBuilder\DocMe.AI.PromptBuilder.Types.pas',
+  DocMe.DiffComment.Process in 'DiffComment\DocMe.DiffComment.Process.pas',
+  DocMe.DiffComment in 'DiffComment\DocMe.DiffComment.pas' {FrmDocMeDiffComment},
+  DocMe.AI.PromptBuilder.Interfaces in 'AI\PromptBuilder\DocMe.AI.PromptBuilder.Interfaces.pas',
+  DocMe.DiffComment.Interfaces in 'DiffComment\DocMe.DiffComment.Interfaces.pas';
 
 end.

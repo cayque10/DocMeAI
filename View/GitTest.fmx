@@ -1,0 +1,80 @@
+object FrmGitCommentTest: TFrmGitCommentTest
+  Left = 0
+  Top = 0
+  Caption = 'Git Comment'
+  ClientHeight = 408
+  ClientWidth = 518
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object RecMem: TRectangle
+    Align = Client
+    Fill.Color = claWhite
+    Size.Width = 518.000000000000000000
+    Size.Height = 362.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object MemDiff: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      Align = Client
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 321.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Viewport.Width = 502.000000000000000000
+      Viewport.Height = 317.000000000000000000
+    end
+    object LbTitle: TLabel
+      Align = Top
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 6.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'Comment generated for code changes.'
+      TabOrder = 3
+    end
+  end
+  object BtnGenerate: TRectangle
+    Align = Bottom
+    Fill.Color = xFF252525
+    Margins.Left = 6.000000000000000000
+    Margins.Right = 6.000000000000000000
+    Margins.Bottom = 6.000000000000000000
+    Position.X = 6.000000000000000000
+    Position.Y = 362.000000000000000000
+    Size.Width = 506.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    XRadius = 4.000000000000000000
+    YRadius = 6.000000000000000000
+    OnClick = BtnGenerateClick
+    object LbGenerate: TLabel
+      Align = Center
+      AutoSize = True
+      StyledSettings = [Family]
+      Locked = True
+      Size.Width = 532.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.FontColor = claWhite
+      TextSettings.HorzAlign = Center
+      Text = 'Generate comment'
+      TabOrder = 0
+    end
+  end
+end

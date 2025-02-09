@@ -4,18 +4,20 @@ interface
 
 uses
   DocMe.AI.Interfaces,
-  DocMe.Configurations.Interfaces;
+  DocMe.Configurations.Interfaces,
+  DocMe.AI.PromptBuilder.Interfaces;
 
 type
-  TDocMeAIGemini= class(TInterfacedObject, IDocMeAI)
+  TDocMeAIGemini = class(TInterfacedObject, IDocMeAI)
   private
     FConfig: IDocMeAIConfig;
     FAdditionalInfo: string;
+    FPromptBuilder: IDocMeAIPromptBuilder;
     /// <summary>
     /// Initializes a new instance of the class with the specified configuration.
     /// </summary>
     /// <param name="pConfig">The configuration to be used for the instance.</param>
-    constructor Create(const AConfig: IDocMeAIConfig);
+    constructor Create(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder);
 
     /// <summary>
     /// Builds a prompt based on the provided data.
@@ -37,7 +39,7 @@ type
     /// </summary>
     /// <param name="AConfig">The configuration to be used for the new instance.</param>
     /// <returns>An instance of IDocMeAI.</returns>
-    class function New(const AConfig: IDocMeAIConfig): IDocMeAI;
+    class function New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder): IDocMeAI;
 
     /// <summary>
     /// Documents the elements based on the provided data and additional information.
@@ -75,20 +77,17 @@ begin
     [FAdditionalInfo]));
 end;
 
-constructor TDocMeAIGemini.Create(const AConfig: IDocMeAIConfig);
+constructor TDocMeAIGemini.Create(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder);
 begin
   FConfig := AConfig;
+  FPromptBuilder := APromptBuilder;
 end;
 
 function TDocMeAIGemini.DocumentElements(const AData, AAdditionalInfo: string): string;
 begin
   FAdditionalInfo := AAdditionalInfo;
 
-  Result := TGeminiAPI.New(FConfig.ApiKey)
-              .Gemini15Flash
-              .Prompt(BuildPrompt(AData))
-              .GenerateContent
-                .Text;
+  Result := TGeminiAPI.New(FConfig.ApiKey).Gemini15Flash.Prompt(BuildPrompt(AData)).GenerateContent.Text;
 
   Result := FormatResponse(Result);
 end;
@@ -99,9 +98,9 @@ begin
   Result := Result.Replace('`', '').Replace('delphi', '').Replace('{', '').Replace('}', '');
 end;
 
-class function TDocMeAIGemini.New(const AConfig: IDocMeAIConfig): IDocMeAI;
+class function TDocMeAIGemini.New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder): IDocMeAI;
 begin
-  Result := Self.Create(AConfig);
+  Result := Self.Create(AConfig, APromptBuilder);
 end;
 
 end.

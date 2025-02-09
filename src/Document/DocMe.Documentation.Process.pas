@@ -12,7 +12,7 @@ uses
 
 type
 
-  TDocMeDocumentationProcess = class(TInterfacedObject, IDocMeAIProcess)
+  TDocMeDocumentationProcess = class(TInterfacedObject, IDocMeAIDocumentationProcess)
   private
     FConfig: IDocMeAIConfig;
     FDocMeText: IDocMeAIText;
@@ -22,7 +22,7 @@ type
     /// <summary>
     /// Creates a new instance of the TDocMeDocumentationProcess class.
     /// </summary>
-    class function New: IDocMeAIProcess;
+    class function New: IDocMeAIDocumentationProcess;
 
     /// <summary>
     /// Destroys the instance of the TDocMeDocumentationProcess class.
@@ -30,11 +30,9 @@ type
     destructor Destroy; override;
 
     /// <summary>
-    /// Processes the documentation with optional additional information.
+    /// Abstractions the processing flow and may return data related to that processing.
     /// </summary>
-    /// <param name="AAdditionalInfo">
-    /// Optional additional information to be used during processing.
-    /// </param>
+    /// <param name="AAdditionalInfo">Optional additional information for processing.</param>
     procedure Process(const AAdditionalInfo: string = '');
   end;
 
@@ -44,14 +42,15 @@ uses
   System.SysUtils,
   Vcl.Dialogs,
   System.StrUtils,
-  DocMe.AI.Factory;
+  DocMe.AI.Factory,
+  DocMe.AI.PromptBuilder.Types;
 
 { TDocMeDocumentationProcess }
 
 constructor TDocMeDocumentationProcess.Create;
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
-  FAI := TDocMeAIFactory.CreateAI(FConfig);
+  FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDocumentation);
   FDocMeText := TDocMeDocumentationText.New;
 end;
 
@@ -60,7 +59,7 @@ begin
   inherited;
 end;
 
-class function TDocMeDocumentationProcess.New: IDocMeAIProcess;
+class function TDocMeDocumentationProcess.New: IDocMeAIDocumentationProcess;
 begin
   Result := Self.Create;
 end;

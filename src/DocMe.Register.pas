@@ -1,4 +1,4 @@
-unit DocMe.Documentation.Register;
+unit DocMe.Register;
 
 interface
 

@@ -48,8 +48,8 @@ object FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation
       Size.Height = 258.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      Viewport.Width = 404.000000000000000000
-      Viewport.Height = 254.000000000000000000
+      Viewport.Width = 408.000000000000000000
+      Viewport.Height = 258.000000000000000000
     end
     object RecButton: TRectangle
       Align = Client

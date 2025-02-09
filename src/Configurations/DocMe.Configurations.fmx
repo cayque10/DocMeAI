@@ -4,7 +4,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
   BorderStyle = Single
   Caption = 'Configurations'
   ClientHeight = 414
-  ClientWidth = 584
+  ClientWidth = 582
   Position = ScreenCenter
   StyleBook = StyleBook1
   FormFactor.Width = 320
@@ -1131,32 +1131,35 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
           0500000000000000C804401453697A652E506C6174666F726D44656661756C74
           080B5374796C654C6F6F6B7570060B767468756D627374796C65000000}
       end>
-    Left = 512
-    Top = 40
+    Left = 520
+    Top = 88
   end
   object RecContainer: TRectangle
     Align = Client
     Fill.Color = claWhite
-    Size.Width = 584.000000000000000000
+    Size.Width = 582.000000000000000000
     Size.Height = 414.000000000000000000
     Size.PlatformDefault = False
     Stroke.Kind = None
     object TcAI: TTabControl
       Align = Client
+      Anchors = [akTop, akRight, akBottom]
       Margins.Left = 6.000000000000000000
       Margins.Top = 6.000000000000000000
       Margins.Right = 6.000000000000000000
       Margins.Bottom = 6.000000000000000000
-      Size.Width = 572.000000000000000000
-      Size.Height = 347.000000000000000000
+      Size.Width = 570.000000000000000000
+      Size.Height = 356.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'TcAIStyle1'
       TabIndex = 0
       TabOrder = 0
       TabPosition = Top
       Sizes = (
-        572s
-        321s)
+        570s
+        330s
+        570s
+        330s)
       object TiAI: TTabItem
         CustomIcon = <
           item
@@ -1173,39 +1176,10 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
         ExplicitSize.cy = 8.000000000000000000
         object LayContainer: TLayout
           Align = Client
-          Size.Width = 572.000000000000000000
-          Size.Height = 321.000000000000000000
+          Size.Width = 570.000000000000000000
+          Size.Height = 330.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
-          object BtnSave: TRectangle
-            Align = Top
-            Fill.Color = xFF252525
-            Margins.Left = 6.000000000000000000
-            Margins.Right = 6.000000000000000000
-            Position.X = 6.000000000000000000
-            Position.Y = 279.000000000000000000
-            Size.Width = 560.000000000000000000
-            Size.Height = 40.000000000000000000
-            Size.PlatformDefault = False
-            Stroke.Kind = None
-            XRadius = 4.000000000000000000
-            YRadius = 6.000000000000000000
-            OnClick = BtnSaveClick
-            object LbSave: TLabel
-              Align = Center
-              AutoSize = True
-              StyledSettings = [Family]
-              Locked = True
-              Size.Width = 532.000000000000000000
-              Size.Height = 19.000000000000000000
-              Size.PlatformDefault = False
-              TextSettings.Font.Size = 14.000000000000000000
-              TextSettings.FontColor = claWhite
-              TextSettings.HorzAlign = Center
-              Text = 'Save'
-              TabOrder = 0
-            end
-          end
           object RecMaxToken: TRectangle
             Align = Top
             Fill.Color = claWhite
@@ -1214,14 +1188,14 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
-            Position.Y = 173.000000000000000000
-            Size.Width = 560.000000000000000000
+            Position.Y = 240.000000000000000000
+            Size.Width = 558.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbMaxToken: TLabel
               Align = Top
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Max Token'
@@ -1231,7 +1205,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Client
               TabOrder = 1
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 27.000000000000000000
               Size.PlatformDefault = False
             end
@@ -1244,14 +1218,14 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
-            Position.Y = 229.000000000000000000
-            Size.Width = 560.000000000000000000
+            Position.Y = 296.000000000000000000
+            Size.Width = 558.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbTemperature: TLabel
               Align = Top
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False
               Text = 'Temperature'
@@ -1261,7 +1235,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
               Touch.InteractiveGestures = [LongTap, DoubleTap]
               Align = Client
               TabOrder = 1
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 27.000000000000000000
               Size.PlatformDefault = False
             end
@@ -1274,15 +1248,15 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
-            Position.Y = 6.000000000000000000
-            Size.Width = 560.000000000000000000
+            Position.Y = 73.000000000000000000
+            Size.Width = 558.000000000000000000
             Size.Height = 99.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object LbAPIKey: TLabel
               Align = Top
               AutoSize = True
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 16.000000000000000000
               Size.PlatformDefault = False
               Text = 'API Key'
@@ -1292,7 +1266,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
               Align = Client
               Fill.Color = claWhite
               Margins.Top = 5.000000000000000000
-              Size.Width = 560.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 78.000000000000000000
               Size.PlatformDefault = False
               Stroke.Color = xFF303030
@@ -1306,13 +1280,13 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
                 Margins.Top = 1.000000000000000000
                 Margins.Right = 1.000000000000000000
                 Margins.Bottom = 1.000000000000000000
-                Size.Width = 558.000000000000000000
+                Size.Width = 556.000000000000000000
                 Size.Height = 76.000000000000000000
                 Size.PlatformDefault = False
                 StyleLookup = 'MemAPIKeyChatGPTStyle1'
                 TabOrder = 1
-                Viewport.Width = 558.000000000000000000
-                Viewport.Height = 76.000000000000000000
+                Viewport.Width = 552.000000000000000000
+                Viewport.Height = 72.000000000000000000
               end
             end
           end
@@ -1324,108 +1298,356 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
             Position.X = 6.000000000000000000
-            Position.Y = 117.000000000000000000
-            Size.Width = 560.000000000000000000
+            Position.Y = 184.000000000000000000
+            Size.Width = 558.000000000000000000
             Size.Height = 44.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
-            object LbModel: TLabel
-              Align = Top
-              Size.Width = 560.000000000000000000
-              Size.Height = 19.000000000000000000
-              Size.PlatformDefault = False
-              Text = 'Model'
-              TabOrder = 0
-            end
             object CbModel: TComboBox
               Align = Top
               ItemIndex = 0
-              Position.Y = 19.000000000000000000
-              Size.Width = 560.000000000000000000
+              Position.Y = 21.000000000000000000
+              Size.Width = 558.000000000000000000
               Size.Height = 25.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = 'comboboxstyle'
-              TabOrder = 1
+              TabOrder = 0
+            end
+            object RecModelTitle: TRectangle
+              Align = Top
+              Fill.Color = claWhite
+              Size.Width = 558.000000000000000000
+              Size.Height = 21.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object LbModel: TLabel
+                Align = Left
+                AutoSize = True
+                Size.Width = 41.000000000000000000
+                Size.Height = 21.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Model'
+                TabOrder = 0
+              end
+            end
+          end
+          object RecContainerComboAI: TRectangle
+            Align = Top
+            Fill.Color = claWhite
+            Margins.Left = 1.000000000000000000
+            Margins.Top = 6.000000000000000000
+            Margins.Right = 1.000000000000000000
+            Margins.Bottom = 6.000000000000000000
+            Position.X = 1.000000000000000000
+            Position.Y = 6.000000000000000000
+            Size.Width = 568.000000000000000000
+            Size.Height = 55.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            object RecCbAI: TRectangle
+              Align = Left
+              Fill.Color = claWhite
+              Margins.Left = 6.000000000000000000
+              Margins.Top = 6.000000000000000000
+              Margins.Right = 6.000000000000000000
+              Position.X = 6.000000000000000000
+              Position.Y = 6.000000000000000000
+              Size.Width = 499.000000000000000000
+              Size.Height = 49.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object CbAI: TComboBox
+                Align = Client
+                Items.Strings = (
+                  'ChatGPT'
+                  'Gemini'
+                  'DeepSeek')
+                ItemIndex = 0
+                Margins.Top = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Size.Width = 499.000000000000000000
+                Size.Height = 21.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 1
+                OnChange = CbAIChange
+              end
+              object LbAI: TLabel
+                Align = Top
+                AutoSize = True
+                Size.Width = 499.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'AI Provider'
+                TabOrder = 0
+              end
+            end
+            object RecActive: TRectangle
+              Align = Client
+              Fill.Color = claWhite
+              Margins.Top = 6.000000000000000000
+              Margins.Right = 6.000000000000000000
+              Size.Width = 51.000000000000000000
+              Size.Height = 49.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object SwActive: TSwitch
+                Align = Left
+                IsChecked = False
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Position.Y = 22.000000000000000000
+                Size.Width = 49.000000000000000000
+                Size.Height = 21.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 1
+                OnSwitch = SwActiveSwitch
+              end
+              object LbActive: TLabel
+                Align = Top
+                AutoSize = True
+                Size.Width = 51.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Active'
+                TabOrder = 0
+              end
             end
           end
         end
       end
-    end
-    object RecContainerComboAI: TRectangle
-      Align = Top
-      Fill.Color = claWhite
-      Size.Width = 584.000000000000000000
-      Size.Height = 55.000000000000000000
-      Size.PlatformDefault = False
-      Stroke.Kind = None
-      object RecCbAI: TRectangle
-        Align = Left
-        Fill.Color = claWhite
-        Margins.Left = 6.000000000000000000
-        Margins.Top = 6.000000000000000000
-        Margins.Right = 6.000000000000000000
-        Position.X = 6.000000000000000000
-        Position.Y = 6.000000000000000000
-        Size.Width = 513.000000000000000000
-        Size.Height = 49.000000000000000000
+      object TiGit: TTabItem
+        CustomIcon = <
+          item
+          end>
+        TextSettings.Trimming = None
+        IsSelected = False
+        Size.Width = 36.000000000000000000
+        Size.Height = 26.000000000000000000
         Size.PlatformDefault = False
-        Stroke.Kind = None
-        object CbAI: TComboBox
+        StyleLookup = ''
+        TabOrder = 0
+        Text = 'Git'
+        ExplicitSize.cx = 36.000000000000000000
+        ExplicitSize.cy = 26.000000000000000000
+        object LayGit: TLayout
           Align = Client
-          Items.Strings = (
-            'ChatGPT'
-            'Gemini'
-            'DeepSeek')
-          ItemIndex = 0
-          Margins.Top = 6.000000000000000000
-          Margins.Bottom = 6.000000000000000000
-          Size.Width = 513.000000000000000000
-          Size.Height = 21.000000000000000000
+          Size.Width = 570.000000000000000000
+          Size.Height = 330.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 1
-          OnChange = CbAIChange
-        end
-        object LbAI: TLabel
-          Align = Top
-          AutoSize = True
-          Size.Width = 513.000000000000000000
-          Size.Height = 16.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'AI Provider'
           TabOrder = 0
+          object RecContainerTop: TRectangle
+            Align = Top
+            Fill.Color = claWhite
+            Margins.Left = 6.000000000000000000
+            Margins.Top = 6.000000000000000000
+            Margins.Right = 6.000000000000000000
+            Margins.Bottom = 6.000000000000000000
+            Position.X = 6.000000000000000000
+            Position.Y = 6.000000000000000000
+            Size.Width = 558.000000000000000000
+            Size.Height = 115.000000000000000000
+            Size.PlatformDefault = False
+            Stroke.Kind = None
+            object RecContainerGitTop: TRectangle
+              Align = Top
+              Fill.Color = claWhite
+              Size.Width = 558.000000000000000000
+              Size.Height = 55.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object LbGitPath: TLabel
+                Align = Top
+                AutoSize = True
+                Margins.Left = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Position.X = 6.000000000000000000
+                Size.Width = 546.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Git Path'
+                TabOrder = 0
+              end
+              object EdtGitPath: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                Align = Client
+                TabOrder = 1
+                Margins.Left = 6.000000000000000000
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Size.Width = 481.000000000000000000
+                Size.Height = 27.000000000000000000
+                Size.PlatformDefault = False
+              end
+              object BtnSelectGit: TRectangle
+                Align = Right
+                Fill.Color = xFF252525
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Position.X = 493.000000000000000000
+                Position.Y = 22.000000000000000000
+                Size.Width = 59.000000000000000000
+                Size.Height = 27.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Kind = None
+                XRadius = 4.000000000000000000
+                YRadius = 6.000000000000000000
+                OnClick = BtnSelectGitClick
+                object LbSelectGit: TLabel
+                  Align = Center
+                  AutoSize = True
+                  StyledSettings = [Family]
+                  Locked = True
+                  Size.Width = 532.000000000000000000
+                  Size.Height = 19.000000000000000000
+                  Size.PlatformDefault = False
+                  TextSettings.Font.Size = 14.000000000000000000
+                  TextSettings.FontColor = claWhite
+                  TextSettings.HorzAlign = Center
+                  Text = 'Select'
+                  TabOrder = 0
+                end
+              end
+            end
+            object RecContainerIgnoreExtenses: TRectangle
+              Align = Top
+              Fill.Color = claWhite
+              Position.Y = 55.000000000000000000
+              Size.Width = 558.000000000000000000
+              Size.Height = 55.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object EdtIgnoreExtGit: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                Align = Client
+                TabOrder = 0
+                Margins.Left = 6.000000000000000000
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Size.Width = 546.000000000000000000
+                Size.Height = 27.000000000000000000
+                Size.PlatformDefault = False
+                TextPrompt = '.res, .dproj'
+              end
+              object LbIgnoreExtGit: TLabel
+                Align = Top
+                AutoSize = True
+                Margins.Left = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Position.X = 6.000000000000000000
+                Size.Width = 546.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Ignore extensions'
+                TabOrder = 1
+              end
+            end
+            object RecContainerProject: TRectangle
+              Align = Top
+              Fill.Color = claWhite
+              Position.Y = 110.000000000000000000
+              Size.Width = 558.000000000000000000
+              Size.Height = 55.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object LbProject: TLabel
+                Align = Top
+                AutoSize = True
+                Margins.Left = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Position.X = 6.000000000000000000
+                Size.Width = 546.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Project Path'
+                TabOrder = 0
+              end
+              object EdtProjectPathGit: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                Align = Client
+                TabOrder = 1
+                Margins.Left = 6.000000000000000000
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Size.Width = 481.000000000000000000
+                Size.Height = 27.000000000000000000
+                Size.PlatformDefault = False
+              end
+              object RecProjectSelect: TRectangle
+                Align = Right
+                Fill.Color = xFF252525
+                Margins.Top = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Position.X = 493.000000000000000000
+                Position.Y = 22.000000000000000000
+                Size.Width = 59.000000000000000000
+                Size.Height = 27.000000000000000000
+                Size.PlatformDefault = False
+                Stroke.Kind = None
+                XRadius = 4.000000000000000000
+                YRadius = 6.000000000000000000
+                OnClick = RecProjectSelectClick
+                object LbProjectSelect: TLabel
+                  Align = Center
+                  AutoSize = True
+                  StyledSettings = [Family]
+                  Locked = True
+                  Size.Width = 532.000000000000000000
+                  Size.Height = 19.000000000000000000
+                  Size.PlatformDefault = False
+                  TextSettings.Font.Size = 14.000000000000000000
+                  TextSettings.FontColor = claWhite
+                  TextSettings.HorzAlign = Center
+                  Text = 'Select'
+                  TabOrder = 0
+                end
+                object DirectionalBlurEffect1: TDirectionalBlurEffect
+                  Angle = 0.000000000000000000
+                  BlurAmount = 1.000000000000000000
+                end
+              end
+            end
+          end
+          object OdGitPath: TOpenDialog
+            Left = 416
+            Top = 224
+          end
         end
       end
-      object RecActive: TRectangle
-        Align = Client
-        Fill.Color = claWhite
-        Margins.Top = 6.000000000000000000
-        Margins.Right = 6.000000000000000000
-        Size.Width = 53.000000000000000000
-        Size.Height = 49.000000000000000000
+    end
+    object BtnSave: TRectangle
+      Align = Bottom
+      Fill.Color = xFF252525
+      Margins.Left = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 368.000000000000000000
+      Size.Width = 570.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      XRadius = 4.000000000000000000
+      YRadius = 6.000000000000000000
+      OnClick = BtnSaveClick
+      object LbSave: TLabel
+        Align = Center
+        AutoSize = True
+        StyledSettings = [Family]
+        Locked = True
+        Size.Width = 532.000000000000000000
+        Size.Height = 19.000000000000000000
         Size.PlatformDefault = False
-        Stroke.Kind = None
-        object SwActive: TSwitch
-          Align = Left
-          IsChecked = False
-          Margins.Top = 6.000000000000000000
-          Margins.Right = 6.000000000000000000
-          Margins.Bottom = 6.000000000000000000
-          Position.Y = 22.000000000000000000
-          Size.Width = 49.000000000000000000
-          Size.Height = 21.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 1
-          OnSwitch = SwActiveSwitch
-        end
-        object LbActive: TLabel
-          Align = Top
-          AutoSize = True
-          Size.Width = 53.000000000000000000
-          Size.Height = 16.000000000000000000
-          Size.PlatformDefault = False
-          Text = 'Active'
-          TabOrder = 0
-        end
+        TextSettings.Font.Size = 14.000000000000000000
+        TextSettings.FontColor = claWhite
+        TextSettings.HorzAlign = Center
+        Text = 'Save'
+        TabOrder = 0
       end
     end
   end

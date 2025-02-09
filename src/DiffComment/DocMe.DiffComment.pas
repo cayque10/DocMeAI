@@ -1,4 +1,4 @@
-unit DocumentationTest;
+unit DocMe.DiffComment;
 
 interface
 
@@ -13,24 +13,24 @@ uses
   FMX.Forms,
   FMX.Graphics,
   FMX.Dialogs,
-  FMX.Controls.Presentation,
   FMX.StdCtrls,
-  FMX.Memo.Types,
   FMX.ScrollBox,
   FMX.Memo,
+  FMX.Controls.Presentation,
   FMX.Objects,
+  FMX.Edit,
   DocMe.Configurations.Interfaces,
+  FMX.Memo.Types,
   DocMe.AI.Interfaces;
 
 type
-  TFrmDocMeAIDocumentation = class(TForm)
-    LbSpecification: TLabel;
-    MemAdditionalInfo: TMemo;
-    RecButton: TRectangle;
-    RecContainer: TRectangle;
-    BtnDocument: TRectangle;
-    LbDocument: TLabel;
-    procedure BtnDocumentClick(Sender: TObject);
+  TFrmDocMeDiffComment = class(TForm)
+    RecMem: TRectangle;
+    MemDiff: TMemo;
+    BtnGenerate: TRectangle;
+    LbGenerate: TLabel;
+    LbTitle: TLabel;
+    procedure BtnGenerateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     FConfig: IDocMeAIConfig;
@@ -47,24 +47,21 @@ type
   public
   end;
 
-var
-  FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation;
-
 implementation
 
 uses
-  System.Threading,
   DocMe.Configurations.Config,
   DocMe.AI.Factory,
+  DocMe.AI.PromptBuilder.Types,
+  System.Threading,
+  DocMe.DiffComment.Process,
   Utils.CustomTask,
   Utils.Forms.Interfaces,
-  Utils.Forms.Loading,
-  DocMe.AI.PromptBuilder.Types;
+  Utils.Forms.Loading;
 
 {$R *.fmx}
-{ TFrmDocMeAIDocumentation }
 
-procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
+procedure TFrmDocMeDiffComment.BtnGenerateClick(Sender: TObject);
 var
   lLoading: ILoading;
 begin
@@ -74,13 +71,15 @@ begin
   TCustomThread.Create(True, True).OnRun(
     procedure
     var
-      lDoc: string;
+      lComment: string;
     begin
-      lDoc := FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
+      lComment := TDocMeDiffComment.New.Process;
+
       TThread.Synchronize(nil,
         procedure
         begin
-          ShowMessage(lDoc);
+          MemDiff.Lines.Clear;
+          MemDiff.Lines.Add(lComment);
         end);
     end).OnStart(
     procedure
@@ -88,7 +87,7 @@ begin
       TThread.Synchronize(nil,
         procedure
         begin
-          lLoading.Show(Self, 'Wait. Documentation in progress.');
+          lLoading.Show(Self, 'Wait. Diff comment in progress.');
         end);
     end).OnFinish(
     procedure
@@ -112,22 +111,22 @@ begin
     end).Start;
 end;
 
-procedure TFrmDocMeAIDocumentation.DisableControls;
+procedure TFrmDocMeDiffComment.DisableControls;
 begin
-  MemAdditionalInfo.Enabled := False;
-  BtnDocument.Enabled := False;
+  BtnGenerate.Enabled := False;
+  MemDiff.Enabled := False;
 end;
 
-procedure TFrmDocMeAIDocumentation.EnableControls;
+procedure TFrmDocMeDiffComment.EnableControls;
 begin
-  MemAdditionalInfo.Enabled := True;
-  BtnDocument.Enabled := True;
+  BtnGenerate.Enabled := True;
+  MemDiff.Enabled := True;
 end;
 
-procedure TFrmDocMeAIDocumentation.FormCreate(Sender: TObject);
+procedure TFrmDocMeDiffComment.FormCreate(Sender: TObject);
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
-  FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDocumentation);
+  FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDiffComment);
 end;
 
 end.

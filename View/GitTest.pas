@@ -1,4 +1,4 @@
-unit DocMe.Documentation;
+unit GitTest;
 
 interface
 
@@ -13,23 +13,28 @@ uses
   FMX.Forms,
   FMX.Graphics,
   FMX.Dialogs,
-  FMX.Controls.Presentation,
   FMX.StdCtrls,
-  FMX.Memo.Types,
   FMX.ScrollBox,
   FMX.Memo,
-  FMX.Objects;
+  FMX.Controls.Presentation,
+  FMX.Objects,
+  FMX.Edit,
+  DocMe.Configurations.Interfaces,
+  FMX.Memo.Types,
+  DocMe.AI.Interfaces;
 
 type
-  TFrmDocMeAIDocumentation = class(TForm)
-    LbSpecification: TLabel;
-    MemAdditionalInfo: TMemo;
-    RecButton: TRectangle;
-    RecContainer: TRectangle;
-    BtnDocument: TRectangle;
-    LbDocument: TLabel;
-    procedure BtnDocumentClick(Sender: TObject);
+  TFrmGitCommentTest = class(TForm)
+    RecMem: TRectangle;
+    MemDiff: TMemo;
+    BtnGenerate: TRectangle;
+    LbGenerate: TLabel;
+    LbTitle: TLabel;
+    procedure BtnGenerateClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
+    FConfig: IDocMeAIConfig;
+    FAI: IDocMeAI;
     /// <summary>
     /// Disables the visual controls.
     /// </summary>
@@ -45,16 +50,18 @@ type
 implementation
 
 uses
+  DocMe.Configurations.Config,
+  DocMe.AI.Factory,
+  DocMe.AI.PromptBuilder.Types,
   System.Threading,
-  DocMe.Documentation.Process,
+  DocMe.DiffComment.Process,
   Utils.CustomTask,
   Utils.Forms.Interfaces,
   Utils.Forms.Loading;
 
 {$R *.fmx}
-{ TFrmDocMeAIDocumentation }
 
-procedure TFrmDocMeAIDocumentation.BtnDocumentClick(Sender: TObject);
+procedure TFrmGitCommentTest.BtnGenerateClick(Sender: TObject);
 var
   lLoading: ILoading;
 begin
@@ -63,15 +70,24 @@ begin
 
   TCustomThread.Create(True, True).OnRun(
     procedure
+    var
+      lComment: string;
     begin
-      TDocMeDocumentationProcess.New.Process(MemAdditionalInfo.Lines.Text.Trim);
+      lComment := TDocMeDiffComment.New.Process;
+
+      TThread.Synchronize(nil,
+        procedure
+        begin
+          MemDiff.Lines.Clear;
+          MemDiff.Lines.Add(lComment);
+        end);
     end).OnStart(
     procedure
     begin
       TThread.Synchronize(nil,
         procedure
         begin
-          lLoading.Show(Self, 'Wait. Documentation in progress.');
+          lLoading.Show(Self, 'Wait. Diff comment in progress.');
         end);
     end).OnFinish(
     procedure
@@ -81,7 +97,6 @@ begin
         begin
           EnableControls;
           lLoading.Hide;
-          Self.Close;
         end);
     end).OnError(
     procedure(AErrorMsg: String)
@@ -96,16 +111,22 @@ begin
     end).Start;
 end;
 
-procedure TFrmDocMeAIDocumentation.DisableControls;
+procedure TFrmGitCommentTest.DisableControls;
 begin
-  MemAdditionalInfo.Enabled := False;
-  BtnDocument.Enabled := False;
+  BtnGenerate.Enabled := False;
+  MemDiff.Enabled := False;
 end;
 
-procedure TFrmDocMeAIDocumentation.EnableControls;
+procedure TFrmGitCommentTest.EnableControls;
 begin
-  MemAdditionalInfo.Enabled := True;
-  BtnDocument.Enabled := True;
+  BtnGenerate.Enabled := True;
+  MemDiff.Enabled := True;
+end;
+
+procedure TFrmGitCommentTest.FormCreate(Sender: TObject);
+begin
+  FConfig := TDocMeAIConfig.New.LoadConfig;
+  FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDiffComment);
 end;
 
 end.

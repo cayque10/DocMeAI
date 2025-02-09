@@ -7,6 +7,18 @@ uses
   DocMe.AI.Interfaces;
 
 type
+  IDocMeAIConfig = interface;
+
+  IDocMeAIGit = interface
+    ['{E812FC2A-9633-4822-BB8D-32698DE18E52}']
+    function FilePath: string; overload;
+    function FilePath(const AValue: string): IDocMeAIGit; overload;
+    function IgnoreExtensions: string; overload;
+    function IgnoreExtensions(const AExtensions: string): IDocMeAIGit; overload;
+    function ProjectPath: string; overload;
+    function ProjectPath(const AValue: string): IDocMeAIGit; overload;
+    function &End: IDocMeAIConfig;
+  end;
 
   IDocMeAIConfig = interface
     ['{9857474D-4922-41F4-8DE8-FDC56C2206A1}']
@@ -155,6 +167,7 @@ type
     /// An instance of <see cref="IAIModelsProvider"/> that provides access to AI models.
     /// </returns>
     function AIModelsProvider: IAIModelsProvider;
+    function AIGit: IDocMeAIGit;
   end;
 
 implementation
