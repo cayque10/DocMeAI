@@ -68,16 +68,18 @@ type
     EdtProjectPathGit: TEdit;
     RecProjectSelect: TRectangle;
     LbProjectSelect: TLabel;
-    DirectionalBlurEffect1: TDirectionalBlurEffect;
     BtnSave: TRectangle;
     LbSave: TLabel;
     OdGitPath: TOpenDialog;
+    LbInfo: TLabel;
     procedure BtnSaveClick(Sender: TObject);
     procedure CbAIChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SwActiveSwitch(Sender: TObject);
     procedure BtnSelectGitClick(Sender: TObject);
     procedure RecProjectSelectClick(Sender: TObject);
+    procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     FConfig: IDocMeAIConfig;
     /// <summary>
@@ -114,7 +116,8 @@ implementation
 
 uses
   DocMe.Configurations.Config,
-  DocMe.AI.ProviderTypes;
+  DocMe.AI.ProviderTypes,
+  FMX.Ani;
 
 {$R *.fmx}
 { TFrmDocMeAISettings }
@@ -122,6 +125,18 @@ uses
 procedure TFrmDocMeAIConfigurations.BtnSaveClick(Sender: TObject);
 begin
   SaveConfig;
+end;
+
+procedure TFrmDocMeAIConfigurations.BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 0.9, 0.1);
+end;
+
+procedure TFrmDocMeAIConfigurations.BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 1.0, 0.1);
 end;
 
 procedure TFrmDocMeAIConfigurations.BtnSelectGitClick(Sender: TObject);

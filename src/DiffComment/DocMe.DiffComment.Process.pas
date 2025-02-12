@@ -14,10 +14,28 @@ type
     FConfig: IDocMeAIConfig;
     FAI: IDocMeAI;
     constructor Create;
-
+    /// <summary>
+    /// Executes a Git command and returns the output as a string.
+    /// </summary>
+    /// <param name="ACommand">The Git command to be executed.</param>
+    /// <returns>The output of the Git command as a string.</returns>
     function ExecuteGitCommand(const ACommand: string): string;
+
+    /// <summary>
+    /// Retrieves a list of modified files in the current Git repository.
+    /// </summary>
+    /// <returns>A TStrings object containing the names of modified files.</returns>
     function GetModifiedFiles: TStrings;
+
+    /// <summary>
+    /// Retrieves the differences between the specified file and its previous version.
+    /// </summary>
+    /// <param name="AFileName">The name of the file for which the differences are to be retrieved.</param>
+    /// <returns>
+    /// A string representing the differences found in the file.
+    /// </returns>
     function GetFileDiff(const AFileName: string): string;
+
     /// <summary>
     /// Retrieves a list of staged files, filtered by specified extensions.
     /// </summary>
@@ -27,10 +45,40 @@ type
     /// Returns nil if no matching files are found or if input is invalid.
     /// </returns >
     function GetStagedFilesFiltered(const AFiles: string; const AExtensions: array of string): TStrings;
+
+    /// <summary>
+    /// Retrieves an array of file extensions.
+    /// </summary>
+    /// <returns>
+    /// An array of strings representing the file extensions.
+    /// </returns>
     function GetExtensions: TArray<string>;
+
+    /// <summary>
+    /// Executes a command with the specified executable and parameters.
+    /// </summary>
+    /// <param name="AExecutable">
+    /// The path to the executable file to run.
+    /// </param>
+    /// <param name="AParams">
+    /// The parameters to pass to the executable.
+    /// </param>
+    /// <param name="AWorkingDir">
+    /// The working directory in which to execute the command.
+    /// </param>
+    /// <returns>
+    /// The output of the executed command as a string.
+    /// </returns>
     function RunCommand(const AExecutable, AParams, AWorkingDir: string): string;
   public
+    /// <summary>
+    /// Creates a new instance of the IDocMeAIDiffComment interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of the IDocMeAIDiffComment interface.
+    /// </returns>
     class function New: IDocMeAIDiffComment;
+
     /// <summary>
     /// Abstractions the processing flow and may return data related to that processing.
     /// </summary>
@@ -178,7 +226,7 @@ begin
       for lFile in lStagedModifiedFiles do
         lDiffData := lDiffData + GetFileDiff(lFile) + sLineBreak;
 
-      Result := FAI.DocumentElements(lDiffData);
+      Result := FAI.GenerateSummary(lDiffData, AAdditionalInfo);
     finally
       lStagedModifiedFiles.Free;
     end;

@@ -3,7 +3,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
   Top = 0
   BorderStyle = Single
   Caption = 'Configurations'
-  ClientHeight = 414
+  ClientHeight = 437
   ClientWidth = 582
   Position = ScreenCenter
   StyleBook = StyleBook1
@@ -1138,7 +1138,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
     Align = Client
     Fill.Color = claWhite
     Size.Width = 582.000000000000000000
-    Size.Height = 414.000000000000000000
+    Size.Height = 437.000000000000000000
     Size.PlatformDefault = False
     Stroke.Kind = None
     object TcAI: TTabControl
@@ -1149,7 +1149,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
       Margins.Right = 6.000000000000000000
       Margins.Bottom = 6.000000000000000000
       Size.Width = 570.000000000000000000
-      Size.Height = 356.000000000000000000
+      Size.Height = 379.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = 'TcAIStyle1'
       TabIndex = 0
@@ -1157,9 +1157,9 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
       TabPosition = Top
       Sizes = (
         570s
-        330s
+        353s
         570s
-        330s)
+        353s)
       object TiAI: TTabItem
         CustomIcon = <
           item
@@ -1177,7 +1177,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
         object LayContainer: TLayout
           Align = Client
           Size.Width = 570.000000000000000000
-          Size.Height = 330.000000000000000000
+          Size.Height = 353.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object RecMaxToken: TRectangle
@@ -1433,20 +1433,18 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
         object LayGit: TLayout
           Align = Client
           Size.Width = 570.000000000000000000
-          Size.Height = 330.000000000000000000
+          Size.Height = 353.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object RecContainerTop: TRectangle
-            Align = Top
+            Align = Client
             Fill.Color = claWhite
             Margins.Left = 6.000000000000000000
             Margins.Top = 6.000000000000000000
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
-            Position.X = 6.000000000000000000
-            Position.Y = 6.000000000000000000
             Size.Width = 558.000000000000000000
-            Size.Height = 115.000000000000000000
+            Size.Height = 341.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object RecContainerGitTop: TRectangle
@@ -1606,11 +1604,24 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
                   Text = 'Select'
                   TabOrder = 0
                 end
-                object DirectionalBlurEffect1: TDirectionalBlurEffect
-                  Angle = 0.000000000000000000
-                  BlurAmount = 1.000000000000000000
-                end
               end
+            end
+            object LbInfo: TLabel
+              Align = Top
+              StyledSettings = [Family, Style]
+              Margins.Left = 6.000000000000000000
+              Margins.Right = 6.000000000000000000
+              Position.X = 6.000000000000000000
+              Position.Y = 165.000000000000000000
+              Size.Width = 546.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 11.000000000000000000
+              TextSettings.FontColor = xFFF38600
+              Text = 
+                'Only modified or staged files will be analyzed. For new files, r' +
+                'un '#39'git add'#39'.'
+              TabOrder = 3
             end
           end
           object OdGitPath: TOpenDialog
@@ -1627,7 +1638,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
       Margins.Right = 6.000000000000000000
       Margins.Bottom = 6.000000000000000000
       Position.X = 6.000000000000000000
-      Position.Y = 368.000000000000000000
+      Position.Y = 391.000000000000000000
       Size.Width = 570.000000000000000000
       Size.Height = 40.000000000000000000
       Size.PlatformDefault = False
@@ -1635,6 +1646,8 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
       XRadius = 4.000000000000000000
       YRadius = 6.000000000000000000
       OnClick = BtnSaveClick
+      OnMouseDown = BtnScaleMouseDown
+      OnMouseUp = BtnScaleMouseUp
       object LbSave: TLabel
         Align = Center
         AutoSize = True

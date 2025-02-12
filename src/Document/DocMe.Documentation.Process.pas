@@ -76,7 +76,7 @@ begin
     Exit;
   end;
 
-  lProcessedData := FAI.DocumentElements(lSelectedData, AAdditionalInfo);
+  lProcessedData := FAI.GenerateSummary(lSelectedData, AAdditionalInfo);
   FDocMeText.ReplaceSelectedText(lProcessedData);
 end;
 

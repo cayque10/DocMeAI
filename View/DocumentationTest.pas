@@ -32,6 +32,8 @@ type
     LbDocument: TLabel;
     procedure BtnDocumentClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     FConfig: IDocMeAIConfig;
     FAI: IDocMeAI;
@@ -59,7 +61,8 @@ uses
   Utils.CustomTask,
   Utils.Forms.Interfaces,
   Utils.Forms.Loading,
-  DocMe.AI.PromptBuilder.Types;
+  DocMe.AI.PromptBuilder.Types,
+  FMX.Ani;
 
 {$R *.fmx}
 { TFrmDocMeAIDocumentation }
@@ -76,7 +79,7 @@ begin
     var
       lDoc: string;
     begin
-      lDoc := FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
+      lDoc := FAI.GenerateSummary('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
       TThread.Synchronize(nil,
         procedure
         begin
@@ -110,6 +113,18 @@ begin
           ShowMessage(AErrorMsg);
         end);
     end).Start;
+end;
+
+procedure TFrmDocMeAIDocumentation.BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 0.9, 0.1);
+end;
+
+procedure TFrmDocMeAIDocumentation.BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 1.0, 0.1);
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;

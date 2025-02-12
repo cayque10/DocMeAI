@@ -11,12 +11,69 @@ type
 
   IDocMeAIGit = interface
     ['{E812FC2A-9633-4822-BB8D-32698DE18E52}']
+    /// <summary>
+    /// Retrieves the file path as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the file path.
+    /// </returns>
     function FilePath: string; overload;
+
+    /// <summary>
+    /// Sets the file path with the specified value.
+    /// </summary>
+    /// <param name="AValue">
+    /// A string representing the file path to set.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
     function FilePath(const AValue: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Retrieves the ignored extensions as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the ignored extensions.
+    /// </returns>
     function IgnoreExtensions: string; overload;
+
+    /// <summary>
+    /// Sets the ignored extensions with the specified value.
+    /// </summary>
+    /// <param name="AExtensions">
+    /// A string representing the extensions to ignore.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
     function IgnoreExtensions(const AExtensions: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Retrieves the project path as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the project path.
+    /// </returns>
     function ProjectPath: string; overload;
+
+    /// <summary>
+    /// Sets the project path with the specified value.
+    /// </summary>
+    /// <param name="AValue">
+    /// A string representing the project path to set.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
     function ProjectPath(const AValue: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Finalizes the configuration and returns an instance of <see cref="IDocMeAIConfig"/>.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIConfig"/> representing the finalized configuration.
+    /// </returns>
     function &End: IDocMeAIConfig;
   end;
 
@@ -167,6 +224,13 @@ type
     /// An instance of <see cref="IAIModelsProvider"/> that provides access to AI models.
     /// </returns>
     function AIModelsProvider: IAIModelsProvider;
+
+    /// <summary>
+    /// Retrieves an instance of the IDocMeAIGit interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/>.
+    /// </returns>
     function AIGit: IDocMeAIGit;
   end;
 

@@ -31,12 +31,13 @@ object FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation
       TextSettings.FontColor = xFF333333
       Text = 
         'Specify any additional information to be used in the documentati' +
-        'on'
+        'on.'
       TabOrder = 0
     end
     object MemAdditionalInfo: TMemo
       Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
       DataDetectorTypes = []
+      TextSettings.WordWrap = True
       Align = Top
       Margins.Left = 6.000000000000000000
       Margins.Top = 6.000000000000000000
@@ -48,8 +49,8 @@ object FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation
       Size.Height = 258.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 1
-      Viewport.Width = 408.000000000000000000
-      Viewport.Height = 258.000000000000000000
+      Viewport.Width = 404.000000000000000000
+      Viewport.Height = 254.000000000000000000
     end
     object RecButton: TRectangle
       Align = Client
@@ -71,6 +72,8 @@ object FrmDocMeAIDocumentation: TFrmDocMeAIDocumentation
         XRadius = 4.000000000000000000
         YRadius = 6.000000000000000000
         OnClick = BtnDocumentClick
+        OnMouseDown = BtnScaleMouseDown
+        OnMouseUp = BtnScaleMouseUp
         object LbDocument: TLabel
           Align = Client
           AutoSize = True

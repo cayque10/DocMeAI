@@ -16,18 +16,19 @@ type
     /// and the value is an array of strings representing the associated model details.
     /// </returns>
     function GetAIModelsList: TDictionary<string, TArray<string>>;
-
   end;
 
   IDocMeAI = interface
     ['{71E19B2D-34B3-4A70-8260-B1461E0384B1}']
     /// <summary>
-    /// Documents the elements based on the provided data and additional information.
+    /// Generates a summary based on the provided data and additional information.
     /// </summary>
-    /// <param name="AData">The data to be documented.</param>
-    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
-    /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
+    /// <param name="AData">The main data used to create the summary.</param>
+    /// <param name="AAdditionalInfo">Optional additional information to include in the summary.</param>
+    /// <returns>
+    /// A string representing the generated summary.
+    /// </returns>
+    function GenerateSummary(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation

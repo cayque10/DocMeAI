@@ -42,12 +42,14 @@ type
     class function New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder): IDocMeAI;
 
     /// <summary>
-    /// Documents the elements based on the provided data and additional information.
+    /// Generates a summary based on the provided data and additional information.
     /// </summary>
-    /// <param name="AData">The data to be documented.</param>
-    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
-    /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
+    /// <param name="AData">The main data used to create the summary.</param>
+    /// <param name="AAdditionalInfo">Optional additional information to include in the summary.</param>
+    /// <returns>
+    /// A string representing the generated summary.
+    /// </returns>
+    function GenerateSummary(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation
@@ -71,7 +73,7 @@ begin
   FPromptBuilder := APromptBuilder;
 end;
 
-function TDocMeAIChatGPT.DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
+function TDocMeAIChatGPT.GenerateSummary(const AData: string; const AAdditionalInfo: string = ''): string;
 var
   lOpenAI: TOpenAI;
   lChat: TChat;
@@ -107,7 +109,7 @@ end;
 function TDocMeAIChatGPT.FormatResponse(const AResponse: string): string;
 begin
   Result := StringReplace(AResponse, #$A, #13#10, [rfReplaceAll]);
-  Result := Result.Replace('`', '').Replace('delphi', '');
+  Result := Result.Replace('`', '').Replace('delphi', '').Replace('xml', '').Replace('{', '').Replace('}', '');
 end;
 
 class function TDocMeAIChatGPT.New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder)

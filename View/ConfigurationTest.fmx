@@ -162,8 +162,8 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
                 Size.PlatformDefault = False
                 StyleLookup = 'MemAPIKeyChatGPTStyle1'
                 TabOrder = 1
-                Viewport.Width = 490.000000000000000000
-                Viewport.Height = 76.000000000000000000
+                Viewport.Width = 486.000000000000000000
+                Viewport.Height = 72.000000000000000000
               end
             end
           end
@@ -344,16 +344,14 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
           Size.PlatformDefault = False
           TabOrder = 0
           object RecContainerTop: TRectangle
-            Align = Top
+            Align = Client
             Fill.Color = claWhite
             Margins.Left = 6.000000000000000000
             Margins.Top = 6.000000000000000000
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
-            Position.X = 6.000000000000000000
-            Position.Y = 6.000000000000000000
             Size.Width = 492.000000000000000000
-            Size.Height = 115.000000000000000000
+            Size.Height = 350.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object RecContainerGitTop: TRectangle
@@ -513,11 +511,24 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
                   Text = 'Select'
                   TabOrder = 0
                 end
-                object DirectionalBlurEffect1: TDirectionalBlurEffect
-                  Angle = 0.000000000000000000
-                  BlurAmount = 1.000000000000000000
-                end
               end
+            end
+            object LbInfo: TLabel
+              Align = Top
+              StyledSettings = [Family, Style]
+              Margins.Left = 6.000000000000000000
+              Margins.Right = 6.000000000000000000
+              Position.X = 6.000000000000000000
+              Position.Y = 165.000000000000000000
+              Size.Width = 480.000000000000000000
+              Size.Height = 17.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.Font.Size = 11.000000000000000000
+              TextSettings.FontColor = xFFF38600
+              Text = 
+                'Only modified or staged files will be analyzed. For new files, r' +
+                'un '#39'git add'#39'.'
+              TabOrder = 3
             end
           end
         end
@@ -538,6 +549,8 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
       XRadius = 4.000000000000000000
       YRadius = 6.000000000000000000
       OnClick = BtnSaveClick
+      OnMouseDown = BtnScaleMouseDown
+      OnMouseUp = BtnScaleMouseUp
       object LbSave: TLabel
         Align = Center
         AutoSize = True

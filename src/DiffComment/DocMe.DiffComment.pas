@@ -21,17 +21,27 @@ uses
   FMX.Edit,
   DocMe.Configurations.Interfaces,
   FMX.Memo.Types,
-  DocMe.AI.Interfaces;
+  DocMe.AI.Interfaces, FMX.Layouts;
 
 type
   TFrmDocMeDiffComment = class(TForm)
-    RecMem: TRectangle;
-    MemDiff: TMemo;
+    LayBottom: TLayout;
+    RecBottom: TRectangle;
     BtnGenerate: TRectangle;
     LbGenerate: TLabel;
+    BtnCopy: TRectangle;
+    LbCopy: TLabel;
+    RecMem: TRectangle;
+    MemDiff: TMemo;
     LbTitle: TLabel;
+    LbInfo: TLabel;
+    LbSpecification: TLabel;
+    MemAdditionalInfo: TMemo;
     procedure BtnGenerateClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure BtnCopyClick(Sender: TObject);
+    procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     FConfig: IDocMeAIConfig;
     FAI: IDocMeAI;
@@ -44,6 +54,15 @@ type
     /// Enables the visual controls.
     /// </summary>
     procedure EnableControls;
+
+    /// <summary>
+    /// Sets the specified text to the clipboard.
+    /// </summary>
+    /// <param name="AText">The text to be copied to the clipboard.</param>
+    /// <returns>
+    /// Returns True if the text was successfully set to the clipboard; otherwise, False.
+    /// </returns>
+    function SetTextToClipboard(const AText: string): Boolean;
   public
   end;
 
@@ -57,9 +76,17 @@ uses
   DocMe.DiffComment.Process,
   Utils.CustomTask,
   Utils.Forms.Interfaces,
-  Utils.Forms.Loading;
+  Utils.Forms.Loading,
+  FMX.Clipboard,
+  FMX.Platform, FMX.Ani;
 
 {$R *.fmx}
+
+procedure TFrmDocMeDiffComment.BtnCopyClick(Sender: TObject);
+begin
+  if not SetTextToClipboard(MemDiff.Lines.Text) then
+    ShowMessage('Unable to copy text.');
+end;
 
 procedure TFrmDocMeDiffComment.BtnGenerateClick(Sender: TObject);
 var
@@ -73,7 +100,7 @@ begin
     var
       lComment: string;
     begin
-      lComment := TDocMeDiffComment.New.Process;
+      lComment := TDocMeDiffComment.New.Process(MemAdditionalInfo.Lines.Text);
 
       TThread.Synchronize(nil,
         procedure
@@ -111,6 +138,17 @@ begin
     end).Start;
 end;
 
+procedure TFrmDocMeDiffComment.BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 0.9, 0.1);
+end;
+
+procedure TFrmDocMeDiffComment.BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 1.0, 0.1);
+end;
+
 procedure TFrmDocMeDiffComment.DisableControls;
 begin
   BtnGenerate.Enabled := False;
@@ -127,6 +165,18 @@ procedure TFrmDocMeDiffComment.FormCreate(Sender: TObject);
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
   FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDiffComment);
+end;
+
+function TFrmDocMeDiffComment.SetTextToClipboard(const AText: string): Boolean;
+var
+  LClipboardService: IFMXClipboardService;
+begin
+  Result := False;
+  if TPlatformServices.Current.SupportsPlatformService(IFMXClipboardService, IInterface(LClipboardService)) then
+  begin
+    LClipboardService.SetClipboard(AText);
+    Result := True;
+  end;
 end;
 
 end.
