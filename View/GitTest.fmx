@@ -1,0 +1,184 @@
+object FrmGitCommentTest: TFrmGitCommentTest
+  Left = 0
+  Top = 0
+  Caption = 'Git Comment'
+  ClientHeight = 408
+  ClientWidth = 518
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object RecMem: TRectangle
+    Align = Client
+    Fill.Color = claWhite
+    Size.Width = 518.000000000000000000
+    Size.Height = 358.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object MemDiff: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      TextSettings.WordWrap = True
+      Align = Client
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 147.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      Viewport.Width = 502.000000000000000000
+      Viewport.Height = 143.000000000000000000
+    end
+    object LbTitle: TLabel
+      Align = Top
+      StyledSettings = [Family, Size, Style]
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 165.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.FontColor = xFF333333
+      Text = 'Comment generated for code changes.'
+      TabOrder = 4
+    end
+    object LbInfo: TLabel
+      Align = Top
+      StyledSettings = [Family, Style]
+      Margins.Left = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 182.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 11.000000000000000000
+      TextSettings.FontColor = xFFF38600
+      Text = 
+        'Only modified or staged files will be analyzed. For new files, r' +
+        'un '#39'git add'#39'.'
+      TabOrder = 3
+    end
+    object LbSpecification: TLabel
+      Align = Top
+      StyledSettings = [Family, Style]
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 6.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 17.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.FontColor = xFF333333
+      Text = 
+        'Specify any additional information to be used in the diff commen' +
+        't.'
+      TabOrder = 0
+    end
+    object MemAdditionalInfo: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      TextSettings.WordWrap = True
+      Align = Top
+      Margins.Left = 6.000000000000000000
+      Margins.Top = 6.000000000000000000
+      Margins.Right = 6.000000000000000000
+      Margins.Bottom = 6.000000000000000000
+      Position.X = 6.000000000000000000
+      Position.Y = 29.000000000000000000
+      Size.Width = 506.000000000000000000
+      Size.Height = 124.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      Viewport.Width = 502.000000000000000000
+      Viewport.Height = 120.000000000000000000
+    end
+  end
+  object LayBottom: TLayout
+    Align = Bottom
+    Position.Y = 358.000000000000000000
+    Size.Width = 518.000000000000000000
+    Size.Height = 50.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object RecBottom: TRectangle
+      Align = Client
+      Fill.Color = claWhite
+      Size.Width = 518.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Kind = None
+      object BtnGenerate: TRectangle
+        Align = Client
+        Fill.Color = xFF252525
+        Margins.Left = 6.000000000000000000
+        Margins.Top = 4.000000000000000000
+        Margins.Right = 3.000000000000000000
+        Margins.Bottom = 6.000000000000000000
+        Size.Width = 428.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 4.000000000000000000
+        YRadius = 6.000000000000000000
+        OnClick = BtnGenerateClick
+        OnMouseDown = BtnScaleMouseDown
+        OnMouseUp = BtnScaleMouseUp
+        object LbGenerate: TLabel
+          Align = Center
+          AutoSize = True
+          StyledSettings = [Family]
+          Locked = True
+          Size.Width = 532.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 14.000000000000000000
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'Generate comment'
+          TabOrder = 0
+        end
+      end
+      object BtnCopy: TRectangle
+        Align = Right
+        Fill.Color = xFF252525
+        Margins.Left = 3.000000000000000000
+        Margins.Top = 4.000000000000000000
+        Margins.Right = 6.000000000000000000
+        Margins.Bottom = 6.000000000000000000
+        Position.X = 440.000000000000000000
+        Position.Y = 4.000000000000000000
+        Size.Width = 72.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        XRadius = 4.000000000000000000
+        YRadius = 6.000000000000000000
+        OnClick = BtnCopyClick
+        OnMouseDown = BtnScaleMouseDown
+        OnMouseUp = BtnScaleMouseUp
+        object LbCopy: TLabel
+          Align = Center
+          AutoSize = True
+          StyledSettings = [Family]
+          Locked = True
+          Size.Width = 532.000000000000000000
+          Size.Height = 19.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Size = 14.000000000000000000
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'Copy'
+          TabOrder = 0
+        end
+      end
+    end
+  end
+end

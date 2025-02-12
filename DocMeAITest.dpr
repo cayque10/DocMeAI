@@ -4,7 +4,8 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   ConfigurationTest in 'View\ConfigurationTest.pas' {FrmDocMeAIConfigurations},
-  DocumentationTest in 'View\DocumentationTest.pas' {FrmDocMeAIDocumentation};
+  DocumentationTest in 'View\DocumentationTest.pas' {FrmDocMeAIDocumentation},
+  GitTest in 'View\GitTest.pas' {FrmGitCommentTest};
 
 {$R *.res}
 

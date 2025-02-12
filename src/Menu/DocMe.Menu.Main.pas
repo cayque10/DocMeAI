@@ -45,6 +45,12 @@ type
     /// </summary>
     /// <param name="Sender">The source of the event.</param>
     procedure OnConfigurations(Sender: TObject);
+
+    /// <summary>
+    /// Handles the event when a difference comment is triggered.
+    /// </summary>
+    /// <param name="Sender">The object that triggered the event.</param>
+    procedure OnDiffComment(Sender: TObject);
   protected
     /// <summary>
     /// Retrieves the ID string associated with the object.
@@ -86,7 +92,8 @@ procedure RegisterMenuWizard;
 implementation
 
 uses
-  DocMe.Configurations;
+  DocMe.Configurations,
+  DocMe.DiffComment;
 
 procedure RegisterMenuWizard;
 begin
@@ -98,6 +105,7 @@ end;
 procedure TDocMeMenuMain.AddSubMenus(AParentMenu: TMenuItem);
 begin
   CreateSubMenu(AParentMenu, 'Document', 'miDocument', OnDocumentElements);
+  CreateSubMenu(AParentMenu, 'Diff Comment', 'miDiffComment', OnDiffComment);
   CreateSubMenu(AParentMenu, 'Configurations', 'miConfigurations', OnConfigurations);
 end;
 
@@ -157,6 +165,18 @@ begin
     lFrmDocMeConfigurations.ShowModal;
   finally
     lFrmDocMeConfigurations.Free;
+  end;
+end;
+
+procedure TDocMeMenuMain.OnDiffComment(Sender: TObject);
+var
+  lFrmDiffComment: TFrmDocMeDiffComment;
+begin
+  lFrmDiffComment := TFrmDocMeDiffComment.Create(nil);
+  try
+    lFrmDiffComment.ShowModal;
+  finally
+    lFrmDiffComment.Free;
   end;
 end;
 

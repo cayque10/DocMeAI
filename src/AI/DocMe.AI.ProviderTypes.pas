@@ -25,7 +25,11 @@ type
     /// </returns>
     class function New: IAIModelsProvider;
 
+    /// <summary>
+    /// Destroys the instance of the class, releasing any resources held.
+    /// </summary>
     destructor Destroy; override;
+
     /// <summary>
     /// Retrieves a list of AI models.
     /// </summary>

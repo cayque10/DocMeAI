@@ -32,6 +32,8 @@ type
     LbDocument: TLabel;
     procedure BtnDocumentClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     FConfig: IDocMeAIConfig;
     FAI: IDocMeAI;
@@ -58,7 +60,9 @@ uses
   DocMe.AI.Factory,
   Utils.CustomTask,
   Utils.Forms.Interfaces,
-  Utils.Forms.Loading;
+  Utils.Forms.Loading,
+  DocMe.AI.PromptBuilder.Types,
+  FMX.Ani;
 
 {$R *.fmx}
 { TFrmDocMeAIDocumentation }
@@ -75,7 +79,7 @@ begin
     var
       lDoc: string;
     begin
-      lDoc := FAI.DocumentElements('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
+      lDoc := FAI.GenerateSummary('procedure EnableControls;', MemAdditionalInfo.Lines.Text.Trim);
       TThread.Synchronize(nil,
         procedure
         begin
@@ -87,7 +91,7 @@ begin
       TThread.Synchronize(nil,
         procedure
         begin
-           LLoading.Show(Self, 'Wait. Documentation in progress.');
+          lLoading.Show(Self, 'Wait. Documentation in progress.');
         end);
     end).OnFinish(
     procedure
@@ -96,7 +100,7 @@ begin
         procedure
         begin
           EnableControls;
-          LLoading.Hide;
+          lLoading.Hide;
         end);
     end).OnError(
     procedure(AErrorMsg: String)
@@ -105,10 +109,22 @@ begin
         procedure
         begin
           EnableControls;
-          LLoading.Hide;
+          lLoading.Hide;
           ShowMessage(AErrorMsg);
         end);
     end).Start;
+end;
+
+procedure TFrmDocMeAIDocumentation.BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 0.9, 0.1);
+end;
+
+procedure TFrmDocMeAIDocumentation.BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 1.0, 0.1);
 end;
 
 procedure TFrmDocMeAIDocumentation.DisableControls;
@@ -126,7 +142,7 @@ end;
 procedure TFrmDocMeAIDocumentation.FormCreate(Sender: TObject);
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
-  FAI := TDocMeAIFactory.CreateAI(FConfig);
+  FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDocumentation);
 end;
 
 end.

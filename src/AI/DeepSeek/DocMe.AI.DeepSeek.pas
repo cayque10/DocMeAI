@@ -4,19 +4,20 @@ interface
 
 uses
   DocMe.AI.Interfaces,
-  DocMe.Configurations.Interfaces;
+  DocMe.Configurations.Interfaces,
+  DocMe.AI.PromptBuilder.Interfaces;
 
 type
   TDocMeAIDeepSeek = class(TInterfacedObject, IDocMeAI)
   private
     FConfig: IDocMeAIConfig;
     FAdditionalInfo: string;
-
+    FPromptBuilder: IDocMeAIPromptBuilder;
     /// <summary>
     /// Initializes a new instance of the class with the specified configuration.
     /// </summary>
     /// <param name="AConfig">The configuration to be used for the instance.</param>
-    constructor Create(const AConfig: IDocMeAIConfig);
+    constructor Create(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder);
 
     /// <summary>
     /// Builds a prompt based on the provided data.
@@ -38,15 +39,17 @@ type
     /// </summary>
     /// <param name="pConfig">The configuration to be used for the new instance.</param>
     /// <returns>An instance of IDocMeAI.</returns>
-    class function New(const AConfig: IDocMeAIConfig): IDocMeAI;
+    class function New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder): IDocMeAI;
 
     /// <summary>
-    /// Documents the elements based on the provided data and additional information.
+    /// Generates a summary based on the provided data and additional information.
     /// </summary>
-    /// <param name="AData">The data to be documented.</param>
-    /// <param name="AAdditionalInfo">Optional additional information for documentation.</param>
-    /// <returns>A string representing the documented elements.</returns>
-    function DocumentElements(const AData: string; const AAdditionalInfo: string = ''): string;
+    /// <param name="AData">The main data used to create the summary.</param>
+    /// <param name="AAdditionalInfo">Optional additional information to include in the summary.</param>
+    /// <returns>
+    /// A string representing the generated summary.
+    /// </returns>
+    function GenerateSummary(const AData: string; const AAdditionalInfo: string = ''): string;
   end;
 
 implementation
@@ -61,13 +64,14 @@ begin
   Result := '';
 end;
 
-constructor TDocMeAIDeepSeek.Create(const AConfig: IDocMeAIConfig);
+constructor TDocMeAIDeepSeek.Create(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder);
 begin
   FConfig := AConfig;
+  FPromptBuilder := APromptBuilder;
   raise Exception.Create('Not implemented');
 end;
 
-function TDocMeAIDeepSeek.DocumentElements(const AData, AAdditionalInfo: string): string;
+function TDocMeAIDeepSeek.GenerateSummary(const AData, AAdditionalInfo: string): string;
 begin
   FAdditionalInfo := AAdditionalInfo;
   Result := FormatResponse(BuildPrompt(''));
@@ -78,9 +82,10 @@ begin
   Result := '';
 end;
 
-class function TDocMeAIDeepSeek.New(const AConfig: IDocMeAIConfig): IDocMeAI;
+class function TDocMeAIDeepSeek.New(const AConfig: IDocMeAIConfig; const APromptBuilder: IDocMeAIPromptBuilder)
+  : IDocMeAI;
 begin
-  Result := Self.Create(AConfig);
+  Result := Self.Create(AConfig, APromptBuilder);
 end;
 
 end.

@@ -23,7 +23,7 @@ uses
   FMX.TabControl,
   FMX.ListBox,
   FMX.Objects,
-  DocMe.Configurations.Interfaces;
+  DocMe.Configurations.Interfaces, FMX.Effects, FMX.Filter.Effects;
 
 type
   TFrmDocMeAIConfigurations = class(TForm)
@@ -31,8 +31,6 @@ type
     TcAI: TTabControl;
     TiAI: TTabItem;
     LayContainer: TLayout;
-    BtnSave: TRectangle;
-    LbSave: TLabel;
     RecMaxToken: TRectangle;
     LbMaxToken: TLabel;
     EdtMaxToken: TEdit;
@@ -45,6 +43,7 @@ type
     MemAPIKey: TMemo;
     RecModel: TRectangle;
     CbModel: TComboBox;
+    RecModelTitle: TRectangle;
     LbModel: TLabel;
     RecContainerComboAI: TRectangle;
     RecCbAI: TRectangle;
@@ -53,10 +52,34 @@ type
     RecActive: TRectangle;
     SwActive: TSwitch;
     LbActive: TLabel;
+    TiGit: TTabItem;
+    LayGit: TLayout;
+    RecContainerTop: TRectangle;
+    RecContainerGitTop: TRectangle;
+    LbGitPath: TLabel;
+    EdtGitPath: TEdit;
+    BtnSelectGit: TRectangle;
+    LbSelectGit: TLabel;
+    RecContainerIgnoreExtenses: TRectangle;
+    EdtIgnoreExtGit: TEdit;
+    LbIgnoreExtGit: TLabel;
+    RecContainerProject: TRectangle;
+    LbProject: TLabel;
+    EdtProjectPathGit: TEdit;
+    RecProjectSelect: TRectangle;
+    LbProjectSelect: TLabel;
+    BtnSave: TRectangle;
+    LbSave: TLabel;
+    OdGitPath: TOpenDialog;
+    LbInfo: TLabel;
     procedure BtnSaveClick(Sender: TObject);
     procedure CbAIChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SwActiveSwitch(Sender: TObject);
+    procedure BtnSelectGitClick(Sender: TObject);
+    procedure RecProjectSelectClick(Sender: TObject);
+    procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     FConfig: IDocMeAIConfig;
     /// <summary>
@@ -93,7 +116,8 @@ implementation
 
 uses
   DocMe.Configurations.Config,
-  DocMe.AI.ProviderTypes;
+  DocMe.AI.ProviderTypes,
+  FMX.Ani;
 
 {$R *.fmx}
 { TFrmDocMeAISettings }
@@ -101,6 +125,26 @@ uses
 procedure TFrmDocMeAIConfigurations.BtnSaveClick(Sender: TObject);
 begin
   SaveConfig;
+end;
+
+procedure TFrmDocMeAIConfigurations.BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 0.9, 0.1);
+end;
+
+procedure TFrmDocMeAIConfigurations.BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X,
+  Y: Single);
+begin
+  TAnimator.AnimateFloat(TControl(Sender), 'Opacity', 1.0, 0.1);
+end;
+
+procedure TFrmDocMeAIConfigurations.BtnSelectGitClick(Sender: TObject);
+begin
+  if not OdGitPath.Execute then
+    Exit;
+
+  EdtGitPath.Text := OdGitPath.FileName;
 end;
 
 procedure TFrmDocMeAIConfigurations.CbAIChange(Sender: TObject);
@@ -128,11 +172,14 @@ begin
   EdtMaxToken.Text := IntToStr(FConfig.MaxTokens);
   EdtTemperature.Text := FloatToStr(FConfig.Temperature);
   SwActive.IsChecked := FConfig.Active;
+  EdtGitPath.Text := FConfig.AIGit.FilePath;
+  EdtIgnoreExtGit.Text := FConfig.AIGit.IgnoreExtensions;
+  EdtProjectPathGit.Text := FConfig.AIGit.ProjectPath;
 end;
 
 procedure TFrmDocMeAIConfigurations.FormCreate(Sender: TObject);
 begin
-  TcAI.TabPosition := TTabPosition.None;
+  TcAI.ActiveTab := TiAI;
   FConfig := TDocMeAIConfig.New.LoadConfig;
   ConfigComboBoxAIModel;
   ConfigToView;
@@ -157,6 +204,16 @@ begin
   finally
     CbModel.EndUpdate;
   end;
+end;
+
+procedure TFrmDocMeAIConfigurations.RecProjectSelectClick(Sender: TObject);
+var
+  lDirectory: string;
+begin
+  if not SelectDirectory('Select path', '', lDirectory) then
+    Exit;
+
+  EdtProjectPathGit.Text := lDirectory;
 end;
 
 procedure TFrmDocMeAIConfigurations.ConfigComboBoxAIModel;
@@ -187,6 +244,11 @@ begin
     .ModelAI(Trim(CbModel.Items[CbModel.ItemIndex]))
     .MaxTokens(StrToIntDef(EdtMaxToken.Text, MAX_TOKENS_AI))
     .Temperature(StrToFloat(Trim(EdtTemperature.Text)))
+    .AIGit
+      .FilePath(Trim(EdtGitPath.Text))
+      .IgnoreExtensions(Trim(EdtIgnoreExtGit.Text))
+      .ProjectPath(Trim(EdtProjectPathGit.Text))
+    .&End
     .SaveConfig;
 
   ShowMessage('Settings saved successfully');

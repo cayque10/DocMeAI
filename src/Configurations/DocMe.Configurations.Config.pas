@@ -12,7 +12,7 @@ uses
   DocMe.AI.Interfaces;
 
 type
-  TDocMeAIConfig = class(TInterfacedObject, IDocMeAIConfig)
+  TDocMeAIConfig = class(TInterfacedObject, IDocMeAIConfig, IDocMeAIGit)
   private
     FActive: Boolean;
     FApiKey: string;
@@ -22,6 +22,9 @@ type
     FConfigFilePath: string;
     FProviderType: TDocMeAIProviderType;
     FAIModelsProvider: IAIModelsProvider;
+    FIgnoreExtensions: string;
+    FFilePath: string;
+    FProjectPath: string;
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
@@ -36,9 +39,22 @@ type
     function LoadFromFile(const AIndex: Integer): Boolean;
 
     /// <summary>
+    /// Loads configuration settings from a Git file.
+    /// </summary>
+    /// <returns>
+    /// Returns True if the configuration was loaded successfully; otherwise, returns False.
+    /// </returns>
+    function LoadFromFileConfigGit: Boolean;
+
+    /// <summary>
     /// Saves the current configuration data to a file.
     /// </summary>
     procedure SaveToFile;
+
+    /// <summary>
+    /// Saves the current configuration to a file in Git format.
+    /// </summary>
+    procedure SaveToFileConfigGit;
 
     /// <summary>
     /// Retrieves the default path for the configuration file.
@@ -52,8 +68,83 @@ type
     /// Ensures that the configuration directory exists, creating it if necessary.
     /// </summary>
     procedure EnsureConfigDirectoryExists;
+
+    /// <summary>
+    /// Retrieves the active provider type as an integer.
+    /// </summary>
+    /// <returns>
+    /// An integer representing the active provider type.
+    /// </returns>
     function GetActiveProviderType: Integer;
+
+    /// <summary>
+    /// Retrieves the file path as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the file path.
+    /// </returns>
+    function FilePath: string; overload;
+
+    /// <summary>
+    /// Sets the file path with the specified value.
+    /// </summary>
+    /// <param name="AValue">
+    /// A string representing the file path to set.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
+    function FilePath(const AValue: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Retrieves the ignored extensions as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the ignored extensions.
+    /// </returns>
+    function IgnoreExtensions: string; overload;
+
+    /// <summary>
+    /// Sets the ignored extensions with the specified value.
+    /// </summary>
+    /// <param name="AExtensions">
+    /// A string representing the extensions to ignore.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
+    function IgnoreExtensions(const AExtensions: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Retrieves the project path as a string.
+    /// </summary>
+    /// <returns>
+    /// A string containing the project path.
+    /// </returns>
+    function ProjectPath: string; overload;
+
+    /// <summary>
+    /// Sets the project path with the specified value.
+    /// </summary>
+    /// <param name="AValue">
+    /// A string representing the project path to set.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
+    function ProjectPath(const AValue: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Finalizes the configuration and returns an instance of <see cref="IDocMeAIConfig"/>.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIConfig"/> representing the finalized configuration.
+    /// </returns>
+    function &End: IDocMeAIConfig;
   public
+    /// <summary>
+    /// Destroys the instance of the class, releasing any resources held.
+    /// </summary>
     destructor Destroy; override;
 
     /// <summary>
@@ -210,6 +301,13 @@ type
     /// </returns>
     function AIModelsProvider: IAIModelsProvider;
 
+    /// <summary>
+    /// Retrieves an instance of the IDocMeAIGit interface.
+    /// </summary>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/>.
+    /// </returns>
+    function AIGit: IDocMeAIGit;
   end;
 
 const
@@ -248,6 +346,17 @@ begin
   lConfigPath := ExtractFileDir(GetDefaultConfigPath);
   if not DirectoryExists(lConfigPath) then
     ForceDirectories(lConfigPath);
+end;
+
+function TDocMeAIConfig.FilePath: string;
+begin
+  Result := FFilePath;
+end;
+
+function TDocMeAIConfig.FilePath(const AValue: string): IDocMeAIGit;
+begin
+  FFilePath := AValue;
+  Result := Self;
 end;
 
 function TDocMeAIConfig.LoadFromFile(const AIndex: Integer): Boolean;
@@ -321,6 +430,60 @@ begin
   end;
 end;
 
+function TDocMeAIConfig.LoadFromFileConfigGit: Boolean;
+var
+  LContent: string;
+  LConfigArray: TJSONArray;
+  LParsedJSON, LGitValue: TJSONValue;
+  LConfigObj: TJSONObject;
+  I: Integer;
+  LValue: string;
+begin
+  Result := False;
+
+  if not TFile.Exists(FConfigFilePath) then
+    Exit;
+
+  LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
+  LParsedJSON := TJSONObject.ParseJSONValue(LContent);
+  try
+    if not Assigned(LParsedJSON) or not(LParsedJSON is TJSONArray) then
+      Exit;
+
+    LConfigArray := TJSONArray(LParsedJSON);
+
+    for I := 0 to Pred(LConfigArray.Count) do
+    begin
+
+      LConfigObj := TJSONObject(LConfigArray.Items[I]);
+
+      if LConfigObj.TryGetValue<TJSONValue>('Git', LGitValue) then
+      begin
+        if LGitValue.TryGetValue<string>('FilePath', LValue) then
+          FFilePath := LValue
+        else
+          FFilePath := '';
+
+        if LGitValue.TryGetValue<string>('IgnoreExtensions', LValue) then
+          FIgnoreExtensions := LValue
+        else
+          FIgnoreExtensions := '';
+
+        if LGitValue.TryGetValue<string>('ProjectPath', LValue) then
+          FProjectPath := LValue
+        else
+          FProjectPath := '';
+
+        Exit(True);
+      end;
+
+    end;
+  finally
+    LParsedJSON.Free;
+  end;
+
+end;
+
 procedure TDocMeAIConfig.SaveToFile;
 var
   LConfigArray: TJSONArray;
@@ -350,7 +513,7 @@ begin
   lKeyValue := IntToStr(Ord(FProviderType));
   lFound := False;
 
-  for I := 0 to LConfigArray.Count - 1 do
+  for I := 0 to Pred(LConfigArray.Count) do
   begin
     LConfig := TJSONObject(LConfigArray.Items[I]);
     if Assigned(LConfig.GetValue('ProviderType')) then
@@ -417,10 +580,100 @@ begin
   end;
 end;
 
+procedure TDocMeAIConfig.SaveToFileConfigGit;
+var
+  LConfigArray: TJSONArray;
+  LContent: string;
+  LNewConfig, LNewConfig2, LConfig: TJSONObject;
+  LParsedJSON: TJSONValue;
+  I: Integer;
+  lFound: Boolean;
+  lRemovedPair: TJSONPair;
+begin
+  if TFile.Exists(FConfigFilePath) then
+  begin
+    LContent := TFile.ReadAllText(FConfigFilePath, TEncoding.UTF8);
+    LParsedJSON := TJSONObject.ParseJSONValue(LContent);
+    if (LParsedJSON <> nil) and (LParsedJSON is TJSONArray) then
+      LConfigArray := TJSONArray(LParsedJSON)
+    else
+    begin
+      LConfigArray := TJSONArray.Create;
+      LParsedJSON.Free;
+    end;
+  end
+  else
+    LConfigArray := TJSONArray.Create;
+
+  lFound := False;
+
+  for I := 0 to Pred(LConfigArray.Count) do
+  begin
+    LConfig := TJSONObject(LConfigArray.Items[I]);
+    if Assigned(LConfig.GetValue('Git')) then
+    begin
+      LNewConfig2 := TJSONObject.ParseJSONValue(LConfig.GetValue('Git').ToJSON) as TJSONObject;
+
+      lRemovedPair := LNewConfig2.RemovePair('FilePath');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LNewConfig2.AddPair('FilePath', TJSONString.Create(FFilePath));
+
+      lRemovedPair := LNewConfig2.RemovePair('IgnoreExtensions');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LNewConfig2.AddPair('IgnoreExtensions', TJSONString.Create(FIgnoreExtensions));
+
+      lRemovedPair := LNewConfig2.RemovePair('ProjectPath');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LNewConfig2.AddPair('ProjectPath', TJSONString.Create(FProjectPath));
+
+      lRemovedPair := LConfig.RemovePair('Git');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LConfig.AddPair('Git', LNewConfig2);
+
+      lFound := True;
+    end;
+  end;
+
+  if not lFound then
+  begin
+    LNewConfig := TJSONObject.Create;
+    try
+      LNewConfig2 := TJSONObject.Create;
+      try
+        LNewConfig2.AddPair('FilePath', TJSONString.Create(FFilePath));
+        LNewConfig2.AddPair('IgnoreExtensions', TJSONString.Create(FIgnoreExtensions));
+        LNewConfig2.AddPair('ProjectPath', TJSONString.Create(FProjectPath));
+        LNewConfig.AddPair('Git', LNewConfig2);
+        LConfigArray.AddElement(LNewConfig);
+      except
+        LNewConfig2.Free;
+        raise;
+      end;
+    except
+      LNewConfig.Free;
+      raise;
+    end;
+  end;
+
+  try
+    LContent := LConfigArray.ToString;
+    TFile.WriteAllText(FConfigFilePath, LContent, TEncoding.UTF8);
+  finally
+    LConfigArray.Free;
+  end;
+end;
+
 function TDocMeAIConfig.LoadConfig: IDocMeAIConfig;
 begin
   if not LoadFromFile(Ord(FProviderType)) then
     SaveToFile;
+
+  if not LoadFromFileConfigGit then
+    SaveToFileConfigGit;
 
   Result := Self;
 end;
@@ -428,6 +681,7 @@ end;
 function TDocMeAIConfig.SaveConfig: IDocMeAIConfig;
 begin
   SaveToFile;
+  SaveToFileConfigGit;
 
   Result := Self;
 end;
@@ -484,9 +738,25 @@ begin
   Result := TPath.Combine(TPath.GetHomePath, 'DocMeAI\config.json');
 end;
 
+function TDocMeAIConfig.IgnoreExtensions: string;
+begin
+  Result := FIgnoreExtensions;
+end;
+
+function TDocMeAIConfig.IgnoreExtensions(const AExtensions: string): IDocMeAIGit;
+begin
+  FIgnoreExtensions := AExtensions;
+  Result := Self;
+end;
+
 function TDocMeAIConfig.ApiKey: string;
 begin
   Result := FApiKey;
+end;
+
+function TDocMeAIConfig.&End: IDocMeAIConfig;
+begin
+  Result := Self;
 end;
 
 function TDocMeAIConfig.Active(const AValue: Boolean): IDocMeAIConfig;
@@ -503,6 +773,11 @@ end;
 function TDocMeAIConfig.Active: Boolean;
 begin
   Result := FActive;
+end;
+
+function TDocMeAIConfig.AIGit: IDocMeAIGit;
+begin
+  Result := Self;
 end;
 
 function TDocMeAIConfig.AIModelsProvider: IAIModelsProvider;
@@ -543,6 +818,17 @@ end;
 class function TDocMeAIConfig.New: IDocMeAIConfig;
 begin
   Result := Self.Create;
+end;
+
+function TDocMeAIConfig.ProjectPath(const AValue: string): IDocMeAIGit;
+begin
+  FProjectPath := AValue;
+  Result := Self;
+end;
+
+function TDocMeAIConfig.ProjectPath: string;
+begin
+  Result := FProjectPath;
 end;
 
 function TDocMeAIConfig.MaxTokens: Integer;
