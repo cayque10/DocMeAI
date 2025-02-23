@@ -74,6 +74,11 @@ type
     RecProjectSelect: TRectangle;
     LbProjectSelect: TLabel;
     LbInfo: TLabel;
+    BeAPIKey: TBlurEffect;
+    BtnClearAndShow: TRectangle;
+    LbClearAndShow: TLabel;
+    LayAPIKey: TLayout;
+    LbInfoAPIKey: TLabel;
     procedure BtnSaveClick(Sender: TObject);
     procedure CbAIChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -84,6 +89,7 @@ type
     procedure RecProjectSelectClick(Sender: TObject);
     procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure BtnClearAndShowClick(Sender: TObject);
   private
     FConfig: IDocMeAIConfig;
     /// <summary>
@@ -114,6 +120,16 @@ type
     /// </summary>
     procedure ConfigComboBoxAIModel;
 
+    /// <summary>
+    /// Displays the API key to the user.
+    /// </summary>
+    procedure ShowAPIKey;
+
+    /// <summary>
+    /// Configures the API key for the application.
+    /// </summary>
+    procedure ConfigureAPIKey;
+
   public
   end;
 
@@ -131,6 +147,12 @@ uses
 
 {$R *.fmx}
 { TFrmDocMeAISettings }
+
+procedure TFrmDocMeAIConfigurations.BtnClearAndShowClick(Sender: TObject);
+begin
+  ShowAPIKey;
+  MemAPIKey.Lines.Clear;
+end;
 
 procedure TFrmDocMeAIConfigurations.BtnDocumentClick(Sender: TObject);
 var
@@ -201,12 +223,13 @@ begin
   EdtGitPath.Text := FConfig.AIGit.FilePath;
   EdtIgnoreExtGit.Text := FConfig.AIGit.IgnoreExtensions;
   EdtProjectPathGit.Text := FConfig.AIGit.ProjectPath;
+  ConfigureAPIKey;
 end;
 
 procedure TFrmDocMeAIConfigurations.FormCreate(Sender: TObject);
 begin
   TcAI.ActiveTab := TiAI;
-  FConfig := TDocMeAIConfig.New.LoadConfig;
+  FConfig := TDocMeAIConfig.New;
   ConfigComboBoxAIModel;
   ConfigToView;
 end;
@@ -230,6 +253,12 @@ begin
   finally
     CbModel.EndUpdate;
   end;
+end;
+
+procedure TFrmDocMeAIConfigurations.ConfigureAPIKey;
+begin
+  BeAPIKey.Enabled := not FConfig.ApiKey.Trim.IsEmpty;
+  MemAPIKey.Enabled := FConfig.ApiKey.Trim.IsEmpty;
 end;
 
 procedure TFrmDocMeAIConfigurations.RecProjectSelectClick(Sender: TObject);
@@ -268,6 +297,12 @@ begin
   end;
 end;
 
+procedure TFrmDocMeAIConfigurations.ShowAPIKey;
+begin
+  BeAPIKey.Enabled := False;
+  MemAPIKey.Enabled := True;
+end;
+
 procedure TFrmDocMeAIConfigurations.SaveConfig;
 begin
   ValidateDatas;
@@ -284,6 +319,8 @@ begin
       .ProjectPath(Trim(EdtProjectPathGit.Text))
     .&End
     .SaveConfig;
+
+  ConfigureAPIKey;
 
   ShowMessage('Settings saved successfully');
 end;
