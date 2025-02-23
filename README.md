@@ -3,6 +3,8 @@
 ## Descrição
 O **DocMeAI** é um facilitador que permite, de forma rápida e prática, documentar métodos dentro das suas units no Delphi utilizando **Inteligência Artificial**. A ferramenta gera automaticamente os **XML Documentation Comments** para seus métodos, simplificando a documentação de código e aumentando a produtividade.
 
+Agora, com o novo recurso **Diff Comment**, o DocMeAI também gera automaticamente um resumo das alterações realizadas em um projeto versionado com Git. Essa funcionalidade ajuda a entender rapidamente as mudanças feitas no código, facilitando revisões e commits mais claros.
+
 ---
 
 ## Instruções de Instalação
@@ -33,54 +35,46 @@ Para utilizar o **DocMeAI**, você precisará ter instalado o **DelphiOpenAI**. 
    - **Modelo de IA**: O modelo utilizado, como `gpt-4o-mini`.
    - **Máximo de Tokens**: Limite de tokens para as respostas.
    - **Temperatura**: Controle da criatividade da IA (valor entre `0.0` e `1.0`).
-   - ![image](https://github.com/user-attachments/assets/75579c12-28fb-4942-8909-63c580e51e6a)
-
-
-
-3. Clique em **Salvar** para concluir a configuração.
+   - ![image](https://github.com/user-attachments/assets/380fe3a3-82dc-4c32-9d6a-f15f70d70d68)
+  
+3. Para o **Diff Comment**, acesse a aba Git e efetue as configurações dos campos.
+4. ![image](https://github.com/user-attachments/assets/235cb2fd-4827-428c-beaa-1277056e46e1)
+5. Clique em **Salvar** para concluir a configuração.
 
 ---
 
 ## Como Usar
 
+### **Documentação de Código**
 1. **Selecione os métodos que deseja documentar** em sua unit.
 2. Use o **atalho** `CTRL + SHIFT + D` ou clique no menu **"Documentation"**.
 3. (Opcional) Insira instruções adicionais antes de gerar a documentação, caso queira orientar a IA para casos específicos.
 4. Clique em **"Document"**.
-5. ![image](https://github.com/user-attachments/assets/edf3103b-ef58-4b5f-92f6-18e70edfc57d)
+5. ![Documentação](https://github.com/user-attachments/assets/edf3103b-ef58-4b5f-92f6-18e70edfc57d)
 6. O código selecionado será automaticamente documentado com os **XML Documentation Comments** do Delphi.
+
+### **Diff Comment**
+1. **Utilize o recurso Diff Comment** para gerar um resumo automático das alterações realizadas em seu projeto versionado com Git.
+2. O recurso analisa:
+   - **Arquivos modificados**: Detecta automaticamente as mudanças em arquivos rastreados.
+   - **Arquivos staged**: Inclui arquivos preparados para commit usando o comando `git add`.
+   - **Novos arquivos**: Lembre-se de usar `git add` para que arquivos novos sejam incluídos no resumo.
+3. Acesse o menu **"Diff Comment"** e clique em **"Generate Diff"** para criar o resumo.
+4. O DocMeAI irá gerar um resumo das alterações agrupadas por arquivo, destacando as principais modificações funcionais e estruturais.
+5. ![image](https://github.com/user-attachments/assets/4ae88476-b4bc-4b6e-aacd-3b4d911fe8b4)
+
+
+**Nota:** Apenas arquivos modificados ou staged serão analisados. Para novos arquivos, certifique-se de adicioná-los com `git add`.
 
 ---
 
 ## Exemplo de Saída
 
-Abaixo está um exemplo de método após ser documentado pelo DocMeAI:
+### Documentação de Código
 
-### Antes:
+#### Antes:
 ```pascal
 function CalculateTotal(const pValue1, pValue2: Double): Double;
 begin
   Result := pValue1 + pValue2;
 end;
-```
-
-### Depois:
-```pascal
-/// <summary>
-/// Calculates the total sum of two values.
-/// </summary>
-/// <param name="pValue1">The first value to be summed.</param>
-/// <param name="pValue2">The second value to be summed.</param>
-/// <returns>The total sum of the two values.</returns>
-function CalculateTotal(const pValue1, pValue2: Double): Double;
-begin
-  Result := pValue1 + pValue2;
-end;
-```
-Demonstração:
-
-
-https://github.com/user-attachments/assets/fee1905f-dfff-4fcb-a695-3f9aefc2495a
-
-
-
