@@ -58,6 +58,9 @@ contains
   DocMe.DiffComment.Process in 'DiffComment\DocMe.DiffComment.Process.pas',
   DocMe.DiffComment in 'DiffComment\DocMe.DiffComment.pas' {FrmDocMeDiffComment},
   DocMe.AI.PromptBuilder.Interfaces in 'AI\PromptBuilder\DocMe.AI.PromptBuilder.Interfaces.pas',
-  DocMe.DiffComment.Interfaces in 'DiffComment\DocMe.DiffComment.Interfaces.pas';
+  DocMe.DiffComment.Interfaces in 'DiffComment\DocMe.DiffComment.Interfaces.pas',
+  Encrypt.MEncryptDecryptAES in 'Encrypt\Encrypt.MEncryptDecryptAES.pas',
+  Encrypt.Interfaces in 'Encrypt\Encrypt.Interfaces.pas',
+  Encrypt.Main in 'Encrypt\Encrypt.Main.pas';
 
 end.

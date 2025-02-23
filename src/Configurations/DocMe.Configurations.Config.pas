@@ -9,11 +9,15 @@ uses
   System.IOUtils,
   DocMe.Configurations.Interfaces,
   DocMe.AI.ProviderTypes,
-  DocMe.AI.Interfaces;
+  DocMe.AI.Interfaces,
+  Encrypt.Interfaces;
 
 type
   TDocMeAIConfig = class(TInterfacedObject, IDocMeAIConfig, IDocMeAIGit)
-  private
+  private const
+    ENCRYPT_KEY = 'wX37fr2562OqvqnWAobq3xzXBnV4GG2s';
+
+  var
     FActive: Boolean;
     FApiKey: string;
     FModelAI: string;
@@ -25,6 +29,7 @@ type
     FIgnoreExtensions: string;
     FFilePath: string;
     FProjectPath: string;
+    FEncrypt: IEncrypt;
     /// <summary>
     /// Initializes a new instance of the class.
     /// </summary>
@@ -317,7 +322,8 @@ const
 implementation
 
 uses
-  System.Generics.Collections;
+  System.Generics.Collections,
+  Encrypt.Main, FMX.Dialogs;
 
 { TDocMeAIConfig }
 
@@ -331,6 +337,7 @@ begin
   FTemperature := TEMPERATURE_AI;
   FProviderType := TDocMeAIProviderType(GetActiveProviderType);
   FAIModelsProvider := TAIModelsProvider.New;
+  FEncrypt := TEncryptMain.New;
   LoadConfig;
 end;
 
@@ -402,7 +409,13 @@ begin
 
     LVal := LConfigObj.GetValue('ApiKey');
     if Assigned(LVal) then
-      FApiKey := LVal.Value
+    begin
+      try
+        FApiKey := FEncrypt.AESDecrypt(LVal.Value, ENCRYPT_KEY)
+      except
+        ShowMessage('Unable to load API key. Enter the key again.');
+      end;
+    end
     else
       FApiKey := '';
 
@@ -518,10 +531,13 @@ begin
     LConfig := TJSONObject(LConfigArray.Items[I]);
     if Assigned(LConfig.GetValue('ProviderType')) then
     begin
-      lRemovedPair := LConfig.RemovePair('Active');
-      if Assigned(lRemovedPair) then
-        lRemovedPair.Free;
-      LConfig.AddPair('Active', TJSONBool.Create(False));
+      if FActive then
+      begin
+        lRemovedPair := LConfig.RemovePair('Active');
+        if Assigned(lRemovedPair) then
+          lRemovedPair.Free;
+        LConfig.AddPair('Active', TJSONBool.Create(False));
+      end;
 
       if (LConfig.GetValue('ProviderType').Value = lKeyValue) then
       begin
@@ -533,7 +549,7 @@ begin
         lRemovedPair := LConfig.RemovePair('ApiKey');
         if Assigned(lRemovedPair) then
           lRemovedPair.Free;
-        LConfig.AddPair('ApiKey', FApiKey);
+        LConfig.AddPair('ApiKey', TJSONString.Create(FEncrypt.AESEncrypt(FApiKey, ENCRYPT_KEY)));
 
         lRemovedPair := LConfig.RemovePair('ModelAI');
         if Assigned(lRemovedPair) then
