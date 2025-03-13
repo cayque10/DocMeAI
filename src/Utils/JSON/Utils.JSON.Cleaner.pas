@@ -13,7 +13,12 @@ uses
 type
   IJSONCleaner<T: class> = interface
     ['{DB75F095-ADE7-4ABF-8986-F9CCB0FD578D}']
-    function CleanJSON(const pJSON: string): string;
+    /// <summary>
+    /// Cleans a JSON string by removing fields that are not present in the corresponding class.
+    /// </summary>
+    /// <param name="AJSON">The JSON string to be cleaned.</param>
+    /// <returns>A cleaned JSON string.</returns>
+    function CleanJSON(const AJSON: string): string;
   end;
 
   TJSONCleaner<T: class> = class(TInterfacedObject, IJSONCleaner<T>)
@@ -21,33 +26,33 @@ type
     /// <summary>
     /// Cleans a JSON object by removing fields that are not present in the corresponding class.
     /// </summary>
-    /// <param name="LJSONObject">The JSON object to be cleaned.</param>
-    /// <param name="LType">The RTTI type of the corresponding Delphi class.</param>
-    procedure CleanJSONObject(LJSONObject: TJSONObject; LType: TRttiType);
+    /// <param name="AJSONObject">The JSON object to be cleaned.</param>
+    /// <param name="AType">The RTTI type of the corresponding Delphi class.</param>
+    procedure CleanJSONObject(AJSONObject: TJSONObject; AType: TRttiType);
 
     /// <summary>
     /// Cleans a JSON array by applying the cleaning process to each item in the array.
     /// </summary>
-    /// <param name="LJSONArray">The JSON array to be cleaned.</param>
-    /// <param name="LType">The RTTI type of the items in the array.</param>
-    procedure CleanJSONArray(LJSONArray: TJSONArray; LType: TRttiType);
+    /// <param name="AJSONArray">The JSON array to be cleaned.</param>
+    /// <param name="AType">The RTTI type of the items in the array.</param>
+    procedure CleanJSONArray(AJSONArray: TJSONArray; AType: TRttiType);
 
     /// <summary>
     /// Obtains the generic type of a list from the RTTI type.
     /// </summary>
     /// <param name="AType">The RTTI type of the TObjectList.</param>
-    /// <param name="pTypeListName">The name of the list type.</param>
+    /// <param name="ATypeListName">The name of the list type.</param>
     /// <returns>The RTTI type of the generic item in the list.</returns>
-    function GetGenericClassType(AType: TRttiType; const pTypeListName: String): TRttiType;
+    function GetGenericClassType(AType: TRttiType; const ATypeListName: String): TRttiType;
 
     /// <summary>
     /// Removes the prefix 'F' (uppercase or lowercase) from the beginning of a string, if present.
     /// </summary>
-    /// <param name="pValue">The string from which the prefix 'F' should be removed.</param>
+    /// <param name="AValue">The string from which the prefix 'F' should be removed.</param>
     /// <returns>
     /// The string without the 'F' prefix at the beginning, if present; otherwise, returns the original string.
     /// </returns>
-    function RemovePrefixF(const pValue: string): string;
+    function RemovePrefixF(const AValue: string): string;
 
   public
     /// <summary>
@@ -61,9 +66,9 @@ type
     /// <summary>
     /// Cleans a JSON string by removing fields that are not present in the corresponding class.
     /// </summary>
-    /// <param name="pJSON">The JSON string to be cleaned.</param>
+    /// <param name="AJSON">The JSON string to be cleaned.</param>
     /// <returns>A cleaned JSON string.</returns>
-    function CleanJSON(const pJSON: string): string;
+    function CleanJSON(const AJSON: string): string;
 
   end;
 
@@ -72,7 +77,7 @@ implementation
 uses
   REST.JSON.Types;
 
-procedure TJSONCleaner<T>.CleanJSONObject(LJSONObject: TJSONObject; LType: TRttiType);
+procedure TJSONCleaner<T>.CleanJSONObject(AJSONObject: TJSONObject; AType: TRttiType);
 var
   LField: TRttiField;
   LContext: TRttiContext;
@@ -82,40 +87,43 @@ var
   LPairValue: string;
   LJSONPair: TJSONPair;
   LPropType, LPropTypeAux: TRttiType;
-  lAttribute: TCustomAttribute;
-  lFieldName: String;
+  LAttribute: TCustomAttribute;
+  LFieldName: String;
 
 begin
+  if not Assigned(AJSONObject) or (AJSONObject.toJSON.ToLower = 'null') then
+    Exit;
+
   LContext := TRttiContext.Create;
   try
     LFields := TDictionary<string, TRttiField>.Create;
     try
-      for LField in LType.GetFields do
+      for LField in AType.GetFields do
       begin
-        lFieldName := EmptyStr;
+        LFieldName := EmptyStr;
 
-        for lAttribute in LField.GetAttributes do
+        for LAttribute in LField.GetAttributes do
         begin
-          if lAttribute is JSONNameAttribute then
+          if LAttribute is JSONNameAttribute then
           begin
 {$IF CompilerVersion >= 36}
-            lFieldName := JSONNameAttribute(lAttribute).Value;
+            LFieldName := JSONNameAttribute(LAttribute).Value;
 {$ELSE}
-            lFieldName := JSONNameAttribute(lAttribute).Name;
+            LFieldName := JSONNameAttribute(LAttribute).Name;
 {$ENDIF}
             break;
           end;
         end;
 
-        if lFieldName.Trim.IsEmpty then
-          lFieldName := RemovePrefixF(LField.Name).ToLower;
+        if LFieldName.Trim.IsEmpty then
+          LFieldName := RemovePrefixF(LField.Name).ToLower;
 
-        LFields.TryAdd(lFieldName.ToLower, LField);
+        LFields.TryAdd(LFieldName.ToLower, LField);
       end;
 
       LListToRemove := TList<string>.Create;
       try
-        for LPair in LJSONObject do
+        for LPair in AJSONObject do
         begin
           if not LFields.ContainsKey(LPair.JsonString.Value.ToLower) then
             LListToRemove.Add(LPair.JsonString.Value)
@@ -143,7 +151,7 @@ begin
 
         for LPairValue in LListToRemove do
         begin
-          LJSONPair := LJSONObject.RemovePair(LPairValue);
+          LJSONPair := AJSONObject.RemovePair(LPairValue);
           if Assigned(LJSONPair) then
             LJSONPair.Free;
         end;
@@ -158,10 +166,10 @@ begin
   end;
 end;
 
-function TJSONCleaner<T>.GetGenericClassType(AType: TRttiType; const pTypeListName: String): TRttiType;
+function TJSONCleaner<T>.GetGenericClassType(AType: TRttiType; const ATypeListName: String): TRttiType;
 var
   LContext: TRttiContext;
-  lRttiType: TRttiType;
+  LRttiType: TRttiType;
   LBaseType: TRttiType;
   LTypeName: string;
   LGenTypeName: string;
@@ -173,11 +181,11 @@ begin
     if Assigned(LBaseType) then
     begin
       LTypeName := LBaseType.QualifiedName;
-      if LTypeName.StartsWith(pTypeListName) then
+      if LTypeName.StartsWith(ATypeListName) then
       begin
         LGenTypeName := Copy(LTypeName, Pos('<', LTypeName) + 1, Length(LTypeName) - Pos('<', LTypeName) - 1);
-        lRttiType := LContext.FindType(LGenTypeName);
-        Result := lRttiType;
+        LRttiType := LContext.FindType(LGenTypeName);
+        Result := LRttiType;
       end;
 
     end;
@@ -191,35 +199,35 @@ begin
   Result := Self.Create;
 end;
 
-function TJSONCleaner<T>.RemovePrefixF(const pValue: string): string;
+function TJSONCleaner<T>.RemovePrefixF(const AValue: string): string;
 begin
-  if (Length(pValue) > 0) and SameText(pValue[1], 'F') then
-    Result := Copy(pValue, 2, Length(pValue) - 1)
+  if (Length(AValue) > 0) and SameText(AValue[1], 'F') then
+    Result := Copy(AValue, 2, Length(AValue) - 1)
   else
-    Result := pValue;
+    Result := AValue;
 end;
 
-procedure TJSONCleaner<T>.CleanJSONArray(LJSONArray: TJSONArray; LType: TRttiType);
+procedure TJSONCleaner<T>.CleanJSONArray(AJSONArray: TJSONArray; AType: TRttiType);
 var
   LItem: TJSONValue;
   LItemType: TRttiType;
   LContext: TRttiContext;
 begin
-  if not Assigned(LJSONArray) or (LJSONArray.toJSON.ToLower = 'null') or (LJSONArray.Count <= 0) then
+  if not Assigned(AJSONArray) or (AJSONArray.toJSON.ToLower = 'null') or (AJSONArray.Count <= 0) then
     Exit;
 
   LContext := TRttiContext.Create;
   try
-    for LItem in LJSONArray do
+    for LItem in AJSONArray do
     begin
       if LItem is TJSONObject then
       begin
-        LItemType := LContext.GetType(LType.AsInstance.MetaclassType);
+        LItemType := LContext.GetType(AType.AsInstance.MetaclassType);
         CleanJSONObject(TJSONObject(LItem), LItemType);
       end
       else if LItem is TJSONArray then
       begin
-        CleanJSONArray(TJSONArray(LItem), LType);
+        CleanJSONArray(TJSONArray(LItem), AType);
       end;
     end;
   finally
@@ -227,13 +235,13 @@ begin
   end;
 end;
 
-function TJSONCleaner<T>.CleanJSON(const pJSON: string): string;
+function TJSONCleaner<T>.CleanJSON(const AJSON: string): string;
 var
   LJSONObject: TJSONObject;
   LContext: TRttiContext;
   LType: TRttiType;
 begin
-  LJSONObject := TJSONObject.ParseJSONValue(pJSON) as TJSONObject;
+  LJSONObject := TJSONObject.ParseJSONValue(AJSON) as TJSONObject;
 
   if not Assigned(LJSONObject) then
     raise Exception.Create('Invalid JSON format');
