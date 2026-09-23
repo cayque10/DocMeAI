@@ -30,7 +30,8 @@ begin
     'For each file, first output the file name on a separate line, then list the changes below, one per line. ' +
     'Do not use any markdown formatting symbols (e.g., "#", "**", "`"). ' +
     'Exclude minor visual or cosmetic adjustments and focus only on significant changes. ' +
-    'Keep the summary clear and brief.' + sLineBreak + AData;
+    'Keep the summary clear and brief.' + sLineBreak + AData + sLineBreak + sLineBreak +
+    IfThen(AAdditionalInfo.Trim.IsEmpty, '', Format('Additional instructions: %s', [AAdditionalInfo]));
 end;
 
 constructor TDocMeAIPromptBuilderDiffComment.Create;
