@@ -6,13 +6,15 @@ uses
   System.Classes,
   DocMe.Configurations.Interfaces,
   DocMe.AI.Interfaces,
-  DocMe.DiffComment.Interfaces;
+  DocMe.DiffComment.Interfaces,
+  DocMe.IDE.ActiveProject.Interfaces;
 
 type
   TDocMeDiffComment = class(TInterfacedObject, IDocMeAIDiffComment)
   private
     FConfig: IDocMeAIConfig;
     FAI: IDocMeAI;
+    FActiveProjectPath: IDocMeActiveProjectPath;
     constructor Create;
     /// <summary>
     /// Executes a Git command and returns the output as a string.
@@ -93,10 +95,12 @@ implementation
 
 uses
   System.StrUtils,
+  System.IOUtils,
   Winapi.Windows,
   DocMe.Configurations.Config,
   DocMe.AI.Factory,
   DocMe.AI.PromptBuilder.Types,
+  DocMe.IDE.ActiveProject,
   System.SysUtils,
   FMX.Dialogs;
 
@@ -106,6 +110,7 @@ constructor TDocMeDiffComment.Create;
 begin
   FConfig := TDocMeAIConfig.New.LoadConfig;
   FAI := TDocMeAIFactory.CreateAI(FConfig, pbtDiffComment);
+  FActiveProjectPath := TDocMeActiveProjectPath.New;
 end;
 
 function TDocMeDiffComment.ExecuteGitCommand(const ACommand: string): string;
@@ -113,9 +118,17 @@ var
   lFullParams: string;
   lGitExe: string;
   lRepoPath: string;
+  lDetectedPath: string;
 begin
   lGitExe := '';
   lRepoPath := FConfig.AIGit.ProjectPath;
+
+  if FConfig.AIGit.AutoDetectProjectPath then
+  begin
+    lDetectedPath := FActiveProjectPath.GetActiveProjectPath;
+    if not lDetectedPath.Trim.IsEmpty then
+      lRepoPath := lDetectedPath;
+  end;
 
   if lRepoPath.Trim.IsEmpty then
     raise Exception.Create('The project path was not found.');
@@ -125,6 +138,9 @@ begin
 
   if not FileExists(lGitExe) then
     raise Exception.Create('The git.exe file path was not found.');
+
+  if not TDirectory.Exists(TPath.Combine(lRepoPath, '.git')) then
+    raise Exception.Create('The resolved project path is not a Git repository: ' + lRepoPath);
 
   lFullParams := Format('--git-dir="%s\.git" --work-tree="%s" %s', [lRepoPath, lRepoPath, ACommand]);
   Result := RunCommand(lGitExe, lFullParams, lRepoPath);

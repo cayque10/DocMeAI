@@ -1486,7 +1486,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
         object LayGit: TLayout
           Align = Client
           Size.Width = 570.000000000000000000
-          Size.Height = 384.000000000000000000
+          Size.Height = 439.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           object RecContainerTop: TRectangle
@@ -1497,7 +1497,7 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
             Margins.Right = 6.000000000000000000
             Margins.Bottom = 6.000000000000000000
             Size.Width = 558.000000000000000000
-            Size.Height = 372.000000000000000000
+            Size.Height = 427.000000000000000000
             Size.PlatformDefault = False
             Stroke.Kind = None
             object RecContainerGitTop: TRectangle
@@ -1659,13 +1659,47 @@ object FrmDocMeAIConfigurations: TFrmDocMeAIConfigurations
                 end
               end
             end
+            object RecContainerAutoDetectProject: TRectangle
+              Align = Top
+              Fill.Color = claWhite
+              Position.Y = 165.000000000000000000
+              Size.Width = 558.000000000000000000
+              Size.Height = 55.000000000000000000
+              Size.PlatformDefault = False
+              Stroke.Kind = None
+              object SwAutoDetectProjectPath: TSwitch
+                Align = Left
+                IsChecked = False
+                Margins.Left = 6.000000000000000000
+                Margins.Top = 6.000000000000000000
+                Margins.Bottom = 6.000000000000000000
+                Position.Y = 22.000000000000000000
+                Size.Width = 49.000000000000000000
+                Size.Height = 21.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                OnSwitch = SwAutoDetectProjectPathSwitch
+              end
+              object LbAutoDetectProjectPath: TLabel
+                Align = Top
+                AutoSize = True
+                Margins.Left = 6.000000000000000000
+                Margins.Right = 6.000000000000000000
+                Position.X = 6.000000000000000000
+                Size.Width = 546.000000000000000000
+                Size.Height = 16.000000000000000000
+                Size.PlatformDefault = False
+                Text = 'Auto-detect project path from the active IDE project'
+                TabOrder = 1
+              end
+            end
             object LbInfo: TLabel
               Align = Top
               StyledSettings = [Family, Style]
               Margins.Left = 6.000000000000000000
               Margins.Right = 6.000000000000000000
               Position.X = 6.000000000000000000
-              Position.Y = 165.000000000000000000
+              Position.Y = 220.000000000000000000
               Size.Width = 546.000000000000000000
               Size.Height = 17.000000000000000000
               Size.PlatformDefault = False

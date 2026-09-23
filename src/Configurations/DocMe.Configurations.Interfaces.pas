@@ -69,6 +69,25 @@ type
     function ProjectPath(const AValue: string): IDocMeAIGit; overload;
 
     /// <summary>
+    /// Retrieves whether the project path should be auto-detected from the IDE's active project.
+    /// </summary>
+    /// <returns>
+    /// True if the active project's directory should be used instead of the manually configured path.
+    /// </returns>
+    function AutoDetectProjectPath: Boolean; overload;
+
+    /// <summary>
+    /// Sets whether the project path should be auto-detected from the IDE's active project.
+    /// </summary>
+    /// <param name="AValue">
+    /// True to use the active project's directory instead of the manually configured path.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
+    function AutoDetectProjectPath(const AValue: Boolean): IDocMeAIGit; overload;
+
+    /// <summary>
     /// Finalizes the configuration and returns an instance of <see cref="IDocMeAIConfig"/>.
     /// </summary>
     /// <returns>

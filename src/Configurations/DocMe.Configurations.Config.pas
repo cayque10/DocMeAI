@@ -29,6 +29,7 @@ type
     FIgnoreExtensions: string;
     FFilePath: string;
     FProjectPath: string;
+    FAutoDetectProjectPath: Boolean;
     FEncrypt: IEncrypt;
     /// <summary>
     /// Initializes a new instance of the class.
@@ -138,6 +139,25 @@ type
     /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
     /// </returns>
     function ProjectPath(const AValue: string): IDocMeAIGit; overload;
+
+    /// <summary>
+    /// Retrieves whether the project path should be auto-detected from the IDE's active project.
+    /// </summary>
+    /// <returns>
+    /// True if the active project's directory should be used instead of the manually configured path.
+    /// </returns>
+    function AutoDetectProjectPath: Boolean; overload;
+
+    /// <summary>
+    /// Sets whether the project path should be auto-detected from the IDE's active project.
+    /// </summary>
+    /// <param name="AValue">
+    /// True to use the active project's directory instead of the manually configured path.
+    /// </param>
+    /// <returns>
+    /// An instance of <see cref="IDocMeAIGit"/> for method chaining.
+    /// </returns>
+    function AutoDetectProjectPath(const AValue: Boolean): IDocMeAIGit; overload;
 
     /// <summary>
     /// Finalizes the configuration and returns an instance of <see cref="IDocMeAIConfig"/>.
@@ -451,6 +471,7 @@ var
   LConfigObj: TJSONObject;
   I: Integer;
   LValue: string;
+  LBoolValue: Boolean;
 begin
   Result := False;
 
@@ -486,6 +507,11 @@ begin
           FProjectPath := LValue
         else
           FProjectPath := '';
+
+        if LGitValue.TryGetValue<Boolean>('AutoDetectProjectPath', LBoolValue) then
+          FAutoDetectProjectPath := LBoolValue
+        else
+          FAutoDetectProjectPath := False;
 
         Exit(True);
       end;
@@ -645,6 +671,11 @@ begin
         lRemovedPair.Free;
       LNewConfig2.AddPair('ProjectPath', TJSONString.Create(FProjectPath));
 
+      lRemovedPair := LNewConfig2.RemovePair('AutoDetectProjectPath');
+      if Assigned(lRemovedPair) then
+        lRemovedPair.Free;
+      LNewConfig2.AddPair('AutoDetectProjectPath', TJSONBool.Create(FAutoDetectProjectPath));
+
       lRemovedPair := LConfig.RemovePair('Git');
       if Assigned(lRemovedPair) then
         lRemovedPair.Free;
@@ -663,6 +694,7 @@ begin
         LNewConfig2.AddPair('FilePath', TJSONString.Create(FFilePath));
         LNewConfig2.AddPair('IgnoreExtensions', TJSONString.Create(FIgnoreExtensions));
         LNewConfig2.AddPair('ProjectPath', TJSONString.Create(FProjectPath));
+        LNewConfig2.AddPair('AutoDetectProjectPath', TJSONBool.Create(FAutoDetectProjectPath));
         LNewConfig.AddPair('Git', LNewConfig2);
         LConfigArray.AddElement(LNewConfig);
       except
@@ -845,6 +877,17 @@ end;
 function TDocMeAIConfig.ProjectPath: string;
 begin
   Result := FProjectPath;
+end;
+
+function TDocMeAIConfig.AutoDetectProjectPath(const AValue: Boolean): IDocMeAIGit;
+begin
+  FAutoDetectProjectPath := AValue;
+  Result := Self;
+end;
+
+function TDocMeAIConfig.AutoDetectProjectPath: Boolean;
+begin
+  Result := FAutoDetectProjectPath;
 end;
 
 function TDocMeAIConfig.MaxTokens: Integer;

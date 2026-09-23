@@ -67,6 +67,9 @@ type
     EdtProjectPathGit: TEdit;
     RecProjectSelect: TRectangle;
     LbProjectSelect: TLabel;
+    RecContainerAutoDetectProject: TRectangle;
+    SwAutoDetectProjectPath: TSwitch;
+    LbAutoDetectProjectPath: TLabel;
     BtnSave: TRectangle;
     LbSave: TLabel;
     OdGitPath: TOpenDialog;
@@ -83,6 +86,7 @@ type
     procedure SwActiveSwitch(Sender: TObject);
     procedure BtnSelectGitClick(Sender: TObject);
     procedure RecProjectSelectClick(Sender: TObject);
+    procedure SwAutoDetectProjectPathSwitch(Sender: TObject);
     procedure BtnScaleMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure BtnScaleMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure BtnClearAndShowClick(Sender: TObject);
@@ -125,6 +129,11 @@ type
     /// Configures the API key for the application.
     /// </summary>
     procedure ConfigureAPIKey;
+
+    /// <summary>
+    /// Enables or disables the manual project path controls based on the auto-detect switch.
+    /// </summary>
+    procedure UpdateProjectPathControlsEnabled;
   public
   end;
 
@@ -197,6 +206,8 @@ begin
   EdtGitPath.Text := FConfig.AIGit.FilePath;
   EdtIgnoreExtGit.Text := FConfig.AIGit.IgnoreExtensions;
   EdtProjectPathGit.Text := FConfig.AIGit.ProjectPath;
+  SwAutoDetectProjectPath.IsChecked := FConfig.AIGit.AutoDetectProjectPath;
+  UpdateProjectPathControlsEnabled;
   ConfigureAPIKey;
 end;
 
@@ -277,6 +288,7 @@ begin
       .FilePath(Trim(EdtGitPath.Text))
       .IgnoreExtensions(Trim(EdtIgnoreExtGit.Text))
       .ProjectPath(Trim(EdtProjectPathGit.Text))
+      .AutoDetectProjectPath(SwAutoDetectProjectPath.IsChecked)
     .&End
     .SaveConfig;
 
@@ -294,6 +306,18 @@ end;
 procedure TFrmDocMeAIConfigurations.SwActiveSwitch(Sender: TObject);
 begin
   FConfig.Active(SwActive.IsChecked);
+end;
+
+procedure TFrmDocMeAIConfigurations.SwAutoDetectProjectPathSwitch(Sender: TObject);
+begin
+  FConfig.AIGit.AutoDetectProjectPath(SwAutoDetectProjectPath.IsChecked);
+  UpdateProjectPathControlsEnabled;
+end;
+
+procedure TFrmDocMeAIConfigurations.UpdateProjectPathControlsEnabled;
+begin
+  EdtProjectPathGit.Enabled := not SwAutoDetectProjectPath.IsChecked;
+  RecProjectSelect.Enabled := not SwAutoDetectProjectPath.IsChecked;
 end;
 
 procedure TFrmDocMeAIConfigurations.ValidateDatas;
